@@ -107,7 +107,7 @@
       qName: 'เกมของคุณชื่ออะไร', qTime: 'ทำตอนกี่โมงถึงกี่โมง', fStart: 'เริ่ม', fEnd: 'จบ',
       btnBegin: 'เริ่มทดลอง', btnStartTimer: 'เริ่มจับเวลา', btnStop: 'หยุดก่อน',
       btnEdit: 'เปลี่ยนเกมหรือเวลา', btnSave: 'บันทึก', btnBack: 'กลับ',
-      dayOf: 'วันที่ {n} จาก 7', timeLine: 'เริ่ม {s} จบ {e}',
+      dayOf: 'วันที่ {n} จาก 7', timeLine: 'เริ่ม {s} จบ {e}', startedAt: 'เริ่มเมื่อ {s}',
       stats: 'ฝึกแล้ว {a} วัน · ตรงเวลา {b} วัน',
       onTimeYes: 'ตรงเวลา', onTimeNo: 'ไม่ตรงเวลาที่ตั้งไว้',
       doneToday: 'วันนี้บันทึกแล้ว', finished: 'ครบ 7 วันแล้ว',
@@ -123,8 +123,8 @@
       qName: 'What is your game called?', qTime: 'What time do you do it, from when to when?', fStart: 'Start', fEnd: 'End',
       btnBegin: 'Start the trial', btnStartTimer: 'Start the timer', btnStop: 'Stop for now',
       btnEdit: 'Change game or time', btnSave: 'Save', btnBack: 'Back',
-      dayOf: 'Day {n} of 7', timeLine: 'Start {s} End {e}',
-      stats: 'Practiced {a} days · on time {b} days',
+      dayOf: 'Day {n} of 7', timeLine: 'Start {s} End {e}', startedAt: 'Started at {s}',
+      stats: 'Days practiced: {a} · on time: {b}',
       onTimeYes: 'on time', onTimeNo: 'not at the time you set',
       doneToday: 'Saved for today', finished: '7 days complete',
       rDone: 'Practice finished', rTitle: 'Notes for today',
@@ -188,7 +188,7 @@
         if (cur === 'timer') {
           $('#tmDay').textContent = fill('dayOf', { n: dayNo() });
           $('#tmName').textContent = S.name;
-          $('#tmStat').textContent = fill('timeLine', { s: startStr, e: '' }).replace(/\s+$/, '') + ' · ' + t(onTime ? 'onTimeYes' : 'onTimeNo');
+          $('#tmStat').textContent = fill('startedAt', { s: startStr }) + ' · ' + t(onTime ? 'onTimeYes' : 'onTimeNo');
         }
       }
       function beep() {
