@@ -40,6 +40,12 @@
     .menu-list { display: flex; flex-direction: column; gap: 8px; margin-top: 8px; }
     .menu-list a, .menu-list button { display: block; text-align: left; min-height: 48px; padding: 10px 14px; font: inherit; color: var(--ink); background: rgba(255,255,255,.06); border: 1px solid var(--line); border-radius: 12px; text-decoration: none; cursor: pointer; }
     :focus-visible { outline: 3px solid var(--ac); outline-offset: 2px; }
+    .welcome-row { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; margin-top: 14px; }
+    .wbtn { min-height: 48px; padding: 8px 16px; border: 2px solid var(--ink); border-radius: 10px; background: transparent; color: var(--ink); font: inherit; font-weight: 700; cursor: pointer; }
+    .wtext { font-size: 18px; font-weight: 600; }
+    .tabs { display: flex; margin-top: 14px; padding: 4px; border: 1px solid var(--line); border-radius: 16px; background: rgba(255,255,255,.06); }
+    .tabs button { flex: 1; min-height: 48px; border: 0; border-radius: 12px; background: transparent; color: var(--ink); font: inherit; font-weight: 600; cursor: pointer; }
+    .tabs button.on { background: rgba(255,255,255,.16); }
     #dlTools { display: none !important; }
     [hidden] { display: none !important; }
   </style>
@@ -57,16 +63,18 @@
         </div>
         <button id="menuBtn" class="pill icon" type="button" aria-expanded="false" aria-controls="menu" data-i18n-label="menuLabel">&#9776;</button>
       </div>
-      <button id="bTest" class="pill" type="button" style="margin-top:12px"></button>
+      <div class="welcome-row">
+        <button id="bTest" class="wbtn" type="button"></button>
+        <span class="wtext" data-i18n="welcomeTo">สู่ Deep Listening Training</span>
+      </div>
+      <p id="noVoice" class="muted" hidden data-i18n="noVoice">เครื่องนี้ยังไม่รองรับเสียงอ่าน</p>
+      <div class="tabs" role="tablist">
+        <button type="button" role="tab" data-tab="today" data-i18n="menuToday">วันนี้</button>
+        <button type="button" role="tab" data-tab="history" data-i18n="menuHistory">ประวัติ</button>
+      </div>
     </header>
 
     <nav id="menu" class="card" hidden>
-      <div class="menu-list">
-        <button type="button" data-go="today" data-i18n="menuToday">วันนี้</button>
-        <button type="button" data-go="history" data-i18n="menuHistory">ประวัติ</button>
-        <a href="coach.html" data-i18n="menuCoach">โค้ช</a>
-        <a href="manual.html" data-i18n="menuTools">เครื่องมือ</a>
-      </div>
       <p class="muted" style="margin-top:12px" data-i18n="menuMore">ภาษาอื่นทั่วโลกกำลังเตรียม</p>
     </nav>
 
@@ -146,7 +154,7 @@
       subTrial: 'ทดลอง 7 วัน · นั่งหลับตา 10 นาที · เล่นเพื่อเป็นคำพูด',
       menuLabel: 'เมนู', menuMore: 'ภาษาอื่นทั่วโลกกำลังเตรียม',
       menuToday: 'วันนี้', menuHistory: 'ประวัติ', menuCoach: 'โค้ช', menuTools: 'เครื่องมือ',
-      soundOn: 'เสียง: เปิด', soundOff: 'เสียง: ปิด', welcomeBtn: 'ยินดีต้อนรับ', welcomeStop: 'หยุดอ่าน',
+      soundOn: 'เสียง: เปิด', soundOff: 'เสียง: ปิด', welcomeBtn: 'ยินดีต้อนรับ', welcomeStop: 'หยุดอ่าน', welcomeTo: 'สู่ Deep Listening Training', noVoice: 'เครื่องนี้ยังไม่รองรับเสียงอ่าน',
       greeting: 'สวัสดีครับ ยินดีต้อนรับสู่ Deep Listening Training มาเริ่มต้นกันเลย',
       btnWelcome: 'มาเริ่มต้นกันเลย',
       qName: 'เกมของคุณชื่ออะไร', qTime: 'ทำตอนกี่โมงถึงกี่โมง', fStart: 'เริ่ม', fEnd: 'จบ',
@@ -166,7 +174,7 @@
       subTrial: '7-day trial · sit with eyes closed for 10 minutes · play to be your word',
       menuLabel: 'Menu', menuMore: 'More languages from around the world are being prepared',
       menuToday: 'Today', menuHistory: 'History', menuCoach: 'Coach', menuTools: 'Tools',
-      soundOn: 'Sound: on', soundOff: 'Sound: off', welcomeBtn: 'Welcome', welcomeStop: 'Stop reading',
+      soundOn: 'Sound: on', soundOff: 'Sound: off', welcomeBtn: 'Welcome', welcomeStop: 'Stop reading', welcomeTo: 'to Deep Listening Training', noVoice: 'This device does not support read-aloud',
       greeting: 'Hello, welcome to Deep Listening Training. Let us begin.',
       btnWelcome: 'Let us begin',
       qName: 'What is your game called?', qTime: 'What time do you do it, from when to when?', fStart: 'Start', fEnd: 'End',
@@ -216,7 +224,7 @@
       }
       function stopSay() { runId++; if (synth) { synth.cancel(); } reading = false; render(); }
       function speakWelcome() {
-        if (!synth) { return; }
+        if (!synth) { $('#noVoice').hidden = false; return; }
         if (reading) { stopSay(); return; }
         runId++; synth.cancel();
         var my = runId, lang = DL.getLang(), code = lang === 'th' ? 'th-TH' : 'en-US';
@@ -243,8 +251,13 @@
       function render() {
         $('#bSound').textContent = t(soundOn ? 'soundOn' : 'soundOff');
         $('#bSound').setAttribute('aria-pressed', soundOn ? 'true' : 'false');
-        $('#bTest').textContent = t(reading ? 'welcomeStop' : 'welcomeBtn');
-        $('#bTest').hidden = !synth || cur !== 'welcome';
+        $('#bTest').textContent = t(reading ? 'welcomeStop' : 'welcomeBtn') + (reading ? ' \u25A0' : ' \u25BC');
+        $('.welcome-row').hidden = cur !== 'welcome';
+        if (cur !== 'welcome') { $('#noVoice').hidden = true; }
+        Array.prototype.forEach.call(document.querySelectorAll('.tabs button'), function (b) {
+          var on = (b.getAttribute('data-tab') === 'history') === (cur === 'history');
+          b.classList.toggle('on', on); b.setAttribute('aria-selected', on ? 'true' : 'false');
+        });
         Array.prototype.forEach.call(document.querySelectorAll('.seg button'), function (b) {
           var on = b.getAttribute('data-lang') === DL.getLang();
           b.classList.toggle('on', on); b.setAttribute('aria-pressed', on ? 'true' : 'false');
@@ -305,10 +318,10 @@
       Array.prototype.forEach.call(document.querySelectorAll('.seg button'), function (b) {
         b.addEventListener('click', function () { DL.setLang(b.getAttribute('data-lang')); });
       });
-      Array.prototype.forEach.call(document.querySelectorAll('[data-go]'), function (b) {
+      Array.prototype.forEach.call(document.querySelectorAll('[data-tab]'), function (b) {
         b.addEventListener('click', function () {
-          var g = b.getAttribute('data-go');
-          if (g === 'today') { show(S.startDate ? 'today' : 'welcome'); } else { show(g); }
+          if (cur === 'timer' || cur === 'reflect') { return; }
+          if (b.getAttribute('data-tab') === 'history') { show('history'); } else { show(S.startDate ? 'today' : 'welcome'); }
         });
       });
       $('#bWelcome').addEventListener('click', function () { show('setup'); });
