@@ -3,29 +3,118 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Deep Listening Training - Manual</title>
-  <link rel="stylesheet" href="style.css">
+  <meta name="theme-color" content="#0d1f1b">
+  <title>Deep Listening Training - คู่มือ</title>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root { --ink: #EAF5F1; --mut: #A9C5BD; --ac: #8EE0CC; --on: #0B2A22; --line: rgba(255,255,255,.2); --card: rgba(255,255,255,.07); }
+    * { box-sizing: border-box; }
+    html { background: #0d1f1b; -webkit-text-size-adjust: 100%; color-scheme: dark; }
+    body { margin: 0; min-height: 100vh; background: linear-gradient(160deg, #0d1f1b 0%, #143229 55%, #1b4338 100%) fixed; color: var(--ink); font: 17px/1.65 'Noto Sans Thai', system-ui, -apple-system, 'Segoe UI', sans-serif; }
+    .wrap { max-width: 680px; margin: 0 auto; padding: 20px 16px 48px; }
+    h1 { margin: 0; font-size: 28px; line-height: 1.3; }
+    h2 { margin: 18px 0 10px; font-size: 22px; }
+    .muted { color: var(--mut); }
+    .ctrl { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; margin: 12px 0; }
+    .seg { display: flex; border: 1px solid var(--line); border-radius: 999px; overflow: hidden; }
+    .seg button { min-height: 48px; min-width: 64px; padding: 8px 18px; border: 0; background: transparent; color: var(--ink); font: inherit; font-weight: 700; cursor: pointer; }
+    .seg button.on { background: var(--ac); color: var(--on); }
+    .back { margin-left: auto; color: var(--ink); text-decoration: underline; min-height: 48px; display: inline-flex; align-items: center; }
+    .tabs { display: flex; padding: 4px; border: 1px solid var(--line); border-radius: 16px; background: rgba(255,255,255,.06); margin: 8px 0 16px; }
+    .tabs button { flex: 1; min-height: 48px; border: 0; border-radius: 12px; background: transparent; color: var(--ink); font: inherit; font-weight: 600; cursor: pointer; }
+    .tabs button.on { background: rgba(255,255,255,.16); }
+    details { background: var(--card); border: 1px solid var(--line); border-radius: 16px; margin: 0 0 12px; }
+    summary { cursor: pointer; padding: 14px 18px; font-weight: 600; font-size: 18px; }
+    details > div { padding: 0 18px 12px; }
+    details p { margin: 0 0 10px; }
+    ul { margin: 0 0 10px; padding-left: 22px; }
+    li { margin: 4px 0; }
+    input { width: 100%; min-height: 52px; padding: 10px 12px; border: 1px solid var(--line); border-radius: 12px; background: rgba(255,255,255,.08); color: var(--ink); font: inherit; font-size: 22px; letter-spacing: 6px; text-align: center; }
+    .btn { display: block; width: 100%; min-height: 52px; margin-top: 12px; border: 0; border-radius: 14px; background: var(--ac); color: var(--on); font: inherit; font-weight: 700; cursor: pointer; }
+    .card { background: var(--card); border: 1px solid var(--line); border-radius: 20px; padding: 20px; margin: 14px 0; }
+    :focus-visible { outline: 3px solid var(--ac); outline-offset: 2px; }
+    [hidden] { display: none !important; }
+    body.l-th .en { display: none; }
+    body.l-en .th { display: none; }
+  </style>
 </head>
-<body>
-  <header class="topbar">
-    <h1 class="brand" data-i18n="appName">Deep Listening Training</h1>
-    <button id="langToggle" class="lang-toggle" type="button" data-i18n="langButton" data-i18n-label="langLabel">EN</button>
-  </header>
-
-  <nav class="nav">
-    <a href="index.html" data-i18n="navParticipant">ผู้ฝึก</a>
-    <a href="coach.html" data-i18n="navCoach">โค้ช</a>
-    <a href="manual.html" data-i18n="navManual">คู่มือ</a>
-  </nav>
-
-  <main>
-    <h2 data-i18n="manualTitle">หน้าคู่มือ</h2>
-    <!-- คำสั่งที่ 3 จะสร้างเนื้อหาหน้านี้ -->
-    <div class="card">
-      <p class="muted" data-i18n="placeholder">หน้านี้อยู่ระหว่างการสร้าง</p>
+<body class="l-th">
+  <div class="wrap">
+    <h1>Deep Listening Training</h1>
+    <div class="ctrl">
+      <div class="seg" role="group" aria-label="Language">
+        <button type="button" data-lang="th">ไทย</button>
+        <button type="button" data-lang="en">EN</button>
+      </div>
+      <a class="back" href="trial.html"><span class="th">กลับหน้าทดลอง</span><span class="en">Back to trial</span></a>
     </div>
-  </main>
 
-  <script src="app.js"></script>
+    <section id="gate" class="card">
+      <h2><span class="th">คู่มือ</span><span class="en">Manual</span></h2>
+      <p class="muted"><span class="th">กรอกรหัสเพื่อเข้าใช้</span><span class="en">Enter the code to continue</span></p>
+      <label for="pc" class="muted"><span class="th">รหัส</span><span class="en">Code</span></label>
+      <input id="pc" type="password" inputmode="numeric" autocomplete="off" maxlength="8">
+      <button id="go" class="btn" type="button"><span class="th">เข้า</span><span class="en">Enter</span></button>
+      <p id="err" class="muted" role="status"></p>
+    </section>
+
+    <section id="app" hidden>
+      <h2><span class="th">คู่มือ</span><span class="en">Manual</span></h2>
+      <p class="muted"><span class="th">โค้ชไม่สอนและไม่แนะนำ แต่สร้างพื้นที่ให้ผู้ฝึกเห็นด้วยตัวเอง</span><span class="en">The coach does not teach or advise, but creates the space for the participant to see for themselves.</span></p>
+      <div class="tabs" role="tablist">
+        <button type="button" role="tab" data-tab="human"><span class="th">โค้ชมนุษย์</span><span class="en">Human coach</span></button>
+        <button type="button" role="tab" data-tab="ai"><span class="th">โค้ช AI</span><span class="en">AI coach</span></button>
+      </div>
+      <div id="t-human">
+<details open><summary><span class="th">Clearing</span><span class="en">Clearing</span></summary><div><p><span class="th">พื้นที่ปลอดภัยให้ระบายจนสมองโล่งว่าง คนมักมีความว้าวุ่น สับสน ไม่สบายใจ อยากระบายแต่กลัวถูกนินทาหรือตัดสิน</span><span class="en">A safe space to vent until the mind is clear and empty. People often carry confusion and unease and want to let it out, but fear gossip or judgement.</span></p><ul><li><span class="th">ให้เขาพูดจนว่างจริงๆ</span><span class="en">Let them talk until they are completely empty</span></li><li><span class="th">ไม่มีผิด ไม่มีชั่ว ไม่มีเลว</span><span class="en">Nothing is wrong, bad or evil</span></li><li><span class="th">ไม่บอก ไม่สอน ไม่แนะนำ และไม่ตัดสิน แม้ในใจ</span><span class="en">No telling, teaching, advising or judging, even silently</span></li><li><span class="th">โค้ชแค่เรียกชื่อความรู้สึก เช่น &quot;ผมเข้าใจว่าคุณกำลังโกรธ&quot; หรือ &quot;เสียใจ&quot;</span><span class="en">The coach only names the feeling, e.g. &quot;I understand you are angry&quot; or &quot;sad&quot;</span></li><li><span class="th">พูดได้ว่า &quot;ผมอยู่ข้างคุณ ไม่ว่าคุณจะโกรธหรือเสียใจ&quot;</span><span class="en">You may say: &quot;I am on your side, whether you are angry or sad&quot;</span></li></ul></div></details>
+<details><summary><span class="th">Sharing</span><span class="en">Sharing</span></summary><div><ul><li><span class="th">ผู้ฝึกแชร์เรื่องการนั่ง 10 นาที ว่าไปทำอะไรมาบ้าง</span><span class="en">The participant shares their 10-minute sit: what they went through</span></li><li><span class="th">โค้ชแชร์ประสบการณ์ของตัวเองประกบ เพื่อให้ผู้ฝึกเห็นว่าการแชร์ที่มาจากการลงมือทำ จากประสบการณ์จริง จากความรู้สึก เป็นอย่างไร</span><span class="en">The coach shares their own experience alongside, so the participant sees what sharing from real doing, real experience and real feeling looks like</span></li></ul></div></details>
+<details><summary><span class="th">Recreate</span><span class="en">Recreate</span></summary><div><p><span class="th">ฟังทั้งตัวคน รวมถึงสิ่งที่ไม่ได้พูด แล้วถามว่า &quot;ฟังแล้วรู้สึกยังไง&quot;</span><span class="en">Hear the whole person, including what is not said, then ask: &quot;Having heard that, how do you feel?&quot;</span></p></div></details>
+<details><summary><span class="th">Leading</span><span class="en">Leading</span></summary><div><p><span class="th">ต่างจากการสอน เหมือนปลูกหรือเพาะเมล็ดพันธุ์ลงในหัวเขา แล้วให้มันเจริญเติบโตเอง</span><span class="en">Different from teaching. Like planting seeds in their head and letting them grow by themselves.</span></p><p><span class="th">เช่น เขามาฝึก 10 นาที แล้วเข้าใจเองว่า &quot;อ๋อ นี่เป็นความรู้สึก นี่เป็นความเชื่อ นี่เป็นความคิด นี่เป็นความอยากหรือไม่อยาก&quot;</span><span class="en">For example, after the 10 minutes they see for themselves: &quot;this is a feeling, this is a belief, this is a thought, this is wanting or not wanting&quot;</span></p></div></details>
+<details><summary><span class="th">หลักของเกม</span><span class="en">Principles of the game</span></summary><div><ul><li><span class="th">เกมหลักคือนั่งหลับตา 10 นาที ทุกคนต้องเล่น</span><span class="en">The main game is sitting with eyes closed for 10 minutes. Everyone plays it</span></li><li><span class="th">เล่นเกมเพื่อเป็นคำพูด (Integrity) ไม่ได้เล่นเพื่อผลลัพธ์</span><span class="en">Play to be your word (Integrity), not for results</span></li><li><span class="th">เริ่มและจบตรงเวลาที่ประกาศไว้ ถ้าคลาดเวลาแม้ 1 นาที ให้ประกาศ break down แล้วเล่นต่อ ไม่ต้องเริ่ม 90 วันใหม่</span><span class="en">Start and end at the declared time. If off by even 1 minute, declare a break down and continue; the 90 days do not restart</span></li><li><span class="th">เมื่อเขาเริ่มสงสัย ถามได้ว่า &quot;คุณเล่นเกมนี้เพราะอะไร&quot;</span><span class="en">When they begin to doubt, you may ask: &quot;Why do you play this game?&quot;</span></li></ul></div></details>
+<details><summary><span class="th">ลำดับการคุยในแต่ละครั้ง</span><span class="en">Order of each session</span></summary><div><ul><li><span class="th">ผู้เข้าร่วมเล่าการนั่งของเขา ว่าอยู่ในความคิด ความรู้สึก หรือความอยาก/ไม่อยาก</span><span class="en">The participant tells their sit: were they in thought, feeling, or wanting/not wanting</span></li><li><span class="th">โค้ช Recreate คือฟังทั้งตัวคน รวมถึงสิ่งที่ไม่ได้พูด</span><span class="en">The coach recreates: hears the whole person, including what is not said</span></li><li><span class="th">ถาม &quot;ฟังแล้วรู้สึกยังไง&quot;</span><span class="en">Ask: &quot;Having heard that, how do you feel?&quot;</span></li><li><span class="th">ถ้าเขาเล่าเป็นเรื่องราว ให้ดึงกลับมาที่ &quot;คุณรู้สึกยังไง&quot;</span><span class="en">If they go into stories, bring them back to &quot;how do you feel?&quot;</span></li><li><span class="th">ถาม 2 ข้อ: 1) คุณรู้สึกอย่างไร 2) คุณได้อะไร เห็นอะไรจากสิ่งนี้</span><span class="en">Ask two things: 1) How do you feel? 2) What did you get, what did you see from this?</span></li></ul></div></details>
+<details><summary><span class="th">8 Element</span><span class="en">8 Element</span></summary><div><ul><li><span class="th">เชื่อว่าตัวเองสามารถ และเชื่อว่าตัวเองทำได้</span><span class="en">Believe you can, and believe you are able to do it</span></li><li><span class="th">มีไอเดียดี</span><span class="en">Have good ideas</span></li><li><span class="th">การสื่อสาร</span><span class="en">Communication</span></li><li><span class="th">ทำแบบโล่งๆ ว่างๆ</span><span class="en">Do it light and empty</span></li><li><span class="th">ไม่มากไม่น้อย</span><span class="en">In balance</span></li><li><span class="th">ทำสม่ำเสมอ</span><span class="en">Do it consistently</span></li><li><span class="th">มีสติระลึกรู้</span><span class="en">Awareness</span></li><li><span class="th">ความสงบในใจ</span><span class="en">Inner peace</span></li></ul><p><span class="th">ลำดับนี้ตั้งใจไว้ เป็นเส้นทางจากเชื่อ สู่คิด พูด ทำ และจบที่ความสงบในใจ</span><span class="en">The order is intentional: a path from believing to thinking, speaking, doing, and ending in inner peace.</span></p></div></details>
+<details><summary><span class="th">Integrity</span><span class="en">Integrity</span></summary><div><p><span class="th">การทำสิ่งที่ตัวเองพูดไว้ ในเวลาที่ตัวเองเลือก กว้างกว่าวินัย เพราะเพิ่มความเป็นเจ้าของคำพูดของตัวเอง วินัยอยู่ในนั้น</span><span class="en">Doing what you yourself said you would do, at the time you yourself chose. It is broader than discipline because it adds ownership of your own word. Discipline is contained in it.</span></p><p><span class="th">การนั่งตรงเวลาทุกวันและการประกาศ break down คือการฝึก Integrity เอง ความเชื่อว่าตัวเองทำได้เกิดจากการรักษาคำพูดซ้ำๆ ไม่ใช่จากการถูกบอก</span><span class="en">The daily on-time sit and declaring a break down are the practice of Integrity itself. Believing you can comes from keeping your word again and again, not from being told.</span></p></div></details>
+<details><summary><span class="th">เมื่อผู้เข้าร่วมโกรธหรือหงุดหงิด</span><span class="en">When a participant is angry or upset</span></summary><div><ul><li><span class="th">ไม่ปลอบ ไม่ขอโทษ ไม่อธิบาย</span><span class="en">Do not soothe, apologise or explain</span></li><li><span class="th">รับรู้ แล้วถามกลับ เช่น &quot;ตอนนี้คุณรู้สึกอย่างไร&quot;</span><span class="en">Acknowledge, then ask back, e.g. &quot;How do you feel right now?&quot;</span></li><li><span class="th">โกรธ หงุดหงิด เจ็บ เศร้า ทำได้ทั้งหมด</span><span class="en">Anger, annoyance, hurt, sadness are all allowed</span></li><li><span class="th">คำตอบสำหรับเขาคือฝึกต่อ 10 นาทีจะให้เขาเห็นเอง ไม่ใช่โค้ช</span><span class="en">The answer for them is to keep practicing: the 10 minutes shows them, not the coach</span></li></ul></div></details>
+      </div>
+      <div id="t-ai" hidden>
+<details open><summary><span class="th">หลักของ AI โค้ช</span><span class="en">Principles of the AI coach</span></summary><div><ul><li><span class="th">ไม่สอน ไม่แนะนำ ไม่ให้ความรู้ และไม่บอกผู้ฝึกว่าเขารู้สึกอะไร</span><span class="en">Does not teach, advise, give knowledge, or tell the participant what they feel</span></li><li><span class="th">ผู้ฝึกต้องเห็นด้วยตัวเอง AI ไม่ทำให้เขาพึ่งพา</span><span class="en">The participant must see for themselves; the AI must not create dependence</span></li><li><span class="th">น้ำเสียงเป็นกลาง ไม่ใช้ภาษาล้มเหลวหรือคำเตือน</span><span class="en">Neutral tone; no language of failure or warnings</span></li><li><span class="th">เมื่อผู้ฝึกไม่ตรงเวลา ให้เขาประกาศ break down แล้วเริ่มใหม่ได้ทันที ไม่ตัดสิน</span><span class="en">When a participant is not on time, they declare a break down and may simply start again, with no judgement</span></li></ul></div></details>
+<details><summary><span class="th">เมื่อผู้ฝึกโกรธหรือหงุดหงิด</span><span class="en">When the participant is angry or upset</span></summary><div><ul><li><span class="th">ไม่ปลอบ ไม่ขอโทษ ไม่อธิบาย</span><span class="en">Do not soothe, apologise or explain</span></li><li><span class="th">รับรู้ แล้วถามกลับ</span><span class="en">Acknowledge, then ask back</span></li><li><span class="th">สนับสนุนให้โกรธ หงุดหงิด เจ็บ เศร้า ได้ทุกอย่าง</span><span class="en">Encourage that anger, annoyance, hurt and sadness are all allowed</span></li></ul></div></details>
+<details><summary><span class="th">Clearing โดย AI</span><span class="en">Clearing by the AI</span></summary><div><ul><li><span class="th">ให้ผู้ฝึกพูดระบายจนโล่งว่าง ไม่ตัดสิน ไม่สอน ไม่แนะนำ</span><span class="en">Let the participant vent until empty; no judging, teaching or advising</span></li><li><span class="th">AI เรียกชื่อความรู้สึกเท่านั้น เช่น &quot;ผมเข้าใจว่าคุณกำลังโกรธ&quot; และบอกได้ว่า &quot;ผมอยู่ข้างคุณ&quot;</span><span class="en">The AI only names the feeling, e.g. &quot;I understand you are angry&quot;, and may say &quot;I am on your side&quot;</span></li></ul></div></details>
+<details><summary><span class="th">ลำดับการคุยหลังการนั่ง</span><span class="en">Order after the sit</span></summary><div><ul><li><span class="th">ให้ผู้ฝึกเล่าการนั่งจนจบ AI รับรู้สั้นๆ ไม่ขัดจังหวะ ไม่ตีความ</span><span class="en">Let the participant tell the sit to the end; the AI acknowledges briefly, no interrupting or interpreting</span></li><li><span class="th">Recreate แล้วถามว่า &quot;ฟังแล้วรู้สึกยังไง&quot;</span><span class="en">Recreate, then ask: &quot;Having heard that, how do you feel?&quot;</span></li><li><span class="th">ถ้าผู้ฝึกไปเล่าเป็นเรื่องราว ดึงกลับมาที่ความรู้สึก</span><span class="en">If they go into stories, bring them back to feeling</span></li><li><span class="th">ถาม: 1) รู้สึกอย่างไร 2) ได้อะไร เห็นอะไรจากสิ่งนี้</span><span class="en">Ask: 1) How do you feel? 2) What did you get, what did you see from this?</span></li></ul></div></details>
+<details><summary><span class="th">เมื่อผู้ฝึกถามว่านั่งอย่างไร หรือจะได้อะไร</span><span class="en">When the participant asks how to sit, or what they will get</span></summary><div><ul><li><span class="th">ในสิบนาที ให้ดูอาการของความคิด ร่างกาย ความรู้สึก ความอยากและไม่อยาก</span><span class="en">In the ten minutes, just watch the symptoms of thought, body, feeling, wanting and not wanting</span></li><li><span class="th">ไม่ต้องสงบหรือนิ่ง โกรธ บ่น หงุดหงิดก็ได้ สงบหรือนิ่งก็ได้ ไม่ต้องสนใจว่าจะออกมาแบบไหน ปล่อยให้ไหลไปอย่างอิสระ เท่านี้</span><span class="en">It does not need to be calm or still. Anger, grumbling and frustration are fine, and calm or still is fine too. Do not care how it turns out; let it flow freely. That is all</span></li></ul></div></details>
+<details><summary><span class="th">Integrity</span><span class="en">Integrity</span></summary><div><p><span class="th">การทำสิ่งที่ตัวเองพูดไว้ ในเวลาที่ตัวเองเลือก</span><span class="en">Doing what you yourself said you would do, at the time you yourself chose</span></p></div></details>
+<details><summary><span class="th">ส่วนที่ยังไม่ได้เขียน</span><span class="en">Not yet written</span></summary><div><p><span class="th">ร่างนี้มาจากสิ่งที่คุยตกลงกันไว้เท่านั้น ยังต้องเติมอีก เช่น ขอบเขตที่ AI ห้ามทำ และตัวอย่างบทสนทนา</span><span class="en">This draft comes only from what has been agreed so far. More is needed, such as what the AI must not do, and example conversations.</span></p></div></details>
+      </div>
+      <p class="muted"><span class="th">รหัสผ่านนี้กันได้เฉพาะคนที่ไม่ตั้งใจดู ไม่ใช่การป้องกันจริง</span><span class="en">This code only stops casual visitors; it is not real protection.</span></p>
+    </section>
+  </div>
+  <script>
+    (function () {
+      var $ = function (s) { return document.querySelector(s); };
+      var lang = 'th';
+      try { lang = localStorage.getItem('dl_lang') === 'en' ? 'en' : 'th'; } catch (e) {}
+      function setLang(l) {
+        lang = l; try { localStorage.setItem('dl_lang', l); } catch (e) {}
+        document.body.className = 'l-' + l; document.documentElement.lang = l;
+        Array.prototype.forEach.call(document.querySelectorAll('.seg button'), function (b) { b.classList.toggle('on', b.getAttribute('data-lang') === l); });
+      }
+      Array.prototype.forEach.call(document.querySelectorAll('.seg button'), function (b) { b.addEventListener('click', function () { setLang(b.getAttribute('data-lang')); }); });
+      setLang(lang);
+      function tab(n) {
+        $('#t-human').hidden = n !== 'human'; $('#t-ai').hidden = n !== 'ai';
+        Array.prototype.forEach.call(document.querySelectorAll('.tabs button'), function (b) { b.classList.toggle('on', b.getAttribute('data-tab') === n); });
+      }
+      Array.prototype.forEach.call(document.querySelectorAll('.tabs button'), function (b) { b.addEventListener('click', function () { tab(b.getAttribute('data-tab')); }); });
+      tab('human');
+      function enter() { $('#gate').hidden = true; $('#app').hidden = false; try { sessionStorage.setItem('mn', '1'); } catch (e) {} }
+      function check() {
+        if ($('#pc').value === '9010') { enter(); }
+        else { $('#err').textContent = lang === 'en' ? 'Incorrect code' : 'รหัสไม่ถูกต้อง'; $('#pc').select(); }
+      }
+      $('#go').addEventListener('click', check);
+      $('#pc').addEventListener('keydown', function (e) { if (e.key === 'Enter') { check(); } });
+      try { if (sessionStorage.getItem('mn') === '1') { enter(); } } catch (e) {}
+    })();
+  </script>
 </body>
 </html>
