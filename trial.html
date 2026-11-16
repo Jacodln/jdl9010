@@ -1,0 +1,243 @@
+<!doctype html>
+<html lang="th">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Deep Listening Training - ทดลอง 7 วัน</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    label { display: block; font-weight: 600; margin: 14px 0 6px; }
+    .row { display: flex; gap: 12px; }
+    .row > div { flex: 1; }
+    .btn { width: 100%; margin-top: 12px; }
+    .menu-btn { min-width: 48px; min-height: 44px; padding: 8px 14px; font: inherit; color: inherit; background: #fff; border: 1px solid #999; border-radius: 8px; cursor: pointer; }
+    .top-actions { display: flex; gap: 8px; }
+    .clock { font-size: 56px; text-align: center; font-variant-numeric: tabular-nums; margin: 24px 0; }
+    .bar { height: 10px; border-radius: 5px; background: #ddd; }
+    .bar > div { height: 10px; border-radius: 5px; background: #222; width: 0; }
+    .center { text-align: center; }
+    .menu-list { display: flex; flex-direction: column; gap: 8px; margin-top: 8px; }
+    .menu-list a, .menu-list button { display: block; text-align: left; min-height: 44px; padding: 10px 12px; font: inherit; color: inherit; background: #fff; border: 1px solid #ddd; border-radius: 8px; text-decoration: none; cursor: pointer; }
+    [hidden] { display: none !important; }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <h1 class="brand" data-i18n="appName">Deep Listening Training</h1>
+    <div class="top-actions">
+      <button id="langToggle" class="lang-toggle" type="button" data-i18n="langButton" data-i18n-label="langLabel">EN</button>
+      <button id="menuBtn" class="menu-btn" type="button" aria-expanded="false" aria-controls="menu" data-i18n-label="menuLabel">&#9776;</button>
+    </div>
+  </header>
+
+  <nav id="menu" class="card" style="margin:12px 16px" hidden>
+    <strong data-i18n="menuLang">ภาษา</strong>
+    <div class="row" style="margin-top:8px">
+      <div><button class="menu-btn" style="width:100%" type="button" data-lang="th">ไทย</button></div>
+      <div><button class="menu-btn" style="width:100%" type="button" data-lang="en">English</button></div>
+    </div>
+    <p class="muted" data-i18n="menuMore">ภาษาอื่นทั่วโลกกำลังเตรียม</p>
+    <div class="menu-list">
+      <button type="button" data-go="today" data-i18n="menuToday">วันนี้</button>
+      <button type="button" data-go="history" data-i18n="menuHistory">ประวัติ</button>
+      <a href="coach.html" data-i18n="menuCoach">โค้ช</a>
+      <a href="manual.html" data-i18n="menuTools">เครื่องมือ</a>
+    </div>
+  </nav>
+
+  <main>
+    <section id="v-setup">
+      <h2>Deep Listening Training</h2>
+      <p data-i18n="trIntro">ทดลอง 7 วัน นั่งหลับตา 10 นาที เล่นเพื่อเป็นคำพูด</p>
+      <label for="gName" data-i18n="qName">เกมของคุณชื่ออะไร</label>
+      <input id="gName" type="text">
+      <label data-i18n="qTime">ทำตอนกี่โมงถึงกี่โมง</label>
+      <div class="row">
+        <div><label for="gStart" data-i18n="fStart" style="margin-top:0">เริ่ม</label><input id="gStart" type="time" value="06:00"></div>
+        <div><label for="gEnd" data-i18n="fEnd" style="margin-top:0">จบ</label><input id="gEnd" type="time" value="06:10"></div>
+      </div>
+      <button id="bBegin" class="btn" type="button" data-i18n="btnBegin">เริ่มทดลอง</button>
+    </section>
+
+    <section id="v-today" hidden>
+      <p class="muted" id="tdDay"></p>
+      <h2 id="tdName"></h2>
+      <p class="muted" id="tdTime"></p>
+      <div class="bar" aria-hidden="true"><div id="tdBar"></div></div>
+      <p class="muted" id="tdStat"></p>
+      <button id="bStart" class="btn" type="button"></button>
+      <button id="bEdit" class="btn secondary" type="button" data-i18n="btnEdit">เปลี่ยนเกมหรือเวลา</button>
+    </section>
+
+    <section id="v-timer" hidden>
+      <p class="muted center" id="tmDay"></p>
+      <h2 class="center" id="tmName"></h2>
+      <div class="clock" id="tmClock" role="timer" aria-live="off">10:00</div>
+      <div class="bar" aria-hidden="true"><div id="tmBar"></div></div>
+      <p class="muted center" id="tmStat"></p>
+      <button id="bStop" class="btn secondary" type="button" data-i18n="btnStop">หยุดก่อน</button>
+    </section>
+
+    <section id="v-reflect" hidden>
+      <p class="muted" data-i18n="rDone">ฝึกเสร็จแล้ว</p>
+      <h2 data-i18n="rTitle">บันทึกของวันนี้</h2>
+      <label for="rb" data-i18n="qBefore">ก่อนทำ คุณรู้สึกอย่างไร</label>
+      <textarea id="rb" rows="3"></textarea>
+      <label for="rd" data-i18n="qDuring">ขณะทำ คุณรู้สึกอย่างไร</label>
+      <textarea id="rd" rows="3"></textarea>
+      <label for="rf" data-i18n="qAfter">ทำเสร็จแล้ว คุณรู้สึกอย่างไร</label>
+      <textarea id="rf" rows="3"></textarea>
+      <button id="bSave" class="btn" type="button" data-i18n="btnSave">บันทึก</button>
+    </section>
+
+    <section id="v-history" hidden>
+      <h2 data-i18n="menuHistory">ประวัติ</h2>
+      <p class="muted" id="hsStat"></p>
+      <div id="hsList"></div>
+      <button id="bBack" class="btn secondary" type="button" data-i18n="btnBack">กลับ</button>
+    </section>
+  </main>
+
+  <script src="app.js"></script>
+  <script>
+    DL.addStrings('th', {
+      menuLabel: 'เมนู', menuLang: 'ภาษา', menuMore: 'ภาษาอื่นทั่วโลกกำลังเตรียม',
+      menuToday: 'วันนี้', menuHistory: 'ประวัติ', menuCoach: 'โค้ช', menuTools: 'เครื่องมือ',
+      trIntro: 'ทดลอง 7 วัน นั่งหลับตา 10 นาที เล่นเพื่อเป็นคำพูด',
+      qName: 'เกมของคุณชื่ออะไร', qTime: 'ทำตอนกี่โมงถึงกี่โมง', fStart: 'เริ่ม', fEnd: 'จบ',
+      btnBegin: 'เริ่มทดลอง', btnStartTimer: 'เริ่มจับเวลา', btnStop: 'หยุดก่อน',
+      btnEdit: 'เปลี่ยนเกมหรือเวลา', btnSave: 'บันทึก', btnBack: 'กลับ',
+      dayOf: 'วันที่ {n} จาก 7', timeLine: 'เริ่ม {s} จบ {e}',
+      stats: 'ฝึกแล้ว {a} วัน · ตรงเวลา {b} วัน',
+      onTimeYes: 'ตรงเวลา', onTimeNo: 'ไม่ตรงเวลาที่ตั้งไว้',
+      doneToday: 'วันนี้บันทึกแล้ว', finished: 'ครบ 7 วันแล้ว',
+      rDone: 'ฝึกเสร็จแล้ว', rTitle: 'บันทึกของวันนี้',
+      qBefore: 'ก่อนทำ คุณรู้สึกอย่างไร', qDuring: 'ขณะทำ คุณรู้สึกอย่างไร', qAfter: 'ทำเสร็จแล้ว คุณรู้สึกอย่างไร',
+      lBefore: 'ก่อนทำ', lDuring: 'ขณะทำ', lAfter: 'ทำเสร็จแล้ว', historyEmpty: 'ยังไม่มีบันทึก',
+      defaultName: 'นั่งหลับตา 10 นาที'
+    });
+    DL.addStrings('en', {
+      menuLabel: 'Menu', menuLang: 'Language', menuMore: 'More languages from around the world are being prepared',
+      menuToday: 'Today', menuHistory: 'History', menuCoach: 'Coach', menuTools: 'Tools',
+      trIntro: '7-day trial. Sit with your eyes closed for 10 minutes. Play to be your word.',
+      qName: 'What is your game called?', qTime: 'What time do you do it, from when to when?', fStart: 'Start', fEnd: 'End',
+      btnBegin: 'Start the trial', btnStartTimer: 'Start the timer', btnStop: 'Stop for now',
+      btnEdit: 'Change game or time', btnSave: 'Save', btnBack: 'Back',
+      dayOf: 'Day {n} of 7', timeLine: 'Start {s} End {e}',
+      stats: 'Practiced {a} days · on time {b} days',
+      onTimeYes: 'on time', onTimeNo: 'not at the time you set',
+      doneToday: 'Saved for today', finished: '7 days complete',
+      rDone: 'Practice finished', rTitle: 'Notes for today',
+      qBefore: 'Before, how do you feel?', qDuring: 'During, how do you feel?', qAfter: 'After, how do you feel?',
+      lBefore: 'Before', lDuring: 'During', lAfter: 'After', historyEmpty: 'No notes yet',
+      defaultName: 'Sit with eyes closed for 10 minutes'
+    });
+
+    (function () {
+      var K = 'dl_trial';
+      var $ = function (s) { return document.querySelector(s); };
+      var t = function (k) { return DL.t(k); };
+      var S = { logs: [] };
+      try { var r = JSON.parse(localStorage.getItem(K) || 'null'); if (r) { S = r; S.logs = S.logs || []; } } catch (e) {}
+      function save() { try { localStorage.setItem(K, JSON.stringify(S)); } catch (e) {} }
+      function pad(n) { return String(n).padStart(2, '0'); }
+      function ymd(d) { return d.getFullYear() + '-' + pad(d.getMonth() + 1) + '-' + pad(d.getDate()); }
+      function hm(d) { return pad(d.getHours()) + ':' + pad(d.getMinutes()); }
+      function mins(s) { var p = s.split(':').map(Number); return p[0] * 60 + p[1]; }
+      function fill(k, o) { var s = t(k); for (var x in o) { s = s.replace('{' + x + '}', o[x]); } return s; }
+      function dayNo() { return Math.min(7, Math.floor((new Date(ymd(new Date())) - new Date(S.startDate)) / 864e5) + 1); }
+      function dur() { var d = mins(S.end) - mins(S.start); return d > 0 ? d : 10; }
+      function stats() { var on = S.logs.filter(function (l) { return l.onTime; }).length; return fill('stats', { a: S.logs.length, b: on }); }
+      function doneToday() { return S.logs.some(function (l) { return l.date === ymd(new Date()); }); }
+
+      var cur = 'setup', T = null, tEnd = 0, onTime = false, startStr = '';
+      var views = ['setup', 'today', 'timer', 'reflect', 'history'];
+      function show(id) {
+        cur = id;
+        views.forEach(function (n) { $('#v-' + n).hidden = n !== id; });
+        closeMenu(); render(); window.scrollTo(0, 0);
+      }
+      function render() {
+        if (cur === 'setup') {
+          if (!$('#gName').value) { $('#gName').value = S.name || t('defaultName'); }
+        }
+        if (cur === 'today' && S.startDate) {
+          var n = dayNo(), full = S.logs.length >= 7;
+          $('#tdDay').textContent = fill('dayOf', { n: n });
+          $('#tdName').textContent = S.name;
+          $('#tdTime').textContent = fill('timeLine', { s: S.start, e: S.end });
+          $('#tdBar').style.width = (n / 7 * 100) + '%';
+          $('#tdStat').textContent = stats();
+          $('#bStart').disabled = full || doneToday();
+          $('#bStart').textContent = full ? t('finished') : (doneToday() ? t('doneToday') : t('btnStartTimer'));
+        }
+        if (cur === 'history') {
+          $('#hsStat').textContent = stats();
+          var box = $('#hsList'); box.textContent = '';
+          if (!S.logs.length) { var e = document.createElement('p'); e.className = 'muted'; e.textContent = t('historyEmpty'); box.appendChild(e); }
+          S.logs.slice().reverse().forEach(function (l) {
+            var c = document.createElement('div'); c.className = 'card';
+            var h = document.createElement('p'); h.className = 'muted'; h.textContent = l.date + ' · ' + fill('dayOf', { n: l.day });
+            c.appendChild(h);
+            [['lBefore', l.b], ['lDuring', l.d], ['lAfter', l.f]].forEach(function (x) {
+              var p = document.createElement('p'); p.textContent = t(x[0]) + ': ' + (x[1] || '-'); c.appendChild(p);
+            });
+            box.appendChild(c);
+          });
+        }
+        if (cur === 'timer') {
+          $('#tmDay').textContent = fill('dayOf', { n: dayNo() });
+          $('#tmName').textContent = S.name;
+          $('#tmStat').textContent = fill('timeLine', { s: startStr, e: '' }).replace(/\s+$/, '') + ' · ' + t(onTime ? 'onTimeYes' : 'onTimeNo');
+        }
+      }
+      function beep() {
+        try { var c = new (window.AudioContext || window.webkitAudioContext)(), o = c.createOscillator(), g = c.createGain(); o.connect(g); g.connect(c.destination); o.frequency.value = 528; g.gain.setValueAtTime(0.2, c.currentTime); g.gain.exponentialRampToValueAtTime(0.001, c.currentTime + 2); o.start(); o.stop(c.currentTime + 2); } catch (e) {}
+        try { if (navigator.vibrate) { navigator.vibrate(300); } } catch (e) {}
+      }
+      function tick() {
+        var left = Math.max(0, tEnd - Date.now()), total = dur() * 60000, s = Math.ceil(left / 1000);
+        $('#tmClock').textContent = pad(Math.floor(s / 60)) + ':' + pad(s % 60);
+        $('#tmBar').style.width = ((1 - left / total) * 100) + '%';
+        if (left <= 0) { clearInterval(T); beep(); $('#rb').value = ''; $('#rd').value = ''; $('#rf').value = ''; show('reflect'); }
+      }
+      function closeMenu() { $('#menu').hidden = true; $('#menuBtn').setAttribute('aria-expanded', 'false'); }
+
+      $('#menuBtn').addEventListener('click', function () {
+        var open = $('#menu').hidden; $('#menu').hidden = !open; this.setAttribute('aria-expanded', open ? 'true' : 'false');
+      });
+      Array.prototype.forEach.call(document.querySelectorAll('[data-lang]'), function (b) {
+        b.addEventListener('click', function () { DL.setLang(b.getAttribute('data-lang')); closeMenu(); });
+      });
+      Array.prototype.forEach.call(document.querySelectorAll('[data-go]'), function (b) {
+        b.addEventListener('click', function () {
+          var g = b.getAttribute('data-go');
+          if (g === 'today') { show(S.startDate ? 'today' : 'setup'); } else { show(g); }
+        });
+      });
+      $('#bBegin').addEventListener('click', function () {
+        S.name = $('#gName').value.trim() || t('defaultName');
+        S.start = $('#gStart').value || '06:00'; S.end = $('#gEnd').value || '06:10';
+        S.startDate = S.startDate || ymd(new Date()); save(); show('today');
+      });
+      $('#bEdit').addEventListener('click', function () {
+        $('#gName').value = S.name || ''; $('#gStart').value = S.start; $('#gEnd').value = S.end; show('setup');
+      });
+      $('#bStart').addEventListener('click', function () {
+        var now = new Date(), planned = new Date(); planned.setHours(0, mins(S.start), 0, 0);
+        tEnd = now.getTime() + dur() * 60000; startStr = hm(now);
+        onTime = Math.abs(now.getTime() - planned.getTime()) <= 5 * 60000;
+        show('timer'); tick(); clearInterval(T); T = setInterval(tick, 250);
+      });
+      $('#bStop').addEventListener('click', function () { clearInterval(T); show('today'); });
+      $('#bSave').addEventListener('click', function () {
+        S.logs.push({ date: ymd(new Date()), day: dayNo(), s: startStr, e: hm(new Date()), onTime: onTime, b: $('#rb').value.trim(), d: $('#rd').value.trim(), f: $('#rf').value.trim() });
+        save(); show('today');
+      });
+      $('#bBack').addEventListener('click', function () { show(S.startDate ? 'today' : 'setup'); });
+      DL.onLangChange(function () { render(); });
+      show(S.startDate ? 'today' : 'setup');
+    })();
+  </script>
+</body>
+</html>
