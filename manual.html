@@ -32,6 +32,8 @@
     input { width: 100%; min-height: 52px; padding: 10px 12px; border: 1px solid var(--line); border-radius: 12px; background: rgba(255,255,255,.08); color: var(--ink); font: inherit; font-size: 22px; letter-spacing: 6px; text-align: center; }
     .btn { display: block; width: 100%; min-height: 52px; margin-top: 12px; border: 0; border-radius: 14px; background: var(--ac); color: var(--on); font: inherit; font-weight: 700; cursor: pointer; }
     .card { background: var(--card); border: 1px solid var(--line); border-radius: 20px; padding: 20px; margin: 14px 0; }
+    .listen { min-height: 44px; margin: 0 0 10px; padding: 6px 14px; border: 2px solid var(--ink); border-radius: 10px; background: transparent; color: var(--ink); font: inherit; font-weight: 700; cursor: pointer; }
+    .listen.on { background: var(--ac); color: var(--on); border-color: var(--ac); }
     :focus-visible { outline: 3px solid var(--ac); outline-offset: 2px; }
     [hidden] { display: none !important; }
     body.l-th .en { display: none; }
@@ -96,11 +98,50 @@
       function setLang(l) {
         lang = l; try { localStorage.setItem('dl_lang', l); } catch (e) {}
         document.body.className = 'l-' + l; document.documentElement.lang = l;
+        if (typeof stopSay === 'function') { stopSay(); }
         Array.prototype.forEach.call(document.querySelectorAll('.seg button'), function (b) { b.classList.toggle('on', b.getAttribute('data-lang') === l); });
       }
       Array.prototype.forEach.call(document.querySelectorAll('.seg button'), function (b) { b.addEventListener('click', function () { setLang(b.getAttribute('data-lang')); }); });
       setLang(lang);
+      var synth = window.speechSynthesis || null, runId = 0, curBtn = null;
+      function pickVoice(code, lg) {
+        var vs = (synth.getVoices() || []).filter(function (v) { return v.lang.toLowerCase().replace('_', '-').indexOf(lg) === 0; });
+        var exact = vs.filter(function (v) { return v.lang.toLowerCase().replace('_', '-') === code.toLowerCase(); });
+        if (exact.length) { vs = exact; }
+        var male = /(^|[^a-z])male([^a-z]|$)|david|mark|guy|james|daniel|alex|niwat|pattara|george|ryan|thomas|fred/i;
+        var fem = /female|woman|premwadee|zira|aria|jenny|samantha|susan|hazel|karen|sara|libby|emma|google/i;
+        var f = vs.filter(function (v) { return fem.test(v.name); });
+        if (f.length) { return f[0]; }
+        var nm = vs.filter(function (v) { return !male.test(v.name); });
+        return nm[0] || vs[0] || null;
+      }
+      function lbl(on) { return on ? (lang === 'en' ? '\u25A0 Stop' : '\u25A0 หยุดฟัง') : (lang === 'en' ? '\uD83D\uDD0A Listen' : '\uD83D\uDD0A ฟัง'); }
+      function stopSay() { runId++; if (synth) { synth.cancel(); } if (curBtn) { curBtn.classList.remove('on'); curBtn = null; } refreshBtns(); }
+      function refreshBtns() { Array.prototype.forEach.call(document.querySelectorAll('.listen'), function (b) { b.textContent = lbl(b === curBtn); }); }
+      function sayDetails(d, btn) {
+        if (!synth) { btn.textContent = lang === 'en' ? 'No read-aloud on this device' : 'เครื่องนี้ยังไม่รองรับเสียงอ่าน'; return; }
+        if (curBtn === btn) { stopSay(); return; }
+        stopSay(); d.open = true;
+        var cls = lang === 'en' ? '.en' : '.th', code = lang === 'en' ? 'en-US' : 'th-TH';
+        var parts = [d.querySelector('summary ' + cls)].concat(Array.prototype.slice.call(d.querySelectorAll('div p ' + cls + ', div li ' + cls))).map(function (n) { return n ? n.textContent : ''; }).filter(function (x) { return x.trim(); });
+        var my = ++runId, voice = pickVoice(code, lang); curBtn = btn; btn.classList.add('on');
+        parts.forEach(function (text, i) {
+          var u = new SpeechSynthesisUtterance(text); u.lang = code; if (voice) { u.voice = voice; }
+          var fin = function () { if (my === runId) { curBtn = null; btn.classList.remove('on'); refreshBtns(); } };
+          if (i === parts.length - 1) { u.onend = fin; }
+          u.onerror = fin; synth.speak(u);
+        });
+        refreshBtns();
+      }
+      Array.prototype.forEach.call(document.querySelectorAll('details'), function (d) {
+        var b = document.createElement('button'); b.type = 'button'; b.className = 'listen';
+        b.addEventListener('click', function () { sayDetails(d, b); });
+        d.querySelector('div').insertBefore(b, d.querySelector('div').firstChild);
+      });
+      refreshBtns();
+      window.addEventListener('pagehide', function () { if (synth) { synth.cancel(); } });
       function tab(n) {
+        stopSay();
         $('#t-human').hidden = n !== 'human'; $('#t-ai').hidden = n !== 'ai';
         Array.prototype.forEach.call(document.querySelectorAll('.tabs button'), function (b) { b.classList.toggle('on', b.getAttribute('data-tab') === n); });
       }
