@@ -50,6 +50,17 @@
     .tabs button.on { background: rgba(255,255,255,.16); }
     .mic { display: inline-block; min-height: 44px; margin-top: 6px; padding: 6px 14px; border: 1px solid var(--line); border-radius: 12px; background: transparent; color: var(--ink); font: inherit; cursor: pointer; }
     .mic.rec { background: var(--ac); color: var(--on); }
+    .ctrl { flex-wrap: nowrap; gap: 6px; align-items: center; }
+    .wbtn { min-height: 44px; padding: 6px 12px; font-size: 16px; white-space: nowrap; }
+    .seg { border: 0; border-radius: 0; overflow: visible; }
+    .seg button { min-width: 44px; min-height: 44px; padding: 6px 10px; border-radius: 0; }
+    .seg button + button { border-left: 1px solid var(--line); }
+    .seg button.on { background: none; color: var(--ac); text-decoration: underline; text-decoration-thickness: 3px; text-underline-offset: 6px; }
+    .snd { margin-left: auto; width: 48px; height: 48px; padding: 0; border: 0; border-radius: 50%; background: rgba(0,0,0,.35); cursor: pointer; display: inline-flex; align-items: center; justify-content: center; flex: none; }
+    .snd svg { width: 30px; height: 30px; }
+    .tabs { gap: 28px; padding: 0; border: 0; border-bottom: 1px solid var(--line); border-radius: 0; background: none; margin-top: 8px; }
+    .tabs button { flex: none; min-height: 44px; padding: 0 4px; border: 0; border-bottom: 3px solid transparent; border-radius: 0; background: none; }
+    .tabs button.on { background: none; border-bottom-color: var(--ac); color: var(--ac); }
     #dlTools { display: none !important; }
     [hidden] { display: none !important; }
   </style>
@@ -63,15 +74,12 @@
       </div>
       <p class="sub" data-i18n="subTrial">ทดลอง 7 วัน · นั่งหลับตา 10 นาที · เล่นเพื่อเป็นคำพูด</p>
       <div class="ctrl">
-        <button id="bSound" class="pill" type="button"></button>
+        <button id="bTest" class="wbtn" type="button"></button>
         <div class="seg" role="group" aria-label="Language">
           <button type="button" data-lang="th">ไทย</button>
           <button type="button" data-lang="en">EN</button>
         </div>
-      </div>
-      <div class="welcome-row">
-        <button id="bTest" class="wbtn" type="button"></button>
-        <span class="wtext" data-i18n="welcomeTo">สู่ Deep Listening Training</span>
+        <button id="bSound" class="snd" type="button"></button>
       </div>
       <p id="noVoice" class="muted" hidden data-i18n="noVoice">เครื่องนี้ยังไม่รองรับเสียงอ่าน</p>
       <div class="tabs" role="tablist">
@@ -305,12 +313,15 @@
         if (id !== 'welcome' && id !== 'reflect' && reading) { runId++; if (synth) { synth.cancel(); } reading = false; }
         closeMenu(); render(); window.scrollTo(0, 0);
       }
+      var SPK = '<path d="M4 9h3.5L13 4.5v15L7.5 15H4z" fill="#fff"/>';
+      var SPK_ON = '<svg viewBox="0 0 24 24" aria-hidden="true">' + SPK + '<path d="M15.5 9.5a3.5 3.5 0 0 1 0 5M18 7a7 7 0 0 1 0 10" stroke="#fff" stroke-width="1.9" fill="none" stroke-linecap="round"/></svg>';
+      var SPK_OFF = '<svg viewBox="0 0 24 24" aria-hidden="true">' + SPK + '<path d="M15.5 9.5l5 5m0-5l-5 5" stroke="#FF8A8A" stroke-width="2.2" fill="none" stroke-linecap="round"/></svg>';
       function render() {
         renderMic();
-        $('#bSound').textContent = soundOn ? '\uD83D\uDD0A' : '\uD83D\uDD07'; $('#bSound').setAttribute('aria-label', t(soundOn ? 'soundOn' : 'soundOff')); $('#bSound').title = t(soundOn ? 'soundOn' : 'soundOff');
+        $('#bSound').innerHTML = soundOn ? SPK_ON : SPK_OFF; $('#bSound').setAttribute('aria-label', t(soundOn ? 'soundOn' : 'soundOff')); $('#bSound').title = t(soundOn ? 'soundOn' : 'soundOff');
         $('#bSound').setAttribute('aria-pressed', soundOn ? 'true' : 'false');
         $('#bTest').textContent = t(reading ? 'welcomeStop' : 'welcomeBtn') + (reading ? ' \u25A0' : ' \u25BC');
-        $('.welcome-row').hidden = cur === 'timer' || cur === 'reflect';
+        $('#bTest').hidden = cur === 'timer' || cur === 'reflect';
         if (cur !== 'welcome') { $('#noVoice').hidden = true; }
         Array.prototype.forEach.call(document.querySelectorAll('.tabs button'), function (b) {
           var want = cur === 'history' ? 'history' : ((cur === 'today' || cur === 'setup') ? 'today' : ''); var on = b.getAttribute('data-tab') === want;
