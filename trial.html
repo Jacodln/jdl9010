@@ -3,129 +3,152 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#0d1f1b">
   <title>Deep Listening Training - ทดลอง 7 วัน</title>
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@400;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css">
   <style>
+    :root { --ink: #EAF5F1; --mut: #A9C5BD; --ac: #8EE0CC; --on: #0B2A22; --line: rgba(255,255,255,.2); --card: rgba(255,255,255,.07); }
+    * { box-sizing: border-box; }
+    html { background: #0d1f1b; -webkit-text-size-adjust: 100%; color-scheme: dark; }
+    body { margin: 0; min-height: 100vh; background: linear-gradient(160deg, #0d1f1b 0%, #143229 55%, #1b4338 100%) fixed; color: var(--ink); font: 17px/1.65 'Noto Sans Thai', system-ui, -apple-system, 'Segoe UI', sans-serif; }
+    .wrap { max-width: 640px; margin: 0 auto; padding: 20px 16px 48px; }
+    .brand { margin: 0; font-size: 28px; line-height: 1.3; }
+    .sub { margin: 6px 0 16px; color: var(--mut); font-size: 16px; }
+    .ctrl { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
+    .pill { min-height: 48px; padding: 8px 18px; border: 2px solid var(--ink); border-radius: 999px; background: transparent; color: var(--ink); font: inherit; font-weight: 600; cursor: pointer; }
+    .pill.icon { margin-left: auto; border: 1px solid var(--line); min-width: 52px; border-radius: 14px; }
+    .seg { display: flex; border: 1px solid var(--line); border-radius: 999px; overflow: hidden; }
+    .seg button { min-height: 48px; min-width: 64px; padding: 8px 18px; border: 0; background: transparent; color: var(--ink); font: inherit; font-weight: 700; cursor: pointer; }
+    .seg button.on { background: var(--ac); color: var(--on); }
+    .link { margin-top: 6px; padding: 8px 0; background: none; border: 0; color: var(--ink); font: inherit; text-decoration: underline; cursor: pointer; }
+    .card { background: var(--card); border: 1px solid var(--line); border-radius: 20px; padding: 20px; margin: 18px 0; -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px); }
+    h2 { margin: 0 0 12px; font-size: 24px; line-height: 1.35; }
+    h3 { margin: 20px 0 6px; font-size: 19px; line-height: 1.4; }
+    p { margin: 0 0 12px; }
+    .muted { color: var(--mut); }
     label { display: block; font-weight: 600; margin: 14px 0 6px; }
+    input, textarea { width: 100%; min-height: 48px; padding: 10px 12px; border: 1px solid var(--line); border-radius: 12px; background: rgba(255,255,255,.08); color: var(--ink); font: inherit; }
     .row { display: flex; gap: 12px; }
     .row > div { flex: 1; }
-    .btn { width: 100%; margin-top: 12px; }
-    .menu-btn { min-width: 48px; min-height: 44px; padding: 8px 14px; font: inherit; color: inherit; background: #fff; border: 1px solid #999; border-radius: 8px; cursor: pointer; }
-    .top-actions { display: flex; gap: 8px; }
-    .clock { font-size: 56px; text-align: center; font-variant-numeric: tabular-nums; margin: 24px 0; }
-    .bar { height: 10px; border-radius: 5px; background: #ddd; }
-    .bar > div { height: 10px; border-radius: 5px; background: #222; width: 0; }
-    .center { text-align: center; }
-    .menu-list { display: flex; flex-direction: column; gap: 8px; margin-top: 8px; }
-    .menu-list a, .menu-list button { display: block; text-align: left; min-height: 44px; padding: 10px 12px; font: inherit; color: inherit; background: #fff; border: 1px solid #ddd; border-radius: 8px; text-decoration: none; cursor: pointer; }
-    [hidden] { display: none !important; }
-
-    /* Colours and font from the first demo (teal, light and dark) */
-    :root { --bg: #F2F5F3; --ink: #1B2A29; --mut: #566866; --ac: #2F6F6A; --on: #fff; --line: #D0DAD7; --card: #fff; }
-    @media (prefers-color-scheme: dark) {
-      :root { --bg: #121A19; --ink: #E6EEEC; --mut: #9DB0AD; --ac: #5FB3AB; --on: #0B1514; --line: #2C3B39; --card: #1A2523; }
-    }
-    html, body { background: var(--bg); color: var(--ink); }
-    body { font-family: 'Noto Sans Thai', system-ui, -apple-system, 'Segoe UI', sans-serif; }
-    .topbar { border-bottom-color: var(--line); }
-    .lang-toggle, .menu-btn { background: var(--card); color: var(--ink); border-color: var(--line); border-radius: 12px; }
-    .card { background: var(--card); border-color: var(--line); border-radius: 16px; }
-    .muted { color: var(--mut); }
-    .btn { background: var(--ac); color: var(--on); border-radius: 14px; min-height: 52px; font-weight: 600; }
+    .btn { display: block; width: 100%; min-height: 52px; margin-top: 14px; padding: 10px 18px; border: 0; border-radius: 14px; background: var(--ac); color: var(--on); font: inherit; font-weight: 700; cursor: pointer; }
     .btn.secondary { background: transparent; color: var(--ink); border: 1px solid var(--line); }
     .btn:disabled { opacity: .5; cursor: default; }
-    input[type="text"], input[type="time"], textarea { background: var(--card); color: var(--ink); border-color: var(--line); border-radius: 12px; }
-    .bar { background: var(--line); }
-    .bar > div { background: var(--ac); }
-    .menu-list a, .menu-list button { background: var(--card); border-color: var(--line); color: var(--ink); }
-    #dlTools button { background: var(--card) !important; border-color: var(--line) !important; color: var(--ink) !important; border-radius: 12px !important; }
-    :focus-visible { outline-color: var(--ac); }
+    .bar { height: 10px; border-radius: 5px; background: var(--line); }
+    .bar > div { height: 10px; border-radius: 5px; background: var(--ac); width: 0; }
+    .clock { font-size: 56px; text-align: center; font-variant-numeric: tabular-nums; margin: 20px 0; }
+    .center { text-align: center; }
+    .menu-list { display: flex; flex-direction: column; gap: 8px; margin-top: 8px; }
+    .menu-list a, .menu-list button { display: block; text-align: left; min-height: 48px; padding: 10px 14px; font: inherit; color: var(--ink); background: rgba(255,255,255,.06); border: 1px solid var(--line); border-radius: 12px; text-decoration: none; cursor: pointer; }
+    :focus-visible { outline: 3px solid var(--ac); outline-offset: 2px; }
+    #dlTools { display: none !important; }
+    [hidden] { display: none !important; }
   </style>
 </head>
 <body>
-  <header class="topbar">
-    <h1 class="brand" data-i18n="appName">Deep Listening Training</h1>
-    <div class="top-actions">
-      <button id="langToggle" class="lang-toggle" type="button" data-i18n="langButton" data-i18n-label="langLabel">EN</button>
-      <button id="menuBtn" class="menu-btn" type="button" aria-expanded="false" aria-controls="menu" data-i18n-label="menuLabel">&#9776;</button>
-    </div>
-  </header>
-
-  <nav id="menu" class="card" style="margin:12px 16px" hidden>
-    <strong data-i18n="menuLang">ภาษา</strong>
-    <div class="row" style="margin-top:8px">
-      <div><button class="menu-btn" style="width:100%" type="button" data-lang="th">ไทย</button></div>
-      <div><button class="menu-btn" style="width:100%" type="button" data-lang="en">English</button></div>
-    </div>
-    <p class="muted" data-i18n="menuMore">ภาษาอื่นทั่วโลกกำลังเตรียม</p>
-    <div class="menu-list">
-      <button type="button" data-go="today" data-i18n="menuToday">วันนี้</button>
-      <button type="button" data-go="history" data-i18n="menuHistory">ประวัติ</button>
-      <a href="coach.html" data-i18n="menuCoach">โค้ช</a>
-      <a href="manual.html" data-i18n="menuTools">เครื่องมือ</a>
-    </div>
-  </nav>
-
-  <main>
-    <section id="v-setup">
-      <h2>Deep Listening Training</h2>
-      <p data-i18n="trIntro">ทดลอง 7 วัน นั่งหลับตา 10 นาที เล่นเพื่อเป็นคำพูด</p>
-      <label for="gName" data-i18n="qName">เกมของคุณชื่ออะไร</label>
-      <input id="gName" type="text">
-      <label data-i18n="qTime">ทำตอนกี่โมงถึงกี่โมง</label>
-      <div class="row">
-        <div><label for="gStart" data-i18n="fStart" style="margin-top:0">เริ่ม</label><input id="gStart" type="time" value="06:00"></div>
-        <div><label for="gEnd" data-i18n="fEnd" style="margin-top:0">จบ</label><input id="gEnd" type="time" value="06:10"></div>
+  <div class="wrap">
+    <header>
+      <h1 class="brand" data-i18n="appName">Deep Listening Training</h1>
+      <p class="sub" data-i18n="subTrial">ทดลอง 7 วัน · นั่งหลับตา 10 นาที · เล่นเพื่อเป็นคำพูด</p>
+      <div class="ctrl">
+        <button id="bSound" class="pill" type="button"></button>
+        <div class="seg" role="group" aria-label="Language">
+          <button type="button" data-lang="th">ไทย</button>
+          <button type="button" data-lang="en">EN</button>
+        </div>
+        <button id="menuBtn" class="pill icon" type="button" aria-expanded="false" aria-controls="menu" data-i18n-label="menuLabel">&#9776;</button>
       </div>
-      <button id="bBegin" class="btn" type="button" data-i18n="btnBegin">เริ่มทดลอง</button>
-    </section>
+      <button id="bTest" class="link" type="button" data-i18n="testSound">ทดสอบเสียง</button>
+    </header>
 
-    <section id="v-today" hidden>
-      <p class="muted" id="tdDay"></p>
-      <h2 id="tdName"></h2>
-      <p class="muted" id="tdTime"></p>
-      <div class="bar" aria-hidden="true"><div id="tdBar"></div></div>
-      <p class="muted" id="tdStat"></p>
-      <button id="bStart" class="btn" type="button"></button>
-      <button id="bEdit" class="btn secondary" type="button" data-i18n="btnEdit">เปลี่ยนเกมหรือเวลา</button>
-    </section>
+    <nav id="menu" class="card" hidden>
+      <div class="menu-list">
+        <button type="button" data-go="today" data-i18n="menuToday">วันนี้</button>
+        <button type="button" data-go="history" data-i18n="menuHistory">ประวัติ</button>
+        <a href="coach.html" data-i18n="menuCoach">โค้ช</a>
+        <a href="manual.html" data-i18n="menuTools">เครื่องมือ</a>
+      </div>
+      <p class="muted" style="margin-top:12px" data-i18n="menuMore">ภาษาอื่นทั่วโลกกำลังเตรียม</p>
+    </nav>
 
-    <section id="v-timer" hidden>
-      <p class="muted center" id="tmDay"></p>
-      <h2 class="center" id="tmName"></h2>
-      <div class="clock" id="tmClock" role="timer" aria-live="off">10:00</div>
-      <div class="bar" aria-hidden="true"><div id="tmBar"></div></div>
-      <p class="muted center" id="tmStat"></p>
-      <button id="bStop" class="btn secondary" type="button" data-i18n="btnStop">หยุดก่อน</button>
-    </section>
+    <main>
+      <section id="v-welcome" class="card">
+        <h2 data-i18n="wh">สวัสดีครับ ยินดีต้อนรับสู่ Deep Listening Training</h2>
+        <h3 data-i18n="wq1">ทำไมเราต้องฝึก Deep Listening Training</h3>
+        <p data-i18n="wp1">ปัจจุบันคนส่วนใหญ่มีแต่พูด แต่ไม่สามารถฟังได้ หรือทนฟังไม่ได้ รู้สึกว่าการฟังคนอื่นเป็นเรื่องน่าเบื่อหน่าย เขาจึงไม่อยากฟัง อยากพูด อยากบอก อยากสอนมากกว่า ในโปรเซสของ Deep Listening Training คุณจะได้ฝึกการฟัง สิ่งแรกก่อนจะฟังคนอื่นได้ คุณต้องฟังตัวเองให้ได้ก่อน</p>
+        <p data-i18n="wp2">เชื้อเชิญทุกคนมาทดลองฝึก 7 วัน นั่งหลับตา 10 นาที</p>
+        <h3 data-i18n="wq2">แล้วการนั่งหลับตา 10 นาที เราทำไปเพื่ออะไร</h3>
+        <p data-i18n="wp3">เพื่อเล่นเป็นคำพูด</p>
+        <p data-i18n="wp4">ในโปรเซสนี้จะไม่มีการสอน จะเน้นการฝึก</p>
+        <p data-i18n="wp5">ใน 10 นาที คุณจะได้มีประสบการณ์การสำรวจตัวเอง มีโอกาสได้รู้จักความรู้สึก ความคิด ความอยากไม่อยาก รู้จักว่าคุณกำลังคิดวนไปมา และรู้จักการเบื่อ การไม่อยากทำ</p>
+        <p data-i18n="wp6">เมื่อคุณได้ฝึก 10 นาที คุณจะได้มีประสบการณ์ของความรู้สึกดีกับตัวเอง 10 นาทีนี้จะให้ประสบการณ์นั้น</p>
+        <p data-i18n="wp7">สรุป โดยกระบวนการนี้ คุณจะได้มีประสบการณ์ด้วยตัวคุณเอง โดยไม่ต้องมีใครมาบอก มาสอน มาแนะนำคุณ คุณเท่านั้นที่จะต้องเห็นด้วยตัวคุณเอง</p>
+        <p data-i18n="wp8">ทั้งหมดที่กล่าวมาคือการฟังตัวเองก่อน เมื่อคุณฟังตัวเองได้ หลังจากนั้นคุณก็จะฟังคนอื่นได้ นี่คือคำว่า Deep Listening Training</p>
+        <button id="bWelcome" class="btn" type="button" data-i18n="btnWelcome">มาเริ่มต้นกันเลย</button>
+      </section>
 
-    <section id="v-reflect" hidden>
-      <p class="muted" data-i18n="rDone">ฝึกเสร็จแล้ว</p>
-      <h2 data-i18n="rTitle">บันทึกของวันนี้</h2>
-      <label for="rb" data-i18n="qBefore">ก่อนทำ คุณรู้สึกอย่างไร</label>
-      <textarea id="rb" rows="3"></textarea>
-      <label for="rd" data-i18n="qDuring">ขณะทำ คุณรู้สึกอย่างไร</label>
-      <textarea id="rd" rows="3"></textarea>
-      <label for="rf" data-i18n="qAfter">ทำเสร็จแล้ว คุณรู้สึกอย่างไร</label>
-      <textarea id="rf" rows="3"></textarea>
-      <button id="bSave" class="btn" type="button" data-i18n="btnSave">บันทึก</button>
-    </section>
+      <section id="v-setup" class="card" hidden>
+        <label for="gName" data-i18n="qName" style="margin-top:0">เกมของคุณชื่ออะไร</label>
+        <input id="gName" type="text">
+        <label data-i18n="qTime">ทำตอนกี่โมงถึงกี่โมง</label>
+        <div class="row">
+          <div><label for="gStart" data-i18n="fStart" style="margin-top:0">เริ่ม</label><input id="gStart" type="time" value="06:00"></div>
+          <div><label for="gEnd" data-i18n="fEnd" style="margin-top:0">จบ</label><input id="gEnd" type="time" value="06:10"></div>
+        </div>
+        <button id="bBegin" class="btn" type="button" data-i18n="btnBegin">เริ่มทดลอง</button>
+      </section>
 
-    <section id="v-history" hidden>
-      <h2 data-i18n="menuHistory">ประวัติ</h2>
-      <p class="muted" id="hsStat"></p>
-      <div id="hsList"></div>
-      <button id="bBack" class="btn secondary" type="button" data-i18n="btnBack">กลับ</button>
-    </section>
-  </main>
+      <section id="v-today" class="card" hidden>
+        <p class="muted" id="tdDay"></p>
+        <h2 id="tdName"></h2>
+        <p class="muted" id="tdTime"></p>
+        <div class="bar" aria-hidden="true"><div id="tdBar"></div></div>
+        <p class="muted" id="tdStat" style="margin-top:12px"></p>
+        <button id="bStart" class="btn" type="button"></button>
+        <button id="bEdit" class="btn secondary" type="button" data-i18n="btnEdit">เปลี่ยนเกมหรือเวลา</button>
+      </section>
+
+      <section id="v-timer" class="card" hidden>
+        <p class="muted center" id="tmDay"></p>
+        <h2 class="center" id="tmName"></h2>
+        <div class="clock" id="tmClock" role="timer" aria-live="off">10:00</div>
+        <div class="bar" aria-hidden="true"><div id="tmBar"></div></div>
+        <p class="muted center" id="tmStat" style="margin-top:12px"></p>
+        <button id="bStop" class="btn secondary" type="button" data-i18n="btnStop">หยุดก่อน</button>
+      </section>
+
+      <section id="v-reflect" class="card" hidden>
+        <p class="muted" data-i18n="rDone">ฝึกเสร็จแล้ว</p>
+        <h2 data-i18n="rTitle">บันทึกของวันนี้</h2>
+        <label for="rb" data-i18n="qBefore">ก่อนทำ คุณรู้สึกอย่างไร</label>
+        <textarea id="rb" rows="3"></textarea>
+        <label for="rd" data-i18n="qDuring">ขณะทำ คุณรู้สึกอย่างไร</label>
+        <textarea id="rd" rows="3"></textarea>
+        <label for="rf" data-i18n="qAfter">ทำเสร็จแล้ว คุณรู้สึกอย่างไร</label>
+        <textarea id="rf" rows="3"></textarea>
+        <button id="bSave" class="btn" type="button" data-i18n="btnSave">บันทึก</button>
+      </section>
+
+      <section id="v-history" hidden>
+        <div class="card">
+          <h2 data-i18n="menuHistory">ประวัติ</h2>
+          <p class="muted" id="hsStat"></p>
+        </div>
+        <div id="hsList"></div>
+        <button id="bBack" class="btn secondary" type="button" data-i18n="btnBack">กลับ</button>
+      </section>
+    </main>
+  </div>
 
   <script src="app.js"></script>
   <script>
-    DL.addStrings('th', {
-      menuLabel: 'เมนู', menuLang: 'ภาษา', menuMore: 'ภาษาอื่นทั่วโลกกำลังเตรียม',
+    DL.addStrings('th', Object.assign({
+      appName: 'Deep Listening Training',
+      subTrial: 'ทดลอง 7 วัน · นั่งหลับตา 10 นาที · เล่นเพื่อเป็นคำพูด',
+      menuLabel: 'เมนู', menuMore: 'ภาษาอื่นทั่วโลกกำลังเตรียม',
       menuToday: 'วันนี้', menuHistory: 'ประวัติ', menuCoach: 'โค้ช', menuTools: 'เครื่องมือ',
-      trIntro: 'ทดลอง 7 วัน นั่งหลับตา 10 นาที เล่นเพื่อเป็นคำพูด',
+      soundOn: 'เสียง: เปิด', soundOff: 'เสียง: ปิด', testSound: 'ทดสอบเสียง',
+      greeting: 'สวัสดีครับ ยินดีต้อนรับสู่ Deep Listening Training มาเริ่มต้นกันเลย',
+      btnWelcome: 'มาเริ่มต้นกันเลย',
       qName: 'เกมของคุณชื่ออะไร', qTime: 'ทำตอนกี่โมงถึงกี่โมง', fStart: 'เริ่ม', fEnd: 'จบ',
       btnBegin: 'เริ่มทดลอง', btnStartTimer: 'เริ่มจับเวลา', btnStop: 'หยุดก่อน',
       btnEdit: 'เปลี่ยนเกมหรือเวลา', btnSave: 'บันทึก', btnBack: 'กลับ',
@@ -137,11 +160,15 @@
       qBefore: 'ก่อนทำ คุณรู้สึกอย่างไร', qDuring: 'ขณะทำ คุณรู้สึกอย่างไร', qAfter: 'ทำเสร็จแล้ว คุณรู้สึกอย่างไร',
       lBefore: 'ก่อนทำ', lDuring: 'ขณะทำ', lAfter: 'ทำเสร็จแล้ว', historyEmpty: 'ยังไม่มีบันทึก',
       defaultName: 'นั่งหลับตา 10 นาที'
-    });
-    DL.addStrings('en', {
-      menuLabel: 'Menu', menuLang: 'Language', menuMore: 'More languages from around the world are being prepared',
+    }, {"wh":"สวัสดีครับ ยินดีต้อนรับสู่ Deep Listening Training","wq1":"ทำไมเราต้องฝึก Deep Listening Training","wp1":"ปัจจุบันคนส่วนใหญ่มีแต่พูด แต่ไม่สามารถฟังได้ หรือทนฟังไม่ได้ รู้สึกว่าการฟังคนอื่นเป็นเรื่องน่าเบื่อหน่าย เขาจึงไม่อยากฟัง อยากพูด อยากบอก อยากสอนมากกว่า ในโปรเซสของ Deep Listening Training คุณจะได้ฝึกการฟัง สิ่งแรกก่อนจะฟังคนอื่นได้ คุณต้องฟังตัวเองให้ได้ก่อน","wp2":"เชื้อเชิญทุกคนมาทดลองฝึก 7 วัน นั่งหลับตา 10 นาที","wq2":"แล้วการนั่งหลับตา 10 นาที เราทำไปเพื่ออะไร","wp3":"เพื่อเล่นเป็นคำพูด","wp4":"ในโปรเซสนี้จะไม่มีการสอน จะเน้นการฝึก","wp5":"ใน 10 นาที คุณจะได้มีประสบการณ์การสำรวจตัวเอง มีโอกาสได้รู้จักความรู้สึก ความคิด ความอยากไม่อยาก รู้จักว่าคุณกำลังคิดวนไปมา และรู้จักการเบื่อ การไม่อยากทำ","wp6":"เมื่อคุณได้ฝึก 10 นาที คุณจะได้มีประสบการณ์ของความรู้สึกดีกับตัวเอง 10 นาทีนี้จะให้ประสบการณ์นั้น","wp7":"สรุป โดยกระบวนการนี้ คุณจะได้มีประสบการณ์ด้วยตัวคุณเอง โดยไม่ต้องมีใครมาบอก มาสอน มาแนะนำคุณ คุณเท่านั้นที่จะต้องเห็นด้วยตัวคุณเอง","wp8":"ทั้งหมดที่กล่าวมาคือการฟังตัวเองก่อน เมื่อคุณฟังตัวเองได้ หลังจากนั้นคุณก็จะฟังคนอื่นได้ นี่คือคำว่า Deep Listening Training"}));
+    DL.addStrings('en', Object.assign({
+      appName: 'Deep Listening Training',
+      subTrial: '7-day trial · sit with eyes closed for 10 minutes · play to be your word',
+      menuLabel: 'Menu', menuMore: 'More languages from around the world are being prepared',
       menuToday: 'Today', menuHistory: 'History', menuCoach: 'Coach', menuTools: 'Tools',
-      trIntro: '7-day trial. Sit with your eyes closed for 10 minutes. Play to be your word.',
+      soundOn: 'Sound: on', soundOff: 'Sound: off', testSound: 'Test sound',
+      greeting: 'Hello, welcome to Deep Listening Training. Let us begin.',
+      btnWelcome: 'Let us begin',
       qName: 'What is your game called?', qTime: 'What time do you do it, from when to when?', fStart: 'Start', fEnd: 'End',
       btnBegin: 'Start the trial', btnStartTimer: 'Start the timer', btnStop: 'Stop for now',
       btnEdit: 'Change game or time', btnSave: 'Save', btnBack: 'Back',
@@ -153,14 +180,16 @@
       qBefore: 'Before, how do you feel?', qDuring: 'During, how do you feel?', qAfter: 'After, how do you feel?',
       lBefore: 'Before', lDuring: 'During', lAfter: 'After', historyEmpty: 'No notes yet',
       defaultName: 'Sit with eyes closed for 10 minutes'
-    });
+    }, {"wh":"Hello, welcome to Deep Listening Training","wq1":"Why do we need to train Deep Listening Training?","wp1":"Today most people only talk. They cannot listen, or cannot bear to. Listening to others feels boring, so they would rather talk, tell and teach than listen. In the process of Deep Listening Training you will train listening. Before you can listen to others, you must first be able to listen to yourself.","wp2":"We invite everyone to try the training: 7 days, sitting with eyes closed for 10 minutes.","wq2":"And why do we sit with eyes closed for 10 minutes?","wp3":"To play to be your word.","wp4":"There is no teaching in this process. The focus is on practice.","wp5":"In 10 minutes you will have the experience of exploring yourself. You will get to know your feelings, your thoughts, your wanting and not wanting. You will get to know that you are thinking in circles, and get to know boredom and not wanting to do it.","wp6":"When you have practiced for 10 minutes, you will have the experience of feeling good about yourself. These 10 minutes will give you that experience.","wp7":"In summary: through this process you will have the experience yourself, without anyone telling, teaching or advising you. Only you will see it for yourself.","wp8":"All of this is listening to yourself first. When you can listen to yourself, after that you will be able to listen to others. This is what Deep Listening Training means."}));
 
     (function () {
-      var K = 'dl_trial';
+      var K = 'dl_trial', KS = 'dl_sound';
       var $ = function (s) { return document.querySelector(s); };
       var t = function (k) { return DL.t(k); };
       var S = { logs: [] };
       try { var r = JSON.parse(localStorage.getItem(K) || 'null'); if (r) { S = r; S.logs = S.logs || []; } } catch (e) {}
+      var soundOn = true;
+      try { soundOn = localStorage.getItem(KS) !== '0'; } catch (e) {}
       function save() { try { localStorage.setItem(K, JSON.stringify(S)); } catch (e) {} }
       function pad(n) { return String(n).padStart(2, '0'); }
       function ymd(d) { return d.getFullYear() + '-' + pad(d.getMonth() + 1) + '-' + pad(d.getDate()); }
@@ -172,17 +201,32 @@
       function stats() { var on = S.logs.filter(function (l) { return l.onTime; }).length; return fill('stats', { a: S.logs.length, b: on }); }
       function doneToday() { return S.logs.some(function (l) { return l.date === ymd(new Date()); }); }
 
-      var cur = 'setup', T = null, tEnd = 0, onTime = false, startStr = '';
-      var views = ['setup', 'today', 'timer', 'reflect', 'history'];
+      var synth = window.speechSynthesis || null;
+      function say(text) {
+        if (!synth) { return; }
+        synth.cancel();
+        var lang = DL.getLang(), code = lang === 'th' ? 'th-TH' : 'en-US';
+        var u = new SpeechSynthesisUtterance(text); u.lang = code;
+        var vs = synth.getVoices() || [];
+        for (var i = 0; i < vs.length; i++) { if (vs[i].lang.toLowerCase().replace('_', '-') === code.toLowerCase()) { u.voice = vs[i]; break; } }
+        synth.speak(u);
+      }
+
+      var cur = 'welcome', T = null, tEnd = 0, onTime = false, startStr = '';
+      var views = ['welcome', 'setup', 'today', 'timer', 'reflect', 'history'];
       function show(id) {
         cur = id;
         views.forEach(function (n) { $('#v-' + n).hidden = n !== id; });
         closeMenu(); render(); window.scrollTo(0, 0);
       }
       function render() {
-        if (cur === 'setup') {
-          if (!$('#gName').value) { $('#gName').value = S.name || t('defaultName'); }
-        }
+        $('#bSound').textContent = t(soundOn ? 'soundOn' : 'soundOff');
+        $('#bSound').setAttribute('aria-pressed', soundOn ? 'true' : 'false');
+        Array.prototype.forEach.call(document.querySelectorAll('.seg button'), function (b) {
+          var on = b.getAttribute('data-lang') === DL.getLang();
+          b.classList.toggle('on', on); b.setAttribute('aria-pressed', on ? 'true' : 'false');
+        });
+        if (cur === 'setup' && !$('#gName').value) { $('#gName').value = S.name || t('defaultName'); }
         if (cur === 'today' && S.startDate) {
           var n = dayNo(), full = S.logs.length >= 7;
           $('#tdDay').textContent = fill('dayOf', { n: n });
@@ -214,6 +258,7 @@
         }
       }
       function beep() {
+        if (!soundOn) { return; }
         try { var c = new (window.AudioContext || window.webkitAudioContext)(), o = c.createOscillator(), g = c.createGain(); o.connect(g); g.connect(c.destination); o.frequency.value = 528; g.gain.setValueAtTime(0.2, c.currentTime); g.gain.exponentialRampToValueAtTime(0.001, c.currentTime + 2); o.start(); o.stop(c.currentTime + 2); } catch (e) {}
         try { if (navigator.vibrate) { navigator.vibrate(300); } } catch (e) {}
       }
@@ -228,15 +273,22 @@
       $('#menuBtn').addEventListener('click', function () {
         var open = $('#menu').hidden; $('#menu').hidden = !open; this.setAttribute('aria-expanded', open ? 'true' : 'false');
       });
-      Array.prototype.forEach.call(document.querySelectorAll('[data-lang]'), function (b) {
-        b.addEventListener('click', function () { DL.setLang(b.getAttribute('data-lang')); closeMenu(); });
+      $('#bSound').addEventListener('click', function () {
+        soundOn = !soundOn; try { localStorage.setItem(KS, soundOn ? '1' : '0'); } catch (e) {}
+        if (!soundOn && synth) { synth.cancel(); }
+        render();
+      });
+      $('#bTest').addEventListener('click', function () { say(t('greeting')); });
+      Array.prototype.forEach.call(document.querySelectorAll('.seg button'), function (b) {
+        b.addEventListener('click', function () { DL.setLang(b.getAttribute('data-lang')); });
       });
       Array.prototype.forEach.call(document.querySelectorAll('[data-go]'), function (b) {
         b.addEventListener('click', function () {
           var g = b.getAttribute('data-go');
-          if (g === 'today') { show(S.startDate ? 'today' : 'setup'); } else { show(g); }
+          if (g === 'today') { show(S.startDate ? 'today' : 'welcome'); } else { show(g); }
         });
       });
+      $('#bWelcome').addEventListener('click', function () { if (soundOn) { say(t('greeting')); } show('setup'); });
       $('#bBegin').addEventListener('click', function () {
         S.name = $('#gName').value.trim() || t('defaultName');
         S.start = $('#gStart').value || '06:00'; S.end = $('#gEnd').value || '06:10';
@@ -256,9 +308,10 @@
         S.logs.push({ date: ymd(new Date()), day: dayNo(), s: startStr, e: hm(new Date()), onTime: onTime, b: $('#rb').value.trim(), d: $('#rd').value.trim(), f: $('#rf').value.trim() });
         save(); show('today');
       });
-      $('#bBack').addEventListener('click', function () { show(S.startDate ? 'today' : 'setup'); });
+      $('#bBack').addEventListener('click', function () { show(S.startDate ? 'today' : 'welcome'); });
       DL.onLangChange(function () { render(); });
-      show(S.startDate ? 'today' : 'setup');
+      window.addEventListener('pagehide', function () { if (synth) { synth.cancel(); } });
+      show(S.startDate ? 'today' : 'welcome');
     })();
   </script>
 </body>
