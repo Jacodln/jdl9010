@@ -12,11 +12,13 @@
     html { background: #0d1f1b; -webkit-text-size-adjust: 100%; color-scheme: dark; }
     body { margin: 0; min-height: 100vh; background: linear-gradient(160deg, #0d1f1b 0%, #143229 55%, #1b4338 100%) fixed; color: var(--ink); font: 17px/1.65 'Noto Sans Thai', system-ui, -apple-system, 'Segoe UI', sans-serif; }
     .wrap { max-width: 640px; margin: 0 auto; padding: 20px 16px 48px; }
-    .brand { margin: 0; font-size: 28px; line-height: 1.3; }
+    .top { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+    .brand { margin: 0; font-size: 23px; line-height: 1.3; }
     .sub { margin: 6px 0 16px; color: var(--mut); font-size: 16px; }
-    .ctrl { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
+    .ctrl { display: flex; gap: 10px; margin-top: 4px; align-items: center; flex-wrap: wrap; }
     .pill { min-height: 48px; padding: 8px 18px; border: 2px solid var(--ink); border-radius: 999px; background: transparent; color: var(--ink); font: inherit; font-weight: 600; cursor: pointer; }
-    .pill.icon { margin-left: auto; border: 1px solid var(--line); min-width: 52px; border-radius: 14px; }
+    .pill.icon { border: 1px solid var(--line); min-width: 52px; border-radius: 14px; flex: none; }
+    #bSound { min-width: 52px; padding: 8px 12px; font-size: 20px; line-height: 1; }
     .seg { display: flex; border: 1px solid var(--line); border-radius: 999px; overflow: hidden; }
     .seg button { min-height: 48px; min-width: 64px; padding: 8px 18px; border: 0; background: transparent; color: var(--ink); font: inherit; font-weight: 700; cursor: pointer; }
     .seg button.on { background: var(--ac); color: var(--on); }
@@ -55,7 +57,10 @@
 <body>
   <div class="wrap">
     <header>
-      <h1 class="brand" data-i18n="appName">Deep Listening Training</h1>
+      <div class="top">
+        <h1 class="brand" data-i18n="appName">Deep Listening Training</h1>
+        <button id="menuBtn" class="pill icon" type="button" aria-expanded="false" aria-controls="menu" data-i18n-label="menuLabel">&#9776;</button>
+      </div>
       <p class="sub" data-i18n="subTrial">ทดลอง 7 วัน · นั่งหลับตา 10 นาที · เล่นเพื่อเป็นคำพูด</p>
       <div class="ctrl">
         <button id="bSound" class="pill" type="button"></button>
@@ -63,7 +68,6 @@
           <button type="button" data-lang="th">ไทย</button>
           <button type="button" data-lang="en">EN</button>
         </div>
-        <button id="menuBtn" class="pill icon" type="button" aria-expanded="false" aria-controls="menu" data-i18n-label="menuLabel">&#9776;</button>
       </div>
       <div class="welcome-row">
         <button id="bTest" class="wbtn" type="button"></button>
@@ -71,7 +75,6 @@
       </div>
       <p id="noVoice" class="muted" hidden data-i18n="noVoice">เครื่องนี้ยังไม่รองรับเสียงอ่าน</p>
       <div class="tabs" role="tablist">
-        <button type="button" role="tab" data-tab="welcome" data-i18n="tabWelcome">ต้อนรับ</button>
         <button type="button" role="tab" data-tab="today" data-i18n="menuToday">วันนี้</button>
         <button type="button" role="tab" data-tab="history" data-i18n="menuHistory">ประวัติ</button>
       </div>
@@ -256,6 +259,7 @@
       function speakWelcome() {
         if (!synth) { $('#noVoice').hidden = false; return; }
         if (reading) { stopSay(); return; }
+        if (cur !== 'welcome') { show('welcome'); }
         $('#wMore').hidden = false;
         var parts = Array.prototype.map.call(document.querySelectorAll('#v-welcome h2, #v-welcome h3, #v-welcome p'), function (n) { return n.textContent; }).filter(function (x) { return x.trim(); });
         speakParts(parts, function () { var bw = $('#bWelcome'); if (bw.scrollIntoView) { bw.scrollIntoView({ behavior: 'smooth', block: 'center' }); } });
@@ -303,13 +307,13 @@
       }
       function render() {
         renderMic();
-        $('#bSound').textContent = t(soundOn ? 'soundOn' : 'soundOff');
+        $('#bSound').textContent = soundOn ? '\uD83D\uDD0A' : '\uD83D\uDD07'; $('#bSound').setAttribute('aria-label', t(soundOn ? 'soundOn' : 'soundOff')); $('#bSound').title = t(soundOn ? 'soundOn' : 'soundOff');
         $('#bSound').setAttribute('aria-pressed', soundOn ? 'true' : 'false');
         $('#bTest').textContent = t(reading ? 'welcomeStop' : 'welcomeBtn') + (reading ? ' \u25A0' : ' \u25BC');
-        $('.welcome-row').hidden = cur !== 'welcome';
+        $('.welcome-row').hidden = cur === 'timer' || cur === 'reflect';
         if (cur !== 'welcome') { $('#noVoice').hidden = true; }
         Array.prototype.forEach.call(document.querySelectorAll('.tabs button'), function (b) {
-          var want = cur === 'welcome' ? 'welcome' : (cur === 'history' ? 'history' : 'today'); var on = b.getAttribute('data-tab') === want;
+          var want = cur === 'history' ? 'history' : ((cur === 'today' || cur === 'setup') ? 'today' : ''); var on = b.getAttribute('data-tab') === want;
           b.classList.toggle('on', on); b.setAttribute('aria-selected', on ? 'true' : 'false');
         });
         Array.prototype.forEach.call(document.querySelectorAll('.seg button'), function (b) {
