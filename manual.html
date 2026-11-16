@@ -19,7 +19,7 @@
     .seg { display: flex; border: 1px solid var(--line); border-radius: 999px; overflow: hidden; }
     .seg button { min-height: 48px; min-width: 64px; padding: 8px 18px; border: 0; background: transparent; color: var(--ink); font: inherit; font-weight: 700; cursor: pointer; }
     .seg button.on { background: var(--ac); color: var(--on); }
-    .back { margin-left: auto; color: var(--ink); text-decoration: underline; min-height: 48px; display: inline-flex; align-items: center; }
+    .back { color: var(--ink); text-decoration: none; font-weight: 600; min-height: 44px; display: inline-flex; align-items: center; }
     .tabs { display: flex; padding: 4px; border: 1px solid var(--line); border-radius: 16px; background: rgba(255,255,255,.06); margin: 8px 0 16px; }
     .tabs button { flex: 1; min-height: 48px; border: 0; border-radius: 12px; background: transparent; color: var(--ink); font: inherit; font-weight: 600; cursor: pointer; }
     .tabs button.on { background: rgba(255,255,255,.16); }
@@ -42,13 +42,13 @@
 </head>
 <body class="l-th">
   <div class="wrap">
+    <a class="back" href="trial.html"><span class="th">← กลับ</span><span class="en">← Back</span></a>
     <h1>Deep Listening Training</h1>
     <div class="ctrl">
       <div class="seg" role="group" aria-label="Language">
         <button type="button" data-lang="th">ไทย</button>
         <button type="button" data-lang="en">EN</button>
       </div>
-      <a class="back" href="trial.html"><span class="th">กลับหน้าทดลอง</span><span class="en">Back to trial</span></a>
     </div>
 
     <section id="gate" class="card">
