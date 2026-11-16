@@ -46,6 +46,8 @@
     .tabs { display: flex; margin-top: 14px; padding: 4px; border: 1px solid var(--line); border-radius: 16px; background: rgba(255,255,255,.06); }
     .tabs button { flex: 1; min-height: 48px; border: 0; border-radius: 12px; background: transparent; color: var(--ink); font: inherit; font-weight: 600; cursor: pointer; }
     .tabs button.on { background: rgba(255,255,255,.16); }
+    .mic { display: inline-block; min-height: 44px; margin-top: 6px; padding: 6px 14px; border: 1px solid var(--line); border-radius: 12px; background: transparent; color: var(--ink); font: inherit; cursor: pointer; }
+    .mic.rec { background: var(--ac); color: var(--on); }
     #dlTools { display: none !important; }
     [hidden] { display: none !important; }
   </style>
@@ -69,6 +71,7 @@
       </div>
       <p id="noVoice" class="muted" hidden data-i18n="noVoice">เครื่องนี้ยังไม่รองรับเสียงอ่าน</p>
       <div class="tabs" role="tablist">
+        <button type="button" role="tab" data-tab="welcome" data-i18n="tabWelcome">ต้อนรับ</button>
         <button type="button" role="tab" data-tab="today" data-i18n="menuToday">วันนี้</button>
         <button type="button" role="tab" data-tab="history" data-i18n="menuHistory">ประวัติ</button>
       </div>
@@ -83,6 +86,7 @@
         <h2 data-i18n="wh">สวัสดีครับ ยินดีต้อนรับสู่ Deep Listening Training</h2>
         <h3 data-i18n="wq1">ทำไมเราต้องฝึก Deep Listening Training</h3>
         <p data-i18n="wp1">ปัจจุบันคนส่วนใหญ่มีแต่พูด แต่ไม่สามารถฟังได้ หรือทนฟังไม่ได้ รู้สึกว่าการฟังคนอื่นเป็นเรื่องน่าเบื่อหน่าย เขาจึงไม่อยากฟัง อยากพูด อยากบอก อยากสอนมากกว่า ในโปรเซสของ Deep Listening Training คุณจะได้ฝึกการฟัง สิ่งแรกก่อนจะฟังคนอื่นได้ คุณต้องฟังตัวเองให้ได้ก่อน</p>
+        <div id="wMore" hidden>
         <p data-i18n="wp2">เชื้อเชิญทุกคนมาทดลองฝึก 7 วัน นั่งหลับตา 10 นาที</p>
         <h3 data-i18n="wq2">แล้วการนั่งหลับตา 10 นาที เราทำไปเพื่ออะไร</h3>
         <p data-i18n="wp3">เพื่อเล่นเป็นคำพูด</p>
@@ -91,6 +95,7 @@
         <p data-i18n="wp6">เมื่อคุณได้ฝึก 10 นาที คุณจะได้มีประสบการณ์ของความรู้สึกดีกับตัวเอง 10 นาทีนี้จะให้ประสบการณ์นั้น</p>
         <p data-i18n="wp7">สรุป โดยกระบวนการนี้ คุณจะได้มีประสบการณ์ด้วยตัวคุณเอง โดยไม่ต้องมีใครมาบอก มาสอน มาแนะนำคุณ คุณเท่านั้นที่จะต้องเห็นด้วยตัวคุณเอง</p>
         <p data-i18n="wp8">ทั้งหมดที่กล่าวมาคือการฟังตัวเองก่อน เมื่อคุณฟังตัวเองได้ หลังจากนั้นคุณก็จะฟังคนอื่นได้ นี่คือคำว่า Deep Listening Training</p>
+        </div>
         <button id="bWelcome" class="btn" type="button" data-i18n="btnWelcome">มาเริ่มต้นกันเลย</button>
       </section>
 
@@ -129,10 +134,14 @@
         <h2 data-i18n="rTitle">บันทึกของวันนี้</h2>
         <label for="rb" data-i18n="qBefore">ก่อนทำ คุณรู้สึกอย่างไร</label>
         <textarea id="rb" rows="3"></textarea>
+        <button type="button" class="mic" data-for="rb" hidden></button>
         <label for="rd" data-i18n="qDuring">ขณะทำ คุณรู้สึกอย่างไร</label>
         <textarea id="rd" rows="3"></textarea>
+        <button type="button" class="mic" data-for="rd" hidden></button>
         <label for="rf" data-i18n="qAfter">ทำเสร็จแล้ว คุณรู้สึกอย่างไร</label>
         <textarea id="rf" rows="3"></textarea>
+        <button type="button" class="mic" data-for="rf" hidden></button>
+        <p id="micMsg" class="muted" hidden></p>
         <button id="bSave" class="btn" type="button" data-i18n="btnSave">บันทึก</button>
       </section>
 
@@ -167,7 +176,8 @@
       rDone: 'ฝึกเสร็จแล้ว', rTitle: 'บันทึกของวันนี้',
       qBefore: 'ก่อนทำ คุณรู้สึกอย่างไร', qDuring: 'ขณะทำ คุณรู้สึกอย่างไร', qAfter: 'ทำเสร็จแล้ว คุณรู้สึกอย่างไร',
       lBefore: 'ก่อนทำ', lDuring: 'ขณะทำ', lAfter: 'ทำเสร็จแล้ว', historyEmpty: 'ยังไม่มีบันทึก',
-      defaultName: 'นั่งหลับตา 10 นาที'
+      defaultName: 'นั่งหลับตา 10 นาที',
+      tabWelcome: 'ต้อนรับ', timeUp: 'หมดเวลาแล้ว', micStart: '🎤 พูดตอบ', micStop: '■ หยุดพูด', micDenied: 'ใช้ไมโครโฟนไม่ได้ พิมพ์ตอบแทนได้'
     }, {"wh":"สวัสดีครับ ยินดีต้อนรับสู่ Deep Listening Training","wq1":"ทำไมเราต้องฝึก Deep Listening Training","wp1":"ปัจจุบันคนส่วนใหญ่มีแต่พูด แต่ไม่สามารถฟังได้ หรือทนฟังไม่ได้ รู้สึกว่าการฟังคนอื่นเป็นเรื่องน่าเบื่อหน่าย เขาจึงไม่อยากฟัง อยากพูด อยากบอก อยากสอนมากกว่า ในโปรเซสของ Deep Listening Training คุณจะได้ฝึกการฟัง สิ่งแรกก่อนจะฟังคนอื่นได้ คุณต้องฟังตัวเองให้ได้ก่อน","wp2":"เชื้อเชิญทุกคนมาทดลองฝึก 7 วัน นั่งหลับตา 10 นาที","wq2":"แล้วการนั่งหลับตา 10 นาที เราทำไปเพื่ออะไร","wp3":"เพื่อเล่นเป็นคำพูด","wp4":"ในโปรเซสนี้จะไม่มีการสอน จะเน้นการฝึก","wp5":"ใน 10 นาที คุณจะได้มีประสบการณ์การสำรวจตัวเอง มีโอกาสได้รู้จักความรู้สึก ความคิด ความอยากไม่อยาก รู้จักว่าคุณกำลังคิดวนไปมา และรู้จักการเบื่อ การไม่อยากทำ","wp6":"เมื่อคุณได้ฝึก 10 นาที คุณจะได้มีประสบการณ์ของความรู้สึกดีกับตัวเอง 10 นาทีนี้จะให้ประสบการณ์นั้น","wp7":"สรุป โดยกระบวนการนี้ คุณจะได้มีประสบการณ์ด้วยตัวคุณเอง โดยไม่ต้องมีใครมาบอก มาสอน มาแนะนำคุณ คุณเท่านั้นที่จะต้องเห็นด้วยตัวคุณเอง","wp8":"ทั้งหมดที่กล่าวมาคือการฟังตัวเองก่อน เมื่อคุณฟังตัวเองได้ หลังจากนั้นคุณก็จะฟังคนอื่นได้ นี่คือคำว่า Deep Listening Training"}));
     DL.addStrings('en', Object.assign({
       appName: 'Deep Listening Training',
@@ -187,7 +197,8 @@
       rDone: 'Practice finished', rTitle: 'Notes for today',
       qBefore: 'Before, how do you feel?', qDuring: 'During, how do you feel?', qAfter: 'After, how do you feel?',
       lBefore: 'Before', lDuring: 'During', lAfter: 'After', historyEmpty: 'No notes yet',
-      defaultName: 'Sit with eyes closed for 10 minutes'
+      defaultName: 'Sit with eyes closed for 10 minutes',
+      tabWelcome: 'Welcome', timeUp: 'Time is up', micStart: '🎤 Speak', micStop: '■ Stop', micDenied: 'Cannot use the microphone. You can type instead'
     }, {"wh":"Hello, welcome to Deep Listening Training","wq1":"Why do we need to train Deep Listening Training?","wp1":"Today most people only talk. They cannot listen, or cannot bear to. Listening to others feels boring, so they would rather talk, tell and teach than listen. In the process of Deep Listening Training you will train listening. Before you can listen to others, you must first be able to listen to yourself.","wp2":"We invite everyone to try the training: 7 days, sitting with eyes closed for 10 minutes.","wq2":"And why do we sit with eyes closed for 10 minutes?","wp3":"To play to be your word.","wp4":"There is no teaching in this process. The focus is on practice.","wp5":"In 10 minutes you will have the experience of exploring yourself. You will get to know your feelings, your thoughts, your wanting and not wanting. You will get to know that you are thinking in circles, and get to know boredom and not wanting to do it.","wp6":"When you have practiced for 10 minutes, you will have the experience of feeling good about yourself. These 10 minutes will give you that experience.","wp7":"In summary: through this process you will have the experience yourself, without anyone telling, teaching or advising you. Only you will see it for yourself.","wp8":"All of this is listening to yourself first. When you can listen to yourself, after that you will be able to listen to others. This is what Deep Listening Training means."}));
 
     (function () {
@@ -223,21 +234,55 @@
         return nm[0] || vs[0] || null;
       }
       function stopSay() { runId++; if (synth) { synth.cancel(); } reading = false; render(); }
+      function speakParts(parts, onEnd) {
+        runId++; synth.cancel();
+        var my = runId, lang = DL.getLang(), code = lang === 'th' ? 'th-TH' : 'en-US', voice = pickVoice(code, lang);
+        reading = true;
+        parts.forEach(function (text, i) {
+          var u = new SpeechSynthesisUtterance(text); u.lang = code; if (voice) { u.voice = voice; }
+          if (i === parts.length - 1) { u.onend = function () { if (my === runId) { reading = false; render(); if (onEnd) { onEnd(); } } }; }
+          u.onerror = function () { if (my === runId) { reading = false; render(); } };
+          synth.speak(u);
+        });
+        render();
+      }
       function speakWelcome() {
         if (!synth) { $('#noVoice').hidden = false; return; }
         if (reading) { stopSay(); return; }
-        runId++; synth.cancel();
-        var my = runId, lang = DL.getLang(), code = lang === 'th' ? 'th-TH' : 'en-US';
-        var voice = pickVoice(code, lang);
+        $('#wMore').hidden = false;
         var parts = Array.prototype.map.call(document.querySelectorAll('#v-welcome h2, #v-welcome h3, #v-welcome p'), function (n) { return n.textContent; }).filter(function (x) { return x.trim(); });
-        parts.forEach(function (text, i) {
-          var u = new SpeechSynthesisUtterance(text); u.lang = code; if (voice) { u.voice = voice; }
-          var fin = function () { if (my === runId) { reading = false; render(); } };
-          if (i === parts.length - 1) { u.onend = fin; }
-          u.onerror = fin;
-          synth.speak(u);
+        speakParts(parts, function () { var bw = $('#bWelcome'); if (bw.scrollIntoView) { bw.scrollIntoView({ behavior: 'smooth', block: 'center' }); } });
+      }
+      function announceEnd() {
+        if (!soundOn || !synth) { return; }
+        setTimeout(function () {
+          if (cur !== 'reflect') { return; }
+          speakParts([t('timeUp')], function () {
+            setTimeout(function () { if (cur === 'reflect') { speakParts([t('qBefore'), t('qDuring'), t('qAfter')]); } }, 1000);
+          });
+        }, 2300);
+      }
+      var SR = window.SpeechRecognition || window.webkitSpeechRecognition, rec = null, recFor = null;
+      function renderMic() {
+        Array.prototype.forEach.call(document.querySelectorAll('.mic'), function (b) {
+          b.hidden = !SR; var on = recFor === b.getAttribute('data-for');
+          b.classList.toggle('rec', on); b.textContent = t(on ? 'micStop' : 'micStart');
         });
-        reading = true; render();
+      }
+      function stopMic() { if (rec) { try { rec.onend = null; rec.stop(); } catch (e) {} rec = null; } recFor = null; renderMic(); }
+      function startMic(id) {
+        if (synth) { runId++; synth.cancel(); reading = false; }
+        stopMic();
+        var r = new SR(); r.lang = DL.getLang() === 'th' ? 'th-TH' : 'en-US'; r.continuous = true; r.interimResults = false;
+        r.onresult = function (e) {
+          var ta = $('#' + id);
+          for (var i = e.resultIndex; i < e.results.length; i++) { if (e.results[i].isFinal) { ta.value = (ta.value ? ta.value + ' ' : '') + e.results[i][0].transcript.trim(); } }
+        };
+        r.onerror = function (e) { if (e.error === 'not-allowed' || e.error === 'service-not-allowed') { $('#micMsg').textContent = t('micDenied'); $('#micMsg').hidden = false; } stopMic(); };
+        r.onend = function () { if (rec === r) { rec = null; recFor = null; renderMic(); } };
+        rec = r; recFor = id; $('#micMsg').hidden = true;
+        try { r.start(); } catch (e) { stopMic(); }
+        renderMic();
       }
 
       var cur = 'welcome', T = null, tEnd = 0, onTime = false, startStr = '';
@@ -245,17 +290,19 @@
       function show(id) {
         cur = id;
         views.forEach(function (n) { $('#v-' + n).hidden = n !== id; });
-        if (id !== 'welcome' && reading) { runId++; if (synth) { synth.cancel(); } reading = false; }
+        if (id !== 'reflect') { stopMic(); }
+        if (id !== 'welcome' && id !== 'reflect' && reading) { runId++; if (synth) { synth.cancel(); } reading = false; }
         closeMenu(); render(); window.scrollTo(0, 0);
       }
       function render() {
+        renderMic();
         $('#bSound').textContent = t(soundOn ? 'soundOn' : 'soundOff');
         $('#bSound').setAttribute('aria-pressed', soundOn ? 'true' : 'false');
         $('#bTest').textContent = t(reading ? 'welcomeStop' : 'welcomeBtn') + (reading ? ' \u25A0' : ' \u25BC');
         $('.welcome-row').hidden = cur !== 'welcome';
         if (cur !== 'welcome') { $('#noVoice').hidden = true; }
         Array.prototype.forEach.call(document.querySelectorAll('.tabs button'), function (b) {
-          var on = (b.getAttribute('data-tab') === 'history') === (cur === 'history');
+          var want = cur === 'welcome' ? 'welcome' : (cur === 'history' ? 'history' : 'today'); var on = b.getAttribute('data-tab') === want;
           b.classList.toggle('on', on); b.setAttribute('aria-selected', on ? 'true' : 'false');
         });
         Array.prototype.forEach.call(document.querySelectorAll('.seg button'), function (b) {
@@ -302,7 +349,7 @@
         var left = Math.max(0, tEnd - Date.now()), total = dur() * 60000, s = Math.ceil(left / 1000);
         $('#tmClock').textContent = pad(Math.floor(s / 60)) + ':' + pad(s % 60);
         $('#tmBar').style.width = ((1 - left / total) * 100) + '%';
-        if (left <= 0) { clearInterval(T); beep(); $('#rb').value = ''; $('#rd').value = ''; $('#rf').value = ''; show('reflect'); }
+        if (left <= 0) { clearInterval(T); beep(); $('#rb').value = ''; $('#rd').value = ''; $('#rf').value = ''; show('reflect'); announceEnd(); }
       }
       function closeMenu() { $('#menu').hidden = true; $('#menuBtn').setAttribute('aria-expanded', 'false'); }
 
@@ -321,10 +368,13 @@
       Array.prototype.forEach.call(document.querySelectorAll('[data-tab]'), function (b) {
         b.addEventListener('click', function () {
           if (cur === 'timer' || cur === 'reflect') { return; }
-          if (b.getAttribute('data-tab') === 'history') { show('history'); } else { show(S.startDate ? 'today' : 'welcome'); }
+          var d = b.getAttribute('data-tab'); if (d === 'history') { show('history'); } else if (d === 'welcome') { show('welcome'); } else { show(S.startDate ? 'today' : 'setup'); }
         });
       });
-      $('#bWelcome').addEventListener('click', function () { show('setup'); });
+      $('#bWelcome').addEventListener('click', function () { show(S.startDate ? 'today' : 'setup'); });
+      Array.prototype.forEach.call(document.querySelectorAll('.mic'), function (b) {
+        b.addEventListener('click', function () { var id = b.getAttribute('data-for'); if (recFor === id) { stopMic(); } else { startMic(id); } });
+      });
       $('#bBegin').addEventListener('click', function () {
         S.name = $('#gName').value.trim() || t('defaultName');
         S.start = $('#gStart').value || '06:00'; S.end = $('#gEnd').value || '06:10';
@@ -347,7 +397,7 @@
       $('#bBack').addEventListener('click', function () { show(S.startDate ? 'today' : 'welcome'); });
       DL.onLangChange(function () { if (reading) { stopSay(); } else { render(); } });
       window.addEventListener('pagehide', function () { if (synth) { synth.cancel(); } });
-      show(S.startDate ? 'today' : 'welcome');
+      show('welcome');
     })();
   </script>
 </body>
