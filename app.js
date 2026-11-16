@@ -18,7 +18,8 @@
       participantTitle: 'หน้าผู้ฝึก',
       coachTitle: 'หน้าโค้ช',
       manualTitle: 'หน้าคู่มือ',
-      placeholder: 'หน้านี้อยู่ระหว่างการสร้าง'
+      placeholder: 'หน้านี้อยู่ระหว่างการสร้าง',
+      intro: 'Deep Listening Training คือการฟังอย่างลึกซึ้ง หรือฟังให้ได้ยินในสิ่งที่เขาไม่ได้พูด โปรแกรมนี้ยืนและสนับสนุนให้คุณได้ผลลัพธ์ในสิ่งที่คุณต้องการ เป็นมากกว่า Deep Listening เชื้อเชิญให้คุณใช้โปรแกรมนี้เป็นเครื่องมือทดสอบ performance ของคุณ'
     },
     en: {
       appName: 'Deep Listening Training',
@@ -30,7 +31,8 @@
       participantTitle: 'Participant page',
       coachTitle: 'Coach page',
       manualTitle: 'Manual page',
-      placeholder: 'This page is under construction'
+      placeholder: 'This page is under construction',
+      intro: 'Deep Listening Training is deep listening: hearing what is not said. This program stands with you and supports you in getting the results you want. It is more than deep listening. We invite you to use this program as a tool to test your own performance.'
     }
   };
 
