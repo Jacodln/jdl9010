@@ -4,6 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Deep Listening Training - ทดลอง 7 วัน</title>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@400;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
   <style>
     label { display: block; font-weight: 600; margin: 14px 0 6px; }
@@ -19,6 +20,27 @@
     .menu-list { display: flex; flex-direction: column; gap: 8px; margin-top: 8px; }
     .menu-list a, .menu-list button { display: block; text-align: left; min-height: 44px; padding: 10px 12px; font: inherit; color: inherit; background: #fff; border: 1px solid #ddd; border-radius: 8px; text-decoration: none; cursor: pointer; }
     [hidden] { display: none !important; }
+
+    /* Colours and font from the first demo (teal, light and dark) */
+    :root { --bg: #F2F5F3; --ink: #1B2A29; --mut: #566866; --ac: #2F6F6A; --on: #fff; --line: #D0DAD7; --card: #fff; }
+    @media (prefers-color-scheme: dark) {
+      :root { --bg: #121A19; --ink: #E6EEEC; --mut: #9DB0AD; --ac: #5FB3AB; --on: #0B1514; --line: #2C3B39; --card: #1A2523; }
+    }
+    html, body { background: var(--bg); color: var(--ink); }
+    body { font-family: 'Noto Sans Thai', system-ui, -apple-system, 'Segoe UI', sans-serif; }
+    .topbar { border-bottom-color: var(--line); }
+    .lang-toggle, .menu-btn { background: var(--card); color: var(--ink); border-color: var(--line); border-radius: 12px; }
+    .card { background: var(--card); border-color: var(--line); border-radius: 16px; }
+    .muted { color: var(--mut); }
+    .btn { background: var(--ac); color: var(--on); border-radius: 14px; min-height: 52px; font-weight: 600; }
+    .btn.secondary { background: transparent; color: var(--ink); border: 1px solid var(--line); }
+    .btn:disabled { opacity: .5; cursor: default; }
+    input[type="text"], input[type="time"], textarea { background: var(--card); color: var(--ink); border-color: var(--line); border-radius: 12px; }
+    .bar { background: var(--line); }
+    .bar > div { background: var(--ac); }
+    .menu-list a, .menu-list button { background: var(--card); border-color: var(--line); color: var(--ink); }
+    #dlTools button { background: var(--card) !important; border-color: var(--line) !important; color: var(--ink) !important; border-radius: 12px !important; }
+    :focus-visible { outline-color: var(--ac); }
   </style>
 </head>
 <body>
