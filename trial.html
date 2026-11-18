@@ -295,6 +295,7 @@
       function speakWelcome() {
         if (!synth) { $('#noVoice').hidden = false; return; }
         if (reading) { stopSay(); return; }
+        if (cur === 'today') { speakParts([t('qName'), t('qTime'), t('qBefore'), t('qDuring'), t('qAfter')]); return; }
         if (cur !== 'welcome') { show('welcome'); }
         $('#wMore').hidden = false;
         var parts = Array.prototype.map.call(document.querySelectorAll('#v-welcome h2, #v-welcome h3, #v-welcome p'), function (n) { return n.textContent; }).filter(function (x) { return x.trim(); });
