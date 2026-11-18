@@ -37,7 +37,7 @@
     .btn:disabled { opacity: .5; cursor: default; }
     .bar { height: 10px; border-radius: 5px; background: var(--line); }
     .bar > div { height: 10px; border-radius: 5px; background: var(--ac); width: 0; }
-    .clock { font-size: 56px; text-align: center; font-variant-numeric: tabular-nums; margin: 20px 0; }
+    .clock { font-size: clamp(72px, 25vw, 150px); font-weight: 700; line-height: 1.05; letter-spacing: -0.02em; white-space: nowrap; text-align: center; font-variant-numeric: tabular-nums; margin: 28px 0; }
     .center { text-align: center; }
     .menu-list { display: flex; flex-direction: column; gap: 8px; margin-top: 8px; }
     .menu-list a, .menu-list button { display: block; text-align: left; min-height: 48px; padding: 10px 14px; font: inherit; color: var(--ink); background: rgba(255,255,255,.06); border: 1px solid var(--line); border-radius: 12px; text-decoration: none; cursor: pointer; }
