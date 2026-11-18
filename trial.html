@@ -12,9 +12,15 @@
     html { background: #0d1f1b; -webkit-text-size-adjust: 100%; color-scheme: dark; }
     body { margin: 0; min-height: 100vh; background: linear-gradient(160deg, #0d1f1b 0%, #143229 55%, #1b4338 100%) fixed; color: var(--ink); font: 17px/1.65 'Noto Sans Thai', system-ui, -apple-system, 'Segoe UI', sans-serif; }
     .wrap { max-width: 640px; margin: 0 auto; padding: 20px 16px 48px; }
-    .top { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
-    .brand { margin: 0; font-size: 23px; line-height: 1.3; }
-    .sub { margin: 6px 0 16px; color: var(--mut); font-size: 16px; }
+    .top { position: relative; }
+    #menuBtn { position: absolute; right: 0; top: 0; }
+    .brand { margin: 0; font-weight: 700; line-height: 1; letter-spacing: -0.02em; }
+    .brand span { display: block; }
+    .brand .b1 { font-size: clamp(48px, 16.5vw, 66px); color: var(--ink); }
+    .brand .b2 { font-size: clamp(48px, 16.5vw, 66px); line-height: 1.08; background: linear-gradient(90deg, #8EE0CC, #D5F7EC); -webkit-background-clip: text; background-clip: text; color: transparent; }
+    .brand .b3 { display: flex; align-items: center; gap: 12px; margin-top: 12px; font-size: clamp(15px, 4.8vw, 19px); font-weight: 600; letter-spacing: 0.5em; color: #F5D06F; }
+    .brand .b3::after { content: ""; flex: 1; height: 2px; background: linear-gradient(90deg, #F5D06F, rgba(245, 208, 111, 0)); }
+    .sub { margin: 14px 0 16px; color: var(--mut); font-size: 16px; }
     .ctrl { display: flex; gap: 10px; margin-top: 4px; align-items: center; flex-wrap: wrap; }
     .pill { min-height: 48px; padding: 8px 18px; border: 2px solid var(--ink); border-radius: 999px; background: transparent; color: var(--ink); font: inherit; font-weight: 600; cursor: pointer; }
     .pill.icon { border: 1px solid var(--line); min-width: 52px; border-radius: 14px; flex: none; }
@@ -75,10 +81,10 @@
   <div class="wrap">
     <header>
       <div class="top">
-        <h1 class="brand" data-i18n="appName">Deep Listening Training</h1>
+        <h1 class="brand" aria-label="Deep Listening Training"><span class="b1">Deep</span><span class="b2">Listening</span><span class="b3">TRAINING</span></h1>
         <button id="menuBtn" class="pill icon" type="button" aria-expanded="false" aria-controls="menu" data-i18n-label="menuLabel">&#9776;</button>
       </div>
-      <p class="sub" data-i18n="subTrial">ทดลอง 7 วัน · นั่งหลับตา 10 นาที · เล่นเพื่อเป็นคำพูด</p>
+      <p class="sub" data-i18n="subTrial">ทดลอง 7 วัน · นั่งหลับตา 10 นาที · เกมเป็นคำพูด</p>
       <div class="ctrl">
         <button id="bTest" class="wbtn" type="button"></button>
         <div class="seg" role="group" aria-label="Language">
@@ -182,7 +188,7 @@
   <script>
     DL.addStrings('th', Object.assign({
       appName: 'Deep Listening Training',
-      subTrial: 'ทดลอง 7 วัน · นั่งหลับตา 10 นาที · เล่นเพื่อเป็นคำพูด',
+      subTrial: 'ทดลอง 7 วัน · นั่งหลับตา 10 นาที · เกมเป็นคำพูด',
       menuLabel: 'เมนู', menuMore: 'ภาษาอื่นทั่วโลกกำลังเตรียม',
       menuToday: 'วันนี้', menuHistory: 'ประวัติ', menuCoach: 'โค้ช', menuTools: 'เครื่องมือ',
       soundOn: 'เสียง: เปิด', soundOff: 'เสียง: ปิด', welcomeBtn: 'ยินดีต้อนรับ', welcomeStop: 'หยุดอ่าน', welcomeTo: 'สู่ Deep Listening Training', noVoice: 'เครื่องนี้ยังไม่รองรับเสียงอ่าน',
@@ -204,7 +210,7 @@
     }, {"wh":"สวัสดีครับ ยินดีต้อนรับสู่ Deep Listening Training","wq1":"ทำไมเราต้องฝึก Deep Listening Training","wp1":"ปัจจุบันคนส่วนใหญ่มีแต่พูด แต่ไม่สามารถฟังได้ หรือทนฟังไม่ได้ รู้สึกว่าการฟังคนอื่นเป็นเรื่องน่าเบื่อหน่าย เขาจึงไม่อยากฟัง อยากพูด อยากบอก อยากสอนมากกว่า ในโปรเซสของ Deep Listening Training คุณจะได้ฝึกการฟัง สิ่งแรกก่อนจะฟังคนอื่นได้ คุณต้องฟังตัวเองให้ได้ก่อน","wp2":"เชื้อเชิญทุกคนมาทดลองฝึก 7 วัน นั่งหลับตา 10 นาที","wq2":"แล้วการนั่งหลับตา 10 นาที เราทำไปเพื่ออะไร","wp3":"เพื่อเล่นเป็นคำพูด","wp4":"ในโปรเซสนี้จะไม่มีการสอน จะเน้นการฝึก","wp5":"ใน 10 นาที คุณจะได้มีประสบการณ์การสำรวจตัวเอง มีโอกาสได้รู้จักความรู้สึก ความคิด ความอยากไม่อยาก รู้จักว่าคุณกำลังคิดวนไปมา และรู้จักการเบื่อ การไม่อยากทำ","wp6":"เมื่อคุณได้ฝึก 10 นาที คุณจะได้มีประสบการณ์ของความรู้สึกดีกับตัวเอง 10 นาทีนี้จะให้ประสบการณ์นั้น","wp7":"สรุป โดยกระบวนการนี้ คุณจะได้มีประสบการณ์ด้วยตัวคุณเอง โดยไม่ต้องมีใครมาบอก มาสอน มาแนะนำคุณ คุณเท่านั้นที่จะต้องเห็นด้วยตัวคุณเอง","wp8":"ทั้งหมดที่กล่าวมาคือการฟังตัวเองก่อน เมื่อคุณฟังตัวเองได้ หลังจากนั้นคุณก็จะฟังคนอื่นได้ นี่คือคำว่า Deep Listening Training"}));
     DL.addStrings('en', Object.assign({
       appName: 'Deep Listening Training',
-      subTrial: '7-day trial · sit with eyes closed for 10 minutes · play to be your word',
+      subTrial: '7-day trial · sit with eyes closed for 10 minutes · the game of being your word',
       menuLabel: 'Menu', menuMore: 'More languages from around the world are being prepared',
       menuToday: 'Today', menuHistory: 'History', menuCoach: 'Coach', menuTools: 'Tools',
       soundOn: 'Sound: on', soundOff: 'Sound: off', welcomeBtn: 'Welcome', welcomeStop: 'Stop reading', welcomeTo: 'to Deep Listening Training', noVoice: 'This device does not support read-aloud',
