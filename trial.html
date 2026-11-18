@@ -204,7 +204,7 @@
       slogan: 'ฟังให้ได้ยินในสิ่งที่เขาไม่ได้พูด',
       menuLabel: 'เมนู', menuMore: 'ภาษาอื่นทั่วโลกกำลังเตรียม',
       menuToday: 'วันนี้', menuHistory: 'ประวัติ', menuCoach: 'โค้ช', menuTools: 'เครื่องมือ',
-      soundOn: 'เสียง: เปิด', soundOff: 'เสียง: ปิด', welcomeBtn: 'กดเพื่อฟังเสียง', welcomeStop: 'หยุดเสียง', welcomeTo: 'สู่ Deep Listening Training', noVoice: 'เครื่องนี้ยังไม่รองรับเสียงอ่าน',
+      soundOn: 'เสียง: เปิด', soundOff: 'เสียง: ปิด', welcomeBtn: 'กดฟังเสียง', welcomeStop: 'หยุดเสียง', welcomeTo: 'สู่ Deep Listening Training', noVoice: 'เครื่องนี้ยังไม่รองรับเสียงอ่าน',
       greeting: 'สวัสดีครับ ยินดีต้อนรับสู่ Deep Listening Training มาเริ่มต้นกันเลย',
       btnWelcome: 'มาเริ่มต้นกันเลย',
       qName: 'เกมของคุณชื่ออะไร', qTime: 'ทำตอนกี่โมงถึงกี่โมง', fStart: 'เริ่ม', fEnd: 'จบ',
@@ -249,6 +249,8 @@
       var K = 'dl_trial', KS = 'dl_sound';
       var $ = function (s) { return document.querySelector(s); };
       var t = function (k) { return DL.t(k); };
+      var DEFAULT_NAMES = ['นั่งหลับตา 10 นาที', 'Sit with eyes closed for 10 minutes'];
+      function shownName() { return (!S.name || DEFAULT_NAMES.indexOf(S.name) >= 0) ? t('defaultName') : S.name; }
       var S = { logs: [] };
       try { var r = JSON.parse(localStorage.getItem(K) || 'null'); if (r) { S = r; S.logs = S.logs || []; } } catch (e) {}
       var soundOn = true;
@@ -357,11 +359,11 @@
           var on = b.getAttribute('data-lang') === DL.getLang();
           b.classList.toggle('on', on); b.setAttribute('aria-pressed', on ? 'true' : 'false');
         });
-        if (cur === 'setup' && !$('#gName').value) { $('#gName').value = S.name || t('defaultName'); }
+        if (cur === 'setup' && !$('#gName').value) { $('#gName').value = shownName(); }
         if (cur === 'today' && S.startDate) {
           var n = dayNo(), full = S.logs.length >= 7;
           $('#tdDay').textContent = fill('dayOf', { n: n });
-          $('#tdName').textContent = S.name;
+          $('#tdName').textContent = shownName();
           $('#tdTime').textContent = fill('timeLine', { s: S.start, e: S.end });
           $('#tdBar').style.width = (n / 7 * 100) + '%';
           $('#tdStat').textContent = stats();
@@ -384,7 +386,7 @@
         }
         if (cur === 'timer') {
           $('#tmDay').textContent = fill('dayOf', { n: dayNo() });
-          $('#tmName').textContent = S.name;
+          $('#tmName').textContent = shownName();
           $('#tmStat').textContent = fill('startedAt', { s: startStr }) + ' · ' + t(onTime ? 'onTimeYes' : 'onTimeNo');
         }
       }
@@ -433,7 +435,7 @@
         S.startDate = S.startDate || ymd(new Date()); save(); show('today');
       });
       $('#bEdit').addEventListener('click', function () {
-        $('#gName').value = S.name || ''; $('#gStart').value = S.start; $('#gEnd').value = S.end; show('setup');
+        $('#gName').value = shownName(); $('#gStart').value = S.start; $('#gEnd').value = S.end; show('setup');
       });
       $('#bStart').addEventListener('click', function () {
         var now = new Date(), planned = new Date(); planned.setHours(0, mins(S.start), 0, 0);
