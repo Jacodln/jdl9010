@@ -350,6 +350,7 @@
         $('#bSound').setAttribute('aria-pressed', soundOn ? 'true' : 'false');
         $('#bTest').textContent = t(reading ? 'welcomeStop' : 'welcomeBtn') + (reading ? ' \u25A0' : '');
         $('#bTest').hidden = cur === 'timer' || cur === 'reflect';
+        $('#bSound').hidden = cur === 'welcome';
         if (cur !== 'welcome') { $('#noVoice').hidden = true; }
         Array.prototype.forEach.call(document.querySelectorAll('.tabs button'), function (b) {
           var want = cur === 'history' ? 'history' : ((cur === 'today' || cur === 'setup') ? 'today' : ''); var on = b.getAttribute('data-tab') === want;
