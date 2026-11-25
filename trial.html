@@ -86,6 +86,17 @@
     .clock { margin: 12px 0; }
     #v-timer p { margin-bottom: 6px; }
     #tmStat { margin-top: 8px; }
+      .calhead { display: flex; align-items: center; gap: 6px; }
+    .calhead h2 { margin: 0; flex: 1; text-align: center; font-size: 18px; }
+    .calhead button { min-width: 44px; min-height: 44px; border: 1px solid var(--line); border-radius: 12px; background: transparent; color: var(--ink); font: inherit; font-size: 20px; cursor: pointer; }
+    .calgrid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; margin-top: 10px; text-align: center; }
+    .calgrid .w { font-size: 13px; color: var(--mut); }
+    .calgrid button { position: relative; min-height: 44px; border: 1px solid transparent; border-radius: 12px; background: transparent; color: var(--ink); font: inherit; cursor: pointer; }
+    .calgrid button.ok::after, .calgrid button.bd::after { content: ''; position: absolute; left: 50%; bottom: 5px; width: 8px; height: 8px; margin-left: -4px; border-radius: 50%; }
+    .calgrid button.ok::after { background: var(--ac); }
+    .calgrid button.bd::after { border: 2px solid #E8C872; }
+    .calgrid button.td { border-color: var(--ac); }
+    .calgrid button.sel { background: rgba(255,255,255,.16); }
   </style>
 </head>
 <body>
@@ -108,6 +119,8 @@
       <p id="noVoice" class="muted" hidden data-i18n="noVoice">เครื่องนี้ยังไม่รองรับเสียงอ่าน</p>
       <div class="tabs" role="tablist">
         <button type="button" role="tab" data-tab="today" data-i18n="menuToday">วันนี้</button>
+        <button type="button" role="tab" data-tab="clock" data-i18n="menuClock">นาฬิกา</button>
+        <button type="button" role="tab" data-tab="calendar" data-i18n="menuCalendar">ปฏิทิน</button>
         <button type="button" role="tab" data-tab="history" data-i18n="menuHistory">ประวัติ</button>
       </div>
     </header>
@@ -194,6 +207,27 @@
         <div id="hsList"></div>
         <button id="bBack" class="btn secondary" type="button" data-i18n="btnBack">กลับ</button>
       </section>
+      <section id="v-clock" class="card" hidden>
+        <p class="muted center" id="ckDate"></p>
+        <div class="clock" id="ckTime" style="font-size:clamp(44px,15vw,84px)">00:00:00</div>
+        <p class="muted center" id="ckGame"></p>
+        <button id="bClockStart" class="btn" type="button" data-i18n="btnStartTimer">เริ่มจับเวลา</button>
+      </section>
+
+      <section id="v-calendar" class="card" hidden>
+        <div class="calhead">
+          <button id="calYm" type="button" aria-label="-1 year">&laquo;</button>
+          <button id="calMm" type="button" aria-label="-1 month">&lsaquo;</button>
+          <h2 id="calTitle"></h2>
+          <button id="calMp" type="button" aria-label="+1 month">&rsaquo;</button>
+          <button id="calYp" type="button" aria-label="+1 year">&raquo;</button>
+        </div>
+        <div class="calgrid" id="calWeek"></div>
+        <div class="calgrid" id="calDays"></div>
+        <p class="muted" id="calLegend" style="margin-top:12px" data-i18n="calLegend"></p>
+        <div id="calNote"></div>
+        <button id="calToday" class="btn secondary" type="button" data-i18n="menuToday">วันนี้</button>
+      </section>
     </main>
   </div>
 
@@ -204,7 +238,7 @@
       subTrial: 'ทดลอง 7 วัน · นั่งหลับตา 10 นาที · เกมเป็นคำพูด',
       slogan: 'ฟังให้ได้ยินในสิ่งที่เขาไม่ได้พูด',
       menuLabel: 'เมนู', menuMore: 'ภาษาอื่นทั่วโลกกำลังเตรียม',
-      menuToday: 'วันนี้', menuHistory: 'ประวัติ', menuCoach: 'โค้ช', menuTools: 'เครื่องมือ',
+      menuToday: 'วันนี้', menuHistory: 'ประวัติ', menuClock: 'นาฬิกา', menuCalendar: 'ปฏิทิน', calLegend: '● ตรงเวลา     ○ break down', menuCoach: 'โค้ช', menuTools: 'เครื่องมือ',
       soundOn: 'เสียง: เปิด', soundOff: 'เสียง: ปิด', welcomeBtn: 'กดฟังเสียง', welcomeStop: 'หยุดเสียง', welcomeTo: 'สู่ Deep Listening Training', noVoice: 'เครื่องนี้ยังไม่รองรับเสียงอ่าน',
       greeting: 'สวัสดีครับ ยินดีต้อนรับสู่ Deep Listening Training มาเริ่มต้นกันเลย',
       btnWelcome: 'มาเริ่มต้นกันเลย',
@@ -227,7 +261,7 @@
       subTrial: '7-day trial · sit with eyes closed for 10 minutes · the game of being your word',
       slogan: 'Hear what they have not said.',
       menuLabel: 'Menu', menuMore: 'More languages from around the world are being prepared',
-      menuToday: 'Today', menuHistory: 'History', menuCoach: 'Coach', menuTools: 'Tools',
+      menuToday: 'Today', menuHistory: 'History', menuClock: 'Clock', menuCalendar: 'Calendar', calLegend: '● On time     ○ Break down', menuCoach: 'Coach', menuTools: 'Tools',
       soundOn: 'Sound: on', soundOff: 'Sound: off', welcomeBtn: 'Tap to listen', welcomeStop: 'Stop audio', welcomeTo: 'to Deep Listening Training', noVoice: 'This device does not support read-aloud',
       greeting: 'Hello, welcome to Deep Listening Training. Let us begin.',
       btnWelcome: 'Let us begin',
@@ -335,7 +369,7 @@
       }
 
       var cur = 'welcome', T = null, tEnd = 0, onTime = false, startStr = '';
-      var views = ['welcome', 'setup', 'today', 'timer', 'reflect', 'history'];
+      var views = ['welcome', 'setup', 'today', 'timer', 'reflect', 'history', 'clock', 'calendar'];
       function show(id) {
         cur = id;
         views.forEach(function (n) { $('#v-' + n).hidden = n !== id; });
@@ -355,7 +389,7 @@
         $('#bSound').hidden = cur === 'welcome';
         if (cur !== 'welcome') { $('#noVoice').hidden = true; }
         Array.prototype.forEach.call(document.querySelectorAll('.tabs button'), function (b) {
-          var want = cur === 'history' ? 'history' : ((cur === 'today' || cur === 'setup') ? 'today' : ''); var on = b.getAttribute('data-tab') === want;
+          var want = cur === 'history' ? 'history' : (cur === 'calendar' ? 'calendar' : ((cur === 'clock' || cur === 'timer') ? 'clock' : ((cur === 'today' || cur === 'setup') ? 'today' : ''))); var on = b.getAttribute('data-tab') === want;
           b.classList.toggle('on', on); b.setAttribute('aria-selected', on ? 'true' : 'false');
         });
         Array.prototype.forEach.call(document.querySelectorAll('.seg button'), function (b) {
@@ -387,12 +421,59 @@
             box.appendChild(c);
           });
         }
+        if (cur === 'clock') { tickClock(); }
+        if (cur === 'calendar') { drawCal(); }
         if (cur === 'timer') {
           $('#tmDay').textContent = fill('dayOf', { n: dayNo() });
           $('#tmName').textContent = shownName();
           $('#tmStat').textContent = fill('startedAt', { s: startStr }) + ' · ' + t(onTime ? 'onTimeYes' : 'onTimeNo');
         }
       }
+      function loc() { return DL.getLang() === 'th' ? 'th-TH-u-ca-gregory' : 'en-US'; }
+      var cy = 0, cm = 0, cSel = '';
+      function openCal() { var n = new Date(); cy = n.getFullYear(); cm = n.getMonth(); cSel = ymd(n); }
+      function moveCal(dm) { var m = cm + dm, y = cy; while (m < 0) { m += 12; y--; } while (m > 11) { m -= 12; y++; } if (y < 1000 || y > 3000) { return; } cy = y; cm = m; drawCal(); }
+      function drawCal() {
+        var th = DL.getLang() === 'th', first = new Date(cy, cm, 1);
+        $('#calTitle').textContent = first.toLocaleDateString(loc(), { month: 'long', year: 'numeric' });
+        var wk = th ? ['อา', 'จ', 'อ', 'พ', 'พฤ', 'ศ', 'ส'] : ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'];
+        var w = $('#calWeek'); w.textContent = '';
+        wk.forEach(function (x) { var e = document.createElement('span'); e.className = 'w'; e.textContent = x; w.appendChild(e); });
+        var box = $('#calDays'); box.textContent = '';
+        for (var i = 0; i < first.getDay(); i++) { box.appendChild(document.createElement('span')); }
+        var dim = new Date(cy, cm + 1, 0).getDate(), today = ymd(new Date());
+        for (var d = 1; d <= dim; d++) {
+          var key = ymd(new Date(cy, cm, d)), b = document.createElement('button'); b.type = 'button'; b.textContent = d;
+          var lg = S.logs.filter(function (l) { return l.date === key; })[0], c = '';
+          if (lg) { c += lg.onTime ? ' ok' : ' bd'; } if (key === today) { c += ' td'; } if (key === cSel) { c += ' sel'; }
+          b.className = c.trim();
+          (function (k) { b.addEventListener('click', function () { cSel = k; drawCal(); }); })(key);
+          box.appendChild(b);
+        }
+        var nb = $('#calNote'); nb.textContent = '';
+        var sl = S.logs.filter(function (l) { return l.date === cSel; })[0];
+        var card = document.createElement('div'); card.className = 'card';
+        var h = document.createElement('p'); h.className = 'muted'; h.textContent = cSel; card.appendChild(h);
+        if (!sl) { var e2 = document.createElement('p'); e2.className = 'muted'; e2.textContent = t('historyEmpty'); card.appendChild(e2); }
+        else { [['lBefore', sl.b], ['lDuring', sl.d], ['lAfter', sl.f]].forEach(function (x) { var p = document.createElement('p'); p.textContent = t(x[0]) + ': ' + (x[1] || '-'); card.appendChild(p); }); }
+        nb.appendChild(card);
+      }
+      function tickClock() {
+        if (cur !== 'clock') { return; }
+        var d = new Date();
+        $('#ckTime').textContent = pad(d.getHours()) + ':' + pad(d.getMinutes()) + ':' + pad(d.getSeconds());
+        $('#ckDate').textContent = d.toLocaleDateString(loc(), { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+        $('#ckGame').textContent = S.startDate ? shownName() + ' · ' + fill('timeLine', { s: S.start, e: S.end }) : '';
+      }
+      setInterval(tickClock, 1000);
+      $('#calYm').addEventListener('click', function () { moveCal(-12); });
+      $('#calMm').addEventListener('click', function () { moveCal(-1); });
+      $('#calMp').addEventListener('click', function () { moveCal(1); });
+      $('#calYp').addEventListener('click', function () { moveCal(12); });
+      $('#calToday').addEventListener('click', function () { openCal(); drawCal(); });
+      $('#bClockStart').addEventListener('click', function () {
+        if (!S.startDate) { show('setup'); } else if (S.logs.length >= 7 || doneToday()) { show('today'); } else { $('#bStart').click(); }
+      });
       function beep() {
         if (!soundOn) { return; }
         try { var c = new (window.AudioContext || window.webkitAudioContext)(), o = c.createOscillator(), g = c.createGain(); o.connect(g); g.connect(c.destination); o.frequency.value = 528; g.gain.setValueAtTime(0.2, c.currentTime); g.gain.exponentialRampToValueAtTime(0.001, c.currentTime + 2); o.start(); o.stop(c.currentTime + 2); } catch (e) {}
@@ -425,7 +506,7 @@
       Array.prototype.forEach.call(document.querySelectorAll('[data-tab]'), function (b) {
         b.addEventListener('click', function () {
           if (cur === 'timer' || cur === 'reflect') { return; }
-          var d = b.getAttribute('data-tab'); if (d === 'history') { show('history'); } else if (d === 'welcome') { show('welcome'); } else { show(S.startDate ? 'today' : 'setup'); }
+          var d = b.getAttribute('data-tab'); if (d === 'history') { show('history'); } else if (d === 'clock') { show('clock'); } else if (d === 'calendar') { openCal(); show('calendar'); } else if (d === 'welcome') { show('welcome'); } else { show(S.startDate ? 'today' : 'setup'); }
         });
       });
       $('#bWelcome').addEventListener('click', function () { show(S.startDate ? 'today' : 'setup'); });
