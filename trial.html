@@ -162,6 +162,7 @@
           <div><label for="gEnd" data-i18n="fEnd" style="margin-top:0">จบ</label><input id="gEnd" type="time" value="06:10"></div>
         </div>
         <button id="bBegin" class="btn" type="button" data-i18n="btnBegin">เริ่มทดลอง</button>
+        <button id="bRedo" class="btn secondary" type="button" hidden data-i18n="redoOpen"></button>
       </section>
 
       <section id="v-today" class="card" hidden>
@@ -207,11 +208,29 @@
         <div id="hsList"></div>
         <button id="bBack" class="btn secondary" type="button" data-i18n="btnBack">กลับ</button>
       </section>
+      <section id="v-redo" class="card" hidden>
+        <h2 data-i18n="redoTitle">ตั้งเวลาใหม่</h2>
+        <p data-i18n="redoText"></p>
+        <div class="row">
+          <div><label for="rStart" data-i18n="fStart" style="margin-top:0">เริ่ม</label><input id="rStart" type="time"></div>
+          <div><label for="rEnd" data-i18n="fEnd" style="margin-top:0">จบ</label><input id="rEnd" type="time"></div>
+        </div>
+        <p class="muted" style="margin-top:12px" data-i18n="redoDur"></p>
+        <div class="row">
+          <button type="button" class="btn secondary rmin" data-min="5">5</button>
+          <button type="button" class="btn secondary rmin" data-min="10">10</button>
+          <button type="button" class="btn secondary rmin" data-min="20">20</button>
+        </div>
+        <button id="bRedoGo" class="btn" type="button" data-i18n="redoGo"></button>
+        <button id="bRedoBack" class="btn secondary" type="button" data-i18n="btnBack">กลับ</button>
+      </section>
+
       <section id="v-clock" class="card" hidden>
         <p class="muted center" id="ckDate"></p>
         <div class="clock" id="ckTime" style="font-size:clamp(44px,15vw,84px)">00:00:00</div>
         <p class="muted center" id="ckGame"></p>
         <button id="bClockStart" class="btn" type="button" data-i18n="btnStartTimer">เริ่มจับเวลา</button>
+        <button id="bClockRedo" class="btn secondary" type="button" data-i18n="redoOpen"></button>
       </section>
 
       <section id="v-calendar" class="card" hidden>
@@ -238,7 +257,7 @@
       subTrial: 'ทดลอง 7 วัน · นั่งหลับตา 10 นาที · เกมเป็นคำพูด',
       slogan: 'ฟังให้ได้ยินในสิ่งที่เขาไม่ได้พูด',
       menuLabel: 'เมนู', menuMore: 'ภาษาอื่นทั่วโลกกำลังเตรียม',
-      menuToday: 'วันนี้', menuHistory: 'ประวัติ', menuClock: 'นาฬิกา', menuCalendar: 'ปฏิทิน', calLegend: '● ตรงเวลา     ○ break down', menuCoach: 'โค้ช', menuTools: 'เครื่องมือ',
+      menuToday: 'วันนี้', menuHistory: 'ประวัติ', menuClock: 'นาฬิกา', menuCalendar: 'ปฏิทิน', redoTitle: 'ตั้งเวลาใหม่', redoText: 'การเปลี่ยนเวลา คือการประกาศ break down: ไม่ได้ทำตามที่ให้คำพูดไว้ แล้วเริ่มใหม่ เวลาใหม่ใช้กติกาเดียวกับเวลาเดิม คือเริ่มและจบตรงตามที่ประกาศ', redoDur: 'ระยะเวลา (นาที)', redoGo: 'ประกาศ break down และตั้งเวลาใหม่', redoOpen: 'ตั้งเวลาใหม่ (ประกาศ break down)', calBreak: 'break down: {a} เป็น {b}', calLegend: '● ตรงเวลา     ○ break down', menuCoach: 'โค้ช', menuTools: 'เครื่องมือ',
       soundOn: 'เสียง: เปิด', soundOff: 'เสียง: ปิด', welcomeBtn: 'กดฟังเสียง', welcomeStop: 'หยุดเสียง', welcomeTo: 'สู่ Deep Listening Training', noVoice: 'เครื่องนี้ยังไม่รองรับเสียงอ่าน',
       greeting: 'สวัสดีครับ ยินดีต้อนรับสู่ Deep Listening Training มาเริ่มต้นกันเลย',
       btnWelcome: 'มาเริ่มต้นกันเลย',
@@ -261,7 +280,7 @@
       subTrial: '7-day trial · sit with eyes closed for 10 minutes · the game of being your word',
       slogan: 'Hear what they have not said.',
       menuLabel: 'Menu', menuMore: 'More languages from around the world are being prepared',
-      menuToday: 'Today', menuHistory: 'History', menuClock: 'Clock', menuCalendar: 'Calendar', calLegend: '● On time     ○ Break down', menuCoach: 'Coach', menuTools: 'Tools',
+      menuToday: 'Today', menuHistory: 'History', menuClock: 'Clock', menuCalendar: 'Calendar', redoTitle: 'Set a new time', redoText: 'Changing the time means declaring a break down: you did not keep the word you gave, and you start again. The new time follows the same rule as before: start and end exactly as declared.', redoDur: 'Length (minutes)', redoGo: 'Declare break down and set the new time', redoOpen: 'Set a new time (declare break down)', calBreak: 'Break down: {a} to {b}', calLegend: '● On time     ○ Break down', menuCoach: 'Coach', menuTools: 'Tools',
       soundOn: 'Sound: on', soundOff: 'Sound: off', welcomeBtn: 'Tap to listen', welcomeStop: 'Stop audio', welcomeTo: 'to Deep Listening Training', noVoice: 'This device does not support read-aloud',
       greeting: 'Hello, welcome to Deep Listening Training. Let us begin.',
       btnWelcome: 'Let us begin',
@@ -369,7 +388,7 @@
       }
 
       var cur = 'welcome', T = null, tEnd = 0, onTime = false, startStr = '';
-      var views = ['welcome', 'setup', 'today', 'timer', 'reflect', 'history', 'clock', 'calendar'];
+      var views = ['welcome', 'setup', 'today', 'timer', 'reflect', 'history', 'clock', 'calendar', 'redo'];
       function show(id) {
         cur = id;
         views.forEach(function (n) { $('#v-' + n).hidden = n !== id; });
@@ -397,6 +416,7 @@
           b.classList.toggle('on', on); b.setAttribute('aria-pressed', on ? 'true' : 'false');
         });
         if (cur === 'setup' && !$('#gName').value) { $('#gName').value = shownName(); }
+        if (cur === 'setup') { var ex = !!S.startDate; $('#gStart').disabled = ex; $('#gEnd').disabled = ex; $('#bRedo').hidden = !ex; }
         if (cur === 'today' && S.startDate) {
           var n = dayNo(), full = S.logs.length >= 7;
           $('#tdDay').textContent = fill('dayOf', { n: n });
@@ -445,7 +465,7 @@
         for (var d = 1; d <= dim; d++) {
           var key = ymd(new Date(cy, cm, d)), b = document.createElement('button'); b.type = 'button'; b.textContent = d;
           var lg = S.logs.filter(function (l) { return l.date === key; })[0], c = '';
-          if (lg) { c += lg.onTime ? ' ok' : ' bd'; } if (key === today) { c += ' td'; } if (key === cSel) { c += ' sel'; }
+          var bk = (S.breaks || []).some(function (x) { return x.date === key; }); if (lg && lg.onTime && !bk) { c += ' ok'; } else if (lg || bk) { c += ' bd'; } if (key === today) { c += ' td'; } if (key === cSel) { c += ' sel'; }
           b.className = c.trim();
           (function (k) { b.addEventListener('click', function () { cSel = k; drawCal(); }); })(key);
           box.appendChild(b);
@@ -454,6 +474,7 @@
         var sl = S.logs.filter(function (l) { return l.date === cSel; })[0];
         var card = document.createElement('div'); card.className = 'card';
         var h = document.createElement('p'); h.className = 'muted'; h.textContent = cSel; card.appendChild(h);
+        (S.breaks || []).filter(function (x) { return x.date === cSel; }).forEach(function (x) { var bp = document.createElement('p'); bp.textContent = fill('calBreak', { a: x.from, b: x.to }); card.appendChild(bp); });
         if (!sl) { var e2 = document.createElement('p'); e2.className = 'muted'; e2.textContent = t('historyEmpty'); card.appendChild(e2); }
         else { [['lBefore', sl.b], ['lDuring', sl.d], ['lAfter', sl.f]].forEach(function (x) { var p = document.createElement('p'); p.textContent = t(x[0]) + ': ' + (x[1] || '-'); card.appendChild(p); }); }
         nb.appendChild(card);
@@ -466,6 +487,30 @@
         $('#ckGame').textContent = S.startDate ? shownName() + ' · ' + fill('timeLine', { s: S.start, e: S.end }) : '';
       }
       setInterval(tickClock, 1000);
+      function openRedo() {
+        var n = new Date(), e = new Date(n.getTime() + dur() * 60000);
+        $('#rStart').value = hm(n); $('#rEnd').value = hm(e); show('redo');
+      }
+      Array.prototype.forEach.call(document.querySelectorAll('.rmin'), function (b) {
+        b.addEventListener('click', function () {
+          var st = $('#rStart').value; if (!st) { return; }
+          var m = (mins(st) + parseInt(b.getAttribute('data-min'), 10)) % 1440;
+          $('#rEnd').value = pad(Math.floor(m / 60)) + ':' + pad(m % 60);
+        });
+      });
+      $('#bClockRedo').addEventListener('click', function () { if (!S.startDate) { show('setup'); } else { openRedo(); } });
+      $('#bRedo').addEventListener('click', openRedo);
+      $('#bRedoBack').addEventListener('click', function () { show(S.startDate ? 'today' : 'welcome'); });
+      $('#bRedoGo').addEventListener('click', function () {
+        var st = $('#rStart').value, en = $('#rEnd').value;
+        if (!st || !en || mins(en) <= mins(st)) { return; }
+        var now = new Date();
+        S.breaks = S.breaks || [];
+        S.breaks.push({ date: ymd(now), at: hm(now), from: S.start + '-' + S.end, to: st + '-' + en });
+        S.start = st; S.end = en; save();
+        var diff = Math.abs(now.getHours() * 60 + now.getMinutes() - mins(st));
+        if (diff <= 5 && !doneToday() && S.logs.length < 7) { $('#bStart').click(); } else { show('today'); }
+      });
       $('#calYm').addEventListener('click', function () { moveCal(-12); });
       $('#calMm').addEventListener('click', function () { moveCal(-1); });
       $('#calMp').addEventListener('click', function () { moveCal(1); });
@@ -515,7 +560,7 @@
       });
       $('#bBegin').addEventListener('click', function () {
         S.name = $('#gName').value.trim() || t('defaultName');
-        S.start = $('#gStart').value || '06:00'; S.end = $('#gEnd').value || '06:10';
+        if (!S.startDate) { S.start = $('#gStart').value || '06:00'; S.end = $('#gEnd').value || '06:10'; }
         S.startDate = S.startDate || ymd(new Date()); save(); show('today');
       });
       $('#bEdit').addEventListener('click', function () {
