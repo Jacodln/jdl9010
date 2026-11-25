@@ -119,9 +119,7 @@
       <p id="noVoice" class="muted" hidden data-i18n="noVoice">เครื่องนี้ยังไม่รองรับเสียงอ่าน</p>
       <div class="tabs" role="tablist">
         <button type="button" role="tab" data-tab="today" data-i18n="menuToday">วันนี้</button>
-        <button type="button" role="tab" data-tab="clock" data-i18n="menuClock">นาฬิกา</button>
         <button type="button" role="tab" data-tab="calendar" data-i18n="menuCalendar">ปฏิทิน</button>
-        <button type="button" role="tab" data-tab="history" data-i18n="menuHistory">ประวัติ</button>
       </div>
     </header>
 
@@ -166,6 +164,8 @@
       </section>
 
       <section id="v-today" class="card" hidden>
+        <p class="muted center" id="ckDate"></p>
+        <div class="clock" id="ckTime" style="font-size:clamp(36px,12vw,56px);margin:4px 0 16px">00:00:00</div>
         <p class="muted" id="tdDay"></p>
         <h2 id="tdName"></h2>
         <p class="muted" id="tdTime"></p>
@@ -173,6 +173,7 @@
         <p class="muted" id="tdStat" style="margin-top:12px"></p>
         <button id="bStart" class="btn" type="button"></button>
         <button id="bEdit" class="btn secondary" type="button" data-i18n="btnEdit">เปลี่ยนเกมหรือเวลา</button>
+        <button id="bTodayRedo" class="btn secondary" type="button" data-i18n="redoOpen"></button>
       </section>
 
       <section id="v-timer" class="card" hidden>
@@ -200,14 +201,6 @@
         <button id="bSave" class="btn" type="button" data-i18n="btnSave">บันทึก</button>
       </section>
 
-      <section id="v-history" hidden>
-        <div class="card">
-          <h2 data-i18n="menuHistory">ประวัติ</h2>
-          <p class="muted" id="hsStat"></p>
-        </div>
-        <div id="hsList"></div>
-        <button id="bBack" class="btn secondary" type="button" data-i18n="btnBack">กลับ</button>
-      </section>
       <section id="v-redo" class="card" hidden>
         <h2 data-i18n="redoTitle">ตั้งเวลาใหม่</h2>
         <p data-i18n="redoText"></p>
@@ -223,14 +216,6 @@
         <button id="bRedoBack" class="btn secondary" type="button" data-i18n="btnBack">กลับ</button>
       </section>
 
-      <section id="v-clock" class="card" hidden>
-        <p class="muted center" id="ckDate"></p>
-        <div class="clock" id="ckTime" style="font-size:clamp(44px,15vw,84px)">00:00:00</div>
-        <p class="muted center" id="ckGame"></p>
-        <button id="bClockStart" class="btn" type="button" data-i18n="btnStartTimer">เริ่มจับเวลา</button>
-        <button id="bClockRedo" class="btn secondary" type="button" data-i18n="redoOpen"></button>
-      </section>
-
       <section id="v-calendar" class="card" hidden>
         <div class="calhead">
           <button id="calYm" type="button" aria-label="-1 year">&laquo;</button>
@@ -241,6 +226,7 @@
         </div>
         <div class="calgrid" id="calWeek"></div>
         <div class="calgrid" id="calDays"></div>
+        <p class="muted" id="calStat" style="margin-top:12px"></p>
         <p class="muted" id="calLegend" style="margin-top:12px" data-i18n="calLegend"></p>
         <div id="calNote"></div>
         <button id="calToday" class="btn secondary" type="button" data-i18n="menuToday">วันนี้</button>
@@ -386,7 +372,7 @@
       }
 
       var cur = 'welcome', T = null, tEnd = 0, onTime = false, startStr = '';
-      var views = ['welcome', 'setup', 'today', 'timer', 'reflect', 'history', 'clock', 'calendar', 'redo'];
+      var views = ['welcome', 'setup', 'today', 'timer', 'reflect', 'calendar', 'redo'];
       function show(id) {
         cur = id;
         views.forEach(function (n) { $('#v-' + n).hidden = n !== id; });
@@ -406,7 +392,7 @@
         $('#bSound').hidden = cur === 'welcome';
         if (cur !== 'welcome') { $('#noVoice').hidden = true; }
         Array.prototype.forEach.call(document.querySelectorAll('.tabs button'), function (b) {
-          var want = cur === 'history' ? 'history' : (cur === 'calendar' ? 'calendar' : ((cur === 'clock' || cur === 'timer') ? 'clock' : ((cur === 'today' || cur === 'setup') ? 'today' : ''))); var on = b.getAttribute('data-tab') === want;
+          var want = cur === 'calendar' ? 'calendar' : ((cur === 'today' || cur === 'setup' || cur === 'timer' || cur === 'redo') ? 'today' : ''); var on = b.getAttribute('data-tab') === want;
           b.classList.toggle('on', on); b.setAttribute('aria-selected', on ? 'true' : 'false');
         });
         Array.prototype.forEach.call(document.querySelectorAll('.seg button'), function (b) {
@@ -439,7 +425,7 @@
             box.appendChild(c);
           });
         }
-        if (cur === 'clock') { tickClock(); }
+        if (cur === 'today') { tickClock(); }
         if (cur === 'calendar') { drawCal(); }
         if (cur === 'timer') {
           $('#tmDay').textContent = fill('dayOf', { n: dayNo() });
@@ -454,6 +440,7 @@
       function drawCal() {
         var th = DL.getLang() === 'th', first = new Date(cy, cm, 1);
         $('#calTitle').textContent = first.toLocaleDateString(loc(), { month: 'long', year: 'numeric' });
+        $('#calStat').textContent = stats();
         var wk = th ? ['อา', 'จ', 'อ', 'พ', 'พฤ', 'ศ', 'ส'] : ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'];
         var w = $('#calWeek'); w.textContent = '';
         wk.forEach(function (x) { var e = document.createElement('span'); e.className = 'w'; e.textContent = x; w.appendChild(e); });
@@ -478,11 +465,10 @@
         nb.appendChild(card);
       }
       function tickClock() {
-        if (cur !== 'clock') { return; }
+        if (cur !== 'today') { return; }
         var d = new Date();
         $('#ckTime').textContent = pad(d.getHours()) + ':' + pad(d.getMinutes()) + ':' + pad(d.getSeconds());
         $('#ckDate').textContent = d.toLocaleDateString(loc(), { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
-        $('#ckGame').textContent = S.startDate ? shownName() + ' · ' + fill('timeLine', { s: S.start, e: S.end }) : '';
       }
       setInterval(tickClock, 1000);
       function openRedo() {
@@ -496,7 +482,7 @@
           $('#rEnd').value = pad(Math.floor(m / 60)) + ':' + pad(m % 60);
         });
       });
-      $('#bClockRedo').addEventListener('click', function () { if (!S.startDate) { show('setup'); } else { openRedo(); } });
+      $('#bTodayRedo').addEventListener('click', function () { openRedo(); });
       $('#bRedo').addEventListener('click', openRedo);
       $('#bRedoBack').addEventListener('click', function () { show(S.startDate ? 'today' : 'welcome'); });
       $('#bRedoGo').addEventListener('click', function () {
@@ -514,9 +500,7 @@
       $('#calMp').addEventListener('click', function () { moveCal(1); });
       $('#calYp').addEventListener('click', function () { moveCal(12); });
       $('#calToday').addEventListener('click', function () { openCal(); drawCal(); });
-      $('#bClockStart').addEventListener('click', function () {
-        if (!S.startDate) { show('setup'); } else if (S.logs.length >= 7 || doneToday()) { show('today'); } else { $('#bStart').click(); }
-      });
+
       function beep() {
         if (!soundOn) { return; }
         try { var c = new (window.AudioContext || window.webkitAudioContext)(), o = c.createOscillator(), g = c.createGain(); o.connect(g); g.connect(c.destination); o.frequency.value = 528; g.gain.setValueAtTime(0.2, c.currentTime); g.gain.exponentialRampToValueAtTime(0.001, c.currentTime + 2); o.start(); o.stop(c.currentTime + 2); } catch (e) {}
@@ -575,7 +559,6 @@
         S.logs.push({ date: ymd(new Date()), day: dayNo(), s: startStr, e: hm(new Date()), onTime: onTime, b: $('#rb').value.trim(), d: $('#rd').value.trim(), f: $('#rf').value.trim() });
         save(); show('today');
       });
-      $('#bBack').addEventListener('click', function () { show(S.startDate ? 'today' : 'welcome'); });
       DL.onLangChange(function () { if (reading) { stopSay(); } else { render(); } });
       window.addEventListener('pagehide', function () { if (synth) { synth.cancel(); } });
       show('welcome');
