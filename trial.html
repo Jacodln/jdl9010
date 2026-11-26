@@ -362,7 +362,7 @@
       function speakWelcome() {
         if (!synth) { $('#noVoice').hidden = false; return; }
         if (reading) { stopSay(); return; }
-        if (cur === 'today' || cur === 'setup') { speakParts([t('qName'), t('qTime'), t('qBefore'), t('qDuring'), t('qAfter'), t('qReady')]); return; }
+        if (cur === 'today' || cur === 'setup') { var ev0 = endVoice(); if (ev0) { speakParts([ev0.p[1], ev0.p[2], ev0.p[3], readyVoice(ev0)], null, ev0.code); } else { speakParts([t('qName'), t('qTime'), t('qBefore'), t('qDuring'), t('qAfter'), t('qReady')]); } return; }
         if (cur !== 'welcome') { show('welcome'); }
         $('#wMore').hidden = false;
         var parts = Array.prototype.map.call(document.querySelectorAll('#v-welcome h2, #v-welcome h3, #v-welcome p'), function (n) { return n.textContent; }).filter(function (x) { return x.trim(); });
@@ -386,6 +386,25 @@
         ar: ['انتهى الوقت', 'قبل ذلك، كيف تشعر؟', 'أثناء ذلك، كيف تشعر؟', 'بعد ذلك، كيف تشعر؟'],
         tr: ['Süre doldu', 'Önce, nasıl hissediyorsunuz?', 'Sırasında, nasıl hissediyorsunuz?', 'Sonra, nasıl hissediyorsunuz?']
       };
+      var RD = {
+        en: 'When you are ready, press start timer',
+        'zh-CN': '准备好后，请按开始计时',
+        'zh-TW': '準備好後，請按開始計時',
+        ru: 'Когда будете готовы, нажмите «Начать отсчёт»',
+        ja: '準備ができたら、タイマー開始を押してください',
+        ko: '준비가 되면 타이머 시작을 눌러 주세요',
+        fr: 'Quand vous êtes prêt, appuyez sur démarrer le minuteur',
+        es: 'Cuando estés listo, pulsa iniciar temporizador',
+        de: 'Wenn Sie bereit sind, drücken Sie Timer starten',
+        pt: 'Quando estiver pronto, toque em iniciar cronômetro',
+        it: 'Quando sei pronto, premi avvia timer',
+        vi: 'Khi sẵn sàng, hãy nhấn bắt đầu bấm giờ',
+        id: 'Saat siap, tekan mulai timer',
+        hi: 'जब आप तैयार हों, टाइमर शुरू करें दबाएँ',
+        ar: 'عندما تكون مستعدًا، اضغط على بدء المؤقت',
+        tr: 'Hazır olduğunuzda, zamanlayıcıyı başlat düğmesine basın'
+      };
+      function readyVoice(ev) { return RD[ev.code] || RD[ev.code.split('-')[0]] || RD.en; }
       function endVoice() {
         var m = document.cookie.match(/(?:^|;\s*)googtrans=([^;]*)/), g = '';
         if (m) { var a = decodeURIComponent(m[1]).split('/'); g = a[a.length - 1] || ''; }
