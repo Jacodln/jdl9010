@@ -363,7 +363,7 @@
       function stopSay() { runId++; if (synth) { synth.cancel(); } reading = false; render(); }
       function speakParts(parts, onEnd, cc) {
         runId++; synth.cancel();
-        var my = runId, lang = DL.getLang(), code = cc || (lang === 'th' ? 'th-TH' : 'en-US'), voice = pickVoice(code, code.split('-')[0]);
+        var my = runId, lang = DL.getLang(), code = cc || gtCode() || (lang === 'th' ? 'th-TH' : 'en-US'), voice = pickVoice(code, code.split('-')[0]);
         reading = true;
         parts.forEach(function (text, i) {
           var u = new SpeechSynthesisUtterance(text); u.lang = code; if (voice) { u.voice = voice; }
@@ -419,6 +419,12 @@
         tr: 'Hazır olduğunuzda, zamanlayıcıyı başlat düğmesine basın'
       };
       function readyVoice(ev) { return RD[ev.code] || RD[ev.code.split('-')[0]] || RD.en; }
+      function gtCode() {
+        var m = document.cookie.match(/(?:^|;\s*)googtrans=([^;]*)/); if (!m) { return null; }
+        var a = decodeURIComponent(m[1]).split('/'), g = a[a.length - 1];
+        if (!g || g === 'th') { return null; }
+        return ({ iw: 'he', jw: 'jv', tl: 'fil' })[g] || g;
+      }
       function gtParts(keys) {
         var m = document.cookie.match(/(?:^|;\s*)googtrans=([^;]*)/); if (!m) { return null; }
         var a = decodeURIComponent(m[1]).split('/'), g = a[a.length - 1];
