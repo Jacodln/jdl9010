@@ -282,7 +282,7 @@
       onTimeYes: 'ตรงเวลา', onTimeNo: 'ไม่ตรงเวลาที่ตั้งไว้',
       doneToday: 'วันนี้บันทึกแล้ว', finished: 'ครบ 7 วันแล้ว',
       rDone: 'ฝึกเสร็จแล้ว', rTitle: 'บันทึกของวันนี้',
-      qBefore: 'ก่อนทำ คุณรู้สึกอย่างไร', qDuring: 'ขณะทำ คุณรู้สึกอย่างไร', qAfter: 'ทำเสร็จแล้ว คุณรู้สึกอย่างไร',
+      qBefore: 'ก่อนทำ คุณรู้สึกอย่างไร', qDuring: 'ขณะทำ คุณรู้สึกอย่างไร', qAfter: 'ทำเสร็จแล้ว คุณรู้สึกอย่างไร', qReady: 'เมื่อพร้อม กดเริ่มจับเวลา',
       lBefore: 'ก่อนทำ', lDuring: 'ขณะทำ', lAfter: 'ทำเสร็จแล้ว', historyEmpty: 'ยังไม่มีบันทึก',
       defaultName: 'นั่งหลับตา 10 นาที',
       navParticipant: 'ผู้ฝึก', navCoach: 'โค้ช', navManual: 'คู่มือ', navInvite: 'หน้าเชิญ', leaveConfirm: 'ออกจากหน้านี้หรือไม่? สิ่งที่ยังไม่ได้บันทึกจะหายไป',
@@ -305,7 +305,7 @@
       onTimeYes: 'on time', onTimeNo: 'not at the time you set',
       doneToday: 'Saved for today', finished: '7 days complete',
       rDone: 'Practice finished', rTitle: 'Notes for today',
-      qBefore: 'Before, how do you feel?', qDuring: 'During, how do you feel?', qAfter: 'After, how do you feel?',
+      qBefore: 'Before, how do you feel?', qDuring: 'During, how do you feel?', qAfter: 'After, how do you feel?', qReady: 'When you are ready, press start timer',
       lBefore: 'Before', lDuring: 'During', lAfter: 'After', historyEmpty: 'No notes yet',
       defaultName: 'Sit with eyes closed for 10 minutes',
       navParticipant: 'Participant', navCoach: 'Coach', navManual: 'Manual', navInvite: 'Invitation', leaveConfirm: 'Leave this page? Anything not yet saved will be lost.',
@@ -362,7 +362,7 @@
       function speakWelcome() {
         if (!synth) { $('#noVoice').hidden = false; return; }
         if (reading) { stopSay(); return; }
-        if (cur === 'today' || cur === 'setup') { speakParts([t('qName'), t('qTime'), t('qBefore'), t('qDuring'), t('qAfter')]); return; }
+        if (cur === 'today' || cur === 'setup') { speakParts([t('qName'), t('qTime'), t('qBefore'), t('qDuring'), t('qAfter'), t('qReady')]); return; }
         if (cur !== 'welcome') { show('welcome'); }
         $('#wMore').hidden = false;
         var parts = Array.prototype.map.call(document.querySelectorAll('#v-welcome h2, #v-welcome h3, #v-welcome p'), function (n) { return n.textContent; }).filter(function (x) { return x.trim(); });
