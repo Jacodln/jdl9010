@@ -99,7 +99,6 @@
     .calgrid button.sel { background: rgba(255,255,255,.16); }
       .gt { margin-top: 14px; min-height: 32px; }
     .gt .goog-te-gadget { font-size: 0 !important; }
-    .gt .goog-te-gadget span { display: none !important; }
     .gt select.goog-te-combo { width: 100%; min-height: 44px; padding: 0 10px; border: 1px solid var(--line); border-radius: 12px; background: #143229; color: var(--ink); font: inherit; font-size: 16px; margin: 0; }
     iframe.skiptranslate, .goog-te-banner-frame { display: none !important; }
     body { top: 0 !important; }
@@ -244,7 +243,7 @@
 
   <script>
     function googleTranslateElementInit() {
-      try { new google.translate.TranslateElement({ pageLanguage: 'th', autoDisplay: false, layout: google.translate.TranslateElement.InlineLayout.SIMPLE }, 'gtEl'); } catch (e) {}
+      try { new google.translate.TranslateElement({ pageLanguage: 'th', autoDisplay: false }, 'gtEl'); } catch (e) {}
     }
   </script>
   <script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit" async></script>
