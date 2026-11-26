@@ -114,6 +114,7 @@
   </style>
 </head>
 <body>
+  <div id="gtSpeak" hidden aria-hidden="true"><span data-s="timeUp">หมดเวลาแล้ว</span><span data-s="ready">เมื่อพร้อม กดเริ่มจับเวลา</span></div>
   <div class="wrap">
     <header>
       <div class="top">
@@ -362,7 +363,7 @@
       function speakWelcome() {
         if (!synth) { $('#noVoice').hidden = false; return; }
         if (reading) { stopSay(); return; }
-        if (cur === 'today' || cur === 'setup') { var ev0 = endVoice(); if (ev0) { speakParts([ev0.p[1], ev0.p[2], ev0.p[3], readyVoice(ev0)], null, ev0.code); } else { speakParts([t('qName'), t('qTime'), t('qBefore'), t('qDuring'), t('qAfter'), t('qReady')]); } return; }
+        if (cur === 'today' || cur === 'setup') { var gp = gtParts(['qName', 'qTime', 'qBefore', 'qDuring', 'qAfter', 'ready']); if (gp) { speakParts(gp.parts, null, gp.code); return; } var ev0 = endVoice(); if (ev0) { speakParts([ev0.p[1], ev0.p[2], ev0.p[3], readyVoice(ev0)], null, ev0.code); } else { speakParts([t('qName'), t('qTime'), t('qBefore'), t('qDuring'), t('qAfter'), t('qReady')]); } return; }
         if (cur !== 'welcome') { show('welcome'); }
         $('#wMore').hidden = false;
         var parts = Array.prototype.map.call(document.querySelectorAll('#v-welcome h2, #v-welcome h3, #v-welcome p'), function (n) { return n.textContent; }).filter(function (x) { return x.trim(); });
@@ -405,6 +406,17 @@
         tr: 'Hazır olduğunuzda, zamanlayıcıyı başlat düğmesine basın'
       };
       function readyVoice(ev) { return RD[ev.code] || RD[ev.code.split('-')[0]] || RD.en; }
+      function gtParts(keys) {
+        var m = document.cookie.match(/(?:^|;\s*)googtrans=([^;]*)/); if (!m) { return null; }
+        var a = decodeURIComponent(m[1]).split('/'), g = a[a.length - 1];
+        if (!g || g === 'th') { return null; }
+        var parts = keys.map(function (k) {
+          var e = document.querySelector(k === 'timeUp' || k === 'ready' ? '#gtSpeak [data-s="' + k + '"]' : '[data-i18n="' + k + '"]');
+          return e ? e.textContent.trim() : '';
+        });
+        if (parts.some(function (x) { return !x || /[\u0E00-\u0E7F]/.test(x); })) { return null; }
+        return { code: ({ iw: 'he', jw: 'jv', tl: 'fil' })[g] || g, parts: parts };
+      }
       function endVoice() {
         var m = document.cookie.match(/(?:^|;\s*)googtrans=([^;]*)/), g = '';
         if (m) { var a = decodeURIComponent(m[1]).split('/'); g = a[a.length - 1] || ''; }
@@ -418,6 +430,8 @@
         if (!soundOn || !synth) { return; }
         setTimeout(function () {
           if (cur !== 'reflect') { return; }
+          var gp2 = gtParts(['timeUp', 'qBefore', 'qDuring', 'qAfter']);
+          if (gp2) { speakParts([gp2.parts[0]], function () { setTimeout(function () { if (cur === 'reflect') { speakParts(gp2.parts.slice(1), null, gp2.code); } }, 1000); }, gp2.code); return; }
           var ev = endVoice();
           speakParts(ev ? [ev.p[0]] : [t('timeUp')], function () {
             setTimeout(function () { if (cur === 'reflect') { speakParts(ev ? ev.p.slice(1) : [t('qBefore'), t('qDuring'), t('qAfter')], null, ev ? ev.code : undefined); } }, 1000);
