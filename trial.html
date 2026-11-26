@@ -501,16 +501,24 @@
       $('#calYp').addEventListener('click', function () { moveCal(12); });
       $('#calToday').addEventListener('click', function () { openCal(); drawCal(); });
 
+      var actx = null, wl = null;
+      function unlockAudio() {
+        try { var AC = window.AudioContext || window.webkitAudioContext; if (!actx) { actx = new AC(); } if (actx.state === 'suspended') { actx.resume(); } var o = actx.createOscillator(), g = actx.createGain(); g.gain.value = 0.0001; o.connect(g); g.connect(actx.destination); o.start(); o.stop(actx.currentTime + 0.05); } catch (e) {}
+        try { if (synth) { var u = new SpeechSynthesisUtterance(' '); u.volume = 0; synth.speak(u); } } catch (e) {}
+      }
+      function lockScreen() { try { if (navigator.wakeLock) { navigator.wakeLock.request('screen').then(function (l) { wl = l; }).catch(function () {}); } } catch (e) {} }
+      function unlockScreen() { try { if (wl) { wl.release(); wl = null; } } catch (e) {} }
+      document.addEventListener('visibilitychange', function () { if (document.visibilityState === 'visible' && cur === 'timer') { wl = null; lockScreen(); } });
       function beep() {
         if (!soundOn) { return; }
-        try { var c = new (window.AudioContext || window.webkitAudioContext)(), o = c.createOscillator(), g = c.createGain(); o.connect(g); g.connect(c.destination); o.frequency.value = 528; g.gain.setValueAtTime(0.2, c.currentTime); g.gain.exponentialRampToValueAtTime(0.001, c.currentTime + 2); o.start(); o.stop(c.currentTime + 2); } catch (e) {}
-        try { if (navigator.vibrate) { navigator.vibrate(300); } } catch (e) {}
+        try { var c = actx || new (window.AudioContext || window.webkitAudioContext)(); if (c.state === 'suspended') { c.resume(); } var o = c.createOscillator(), g = c.createGain(); o.connect(g); g.connect(c.destination); o.frequency.value = 528; g.gain.setValueAtTime(0.5, c.currentTime); g.gain.exponentialRampToValueAtTime(0.001, c.currentTime + 3); o.start(); o.stop(c.currentTime + 3); } catch (e) {}
+        try { if (navigator.vibrate) { navigator.vibrate([300, 150, 300]); } } catch (e) {}
       }
       function tick() {
         var left = Math.max(0, tEnd - Date.now()), total = dur() * 60000, s = Math.ceil(left / 1000);
         $('#tmClock').textContent = pad(Math.floor(s / 60)) + ':' + pad(s % 60);
         $('#tmBar').style.width = ((1 - left / total) * 100) + '%';
-        if (left <= 0) { clearInterval(T); beep(); $('#rb').value = ''; $('#rd').value = ''; $('#rf').value = ''; show('reflect'); announceEnd(); }
+        if (left <= 0) { clearInterval(T); unlockScreen(); beep(); $('#rb').value = ''; $('#rd').value = ''; $('#rf').value = ''; show('reflect'); announceEnd(); }
       }
       function closeMenu() { $('#menu').hidden = true; $('#menuBtn').setAttribute('aria-expanded', 'false'); }
 
@@ -552,9 +560,9 @@
         var now = new Date(), planned = new Date(); planned.setHours(0, mins(S.start), 0, 0);
         tEnd = now.getTime() + dur() * 60000; startStr = hm(now);
         onTime = Math.abs(now.getTime() - planned.getTime()) <= 5 * 60000;
-        show('timer'); tick(); clearInterval(T); T = setInterval(tick, 250);
+        unlockAudio(); lockScreen(); show('timer'); tick(); clearInterval(T); T = setInterval(tick, 250);
       });
-      $('#bStop').addEventListener('click', function () { clearInterval(T); show('today'); });
+      $('#bStop').addEventListener('click', function () { clearInterval(T); unlockScreen(); show('today'); });
       $('#bSave').addEventListener('click', function () {
         S.logs.push({ date: ymd(new Date()), day: dayNo(), s: startStr, e: hm(new Date()), onTime: onTime, b: $('#rb').value.trim(), d: $('#rd').value.trim(), f: $('#rf').value.trim() });
         save(); show('today');
