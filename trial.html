@@ -117,7 +117,7 @@
       <p class="sub" data-i18n="subTrial">ทดลอง 7 วัน · นั่งหลับตา 10 นาที · เกมเป็นคำพูด</p>
       <div class="ctrl">
         <button id="bTest" class="wbtn" type="button"></button>
-        <div class="seg" role="group" aria-label="Language">
+        <div class="seg" role="group" aria-label="Language" translate="no">
           <button type="button" data-lang="th">ไทย</button>
           <button type="button" data-lang="en">EN</button>
         </div>
@@ -597,7 +597,16 @@
       });
       $('#bTest').addEventListener('click', speakWelcome);
       Array.prototype.forEach.call(document.querySelectorAll('.seg button'), function (b) {
-        b.addEventListener('click', function () { DL.setLang(b.getAttribute('data-lang')); });
+        b.addEventListener('click', function () {
+          DL.setLang(b.getAttribute('data-lang'));
+          if (/(?:^|;\s*)googtrans=/.test(document.cookie)) {
+            var past = 'googtrans=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/';
+            document.cookie = past;
+            document.cookie = past + '; domain=' + location.hostname;
+            document.cookie = past + '; domain=.' + location.hostname;
+            location.reload();
+          }
+        });
       });
       Array.prototype.forEach.call(document.querySelectorAll('[data-tab]'), function (b) {
         b.addEventListener('click', function () {
