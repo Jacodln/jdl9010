@@ -97,13 +97,21 @@
     .calgrid button.bd::after { border: 2px solid #E8C872; }
     .calgrid button.td { border-color: var(--ac); }
     .calgrid button.sel { background: rgba(255,255,255,.16); }
+      .gt { margin-top: 14px; min-height: 32px; }
+    .gt .goog-te-gadget { font-size: 0 !important; }
+    .gt .goog-te-gadget span { display: none !important; }
+    .gt select.goog-te-combo { width: 100%; min-height: 44px; padding: 0 10px; border: 1px solid var(--line); border-radius: 12px; background: #143229; color: var(--ink); font: inherit; font-size: 16px; margin: 0; }
+    iframe.skiptranslate, .goog-te-banner-frame { display: none !important; }
+    body { top: 0 !important; }
+    #goog-gt-tt, .goog-tooltip, .goog-tooltip:hover { display: none !important; }
+    .goog-text-highlight { background: none !important; box-shadow: none !important; }
   </style>
 </head>
 <body>
   <div class="wrap">
     <header>
       <div class="top">
-        <h1 class="brand" aria-label="Deep Listening Training"><span class="b1">Deep</span><span class="b2">Listening</span><span class="b3">TRAINING</span></h1>
+        <h1 class="brand" translate="no" aria-label="Deep Listening Training"><span class="b1">Deep</span><span class="b2">Listening</span><span class="b3">TRAINING</span></h1>
         <button id="menuBtn" class="pill icon" type="button" aria-expanded="false" aria-controls="menu" data-i18n-label="menuLabel">&#9776;</button>
       </div>
       <p class="slogan" data-i18n="slogan">ฟังให้ได้ยินในสิ่งที่เขาไม่ได้พูด</p>
@@ -130,7 +138,7 @@
         <a href="manual.html" data-i18n="navManual">คู่มือ</a>
         <a href="invite.html" data-i18n="navInvite">หน้าเชิญ</a>
       </div>
-      <p class="muted" style="margin-top:12px" data-i18n="menuMore">ภาษาอื่นทั่วโลกกำลังเตรียม</p>
+      <div id="gtEl" class="gt" translate="no"></div>
     </nav>
 
     <main>
@@ -165,7 +173,7 @@
 
       <section id="v-today" class="card" hidden>
         <p class="muted center" id="ckDate"></p>
-        <div class="clock" id="ckTime" style="font-size:clamp(36px,12vw,56px);margin:4px 0 16px">00:00:00</div>
+        <div class="clock" id="ckTime" translate="no" style="font-size:clamp(36px,12vw,56px);margin:4px 0 16px">00:00:00</div>
         <p class="muted" id="tdDay"></p>
         <h2 id="tdName"></h2>
         <p class="muted" id="tdTime"></p>
@@ -179,7 +187,7 @@
       <section id="v-timer" class="card" hidden>
         <p class="muted center" id="tmDay"></p>
         <h2 class="center" id="tmName"></h2>
-        <div class="clock" id="tmClock" role="timer" aria-live="off">10:00</div>
+        <div class="clock" id="tmClock" translate="no" role="timer" aria-live="off">10:00</div>
         <div class="bar" aria-hidden="true"><div id="tmBar"></div></div>
         <p class="muted center" id="tmStat" style="margin-top:12px"></p>
         <button id="bStop" class="btn secondary" type="button" data-i18n="btnStop">หยุดก่อน</button>
@@ -234,6 +242,12 @@
     </main>
   </div>
 
+  <script>
+    function googleTranslateElementInit() {
+      try { new google.translate.TranslateElement({ pageLanguage: 'th', autoDisplay: false, layout: google.translate.TranslateElement.InlineLayout.SIMPLE }, 'gtEl'); } catch (e) {}
+    }
+  </script>
+  <script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit" async></script>
   <script src="app.js"></script>
   <script>
     DL.addStrings('th', Object.assign({
@@ -318,9 +332,9 @@
         return nm[0] || vs[0] || null;
       }
       function stopSay() { runId++; if (synth) { synth.cancel(); } reading = false; render(); }
-      function speakParts(parts, onEnd) {
+      function speakParts(parts, onEnd, cc) {
         runId++; synth.cancel();
-        var my = runId, lang = DL.getLang(), code = lang === 'th' ? 'th-TH' : 'en-US', voice = pickVoice(code, lang);
+        var my = runId, lang = DL.getLang(), code = cc || (lang === 'th' ? 'th-TH' : 'en-US'), voice = pickVoice(code, code.split('-')[0]);
         reading = true;
         parts.forEach(function (text, i) {
           var u = new SpeechSynthesisUtterance(text); u.lang = code; if (voice) { u.voice = voice; }
@@ -339,13 +353,41 @@
         var parts = Array.prototype.map.call(document.querySelectorAll('#v-welcome h2, #v-welcome h3, #v-welcome p'), function (n) { return n.textContent; }).filter(function (x) { return x.trim(); });
         speakParts(parts, function () { var bw = $('#bWelcome'); if (bw.scrollIntoView) { bw.scrollIntoView({ behavior: 'smooth', block: 'center' }); } });
       }
+      var VP = {
+        en: ['Time is up', 'Before, how do you feel?', 'During, how do you feel?', 'After, how do you feel?'],
+        'zh-CN': ['时间到了', '做之前，你感觉如何？', '做的时候，你感觉如何？', '做完之后，你感觉如何？'],
+        'zh-TW': ['時間到了', '做之前，你感覺如何？', '做的時候，你感覺如何？', '做完之後，你感覺如何？'],
+        ru: ['Время вышло', 'Перед началом: что вы чувствуете?', 'Во время: что вы чувствуете?', 'После: что вы чувствуете?'],
+        ja: ['時間です', '始める前は、どう感じましたか？', '行っている間は、どう感じましたか？', '終わった後は、どう感じていますか？'],
+        ko: ['시간이 다 되었습니다', '시작하기 전에 어떻게 느끼셨나요?', '하는 동안 어떻게 느끼셨나요?', '끝난 후 어떻게 느끼시나요?'],
+        fr: ['Le temps est écoulé', 'Avant, comment vous sentez-vous ?', 'Pendant, comment vous sentez-vous ?', 'Après, comment vous sentez-vous ?'],
+        es: ['Se acabó el tiempo', 'Antes, ¿cómo te sientes?', 'Durante, ¿cómo te sientes?', 'Después, ¿cómo te sientes?'],
+        de: ['Die Zeit ist um', 'Vorher: Wie fühlen Sie sich?', 'Währenddessen: Wie fühlen Sie sich?', 'Danach: Wie fühlen Sie sich?'],
+        pt: ['O tempo acabou', 'Antes, como você se sente?', 'Durante, como você se sente?', 'Depois, como você se sente?'],
+        it: ['Il tempo è finito', 'Prima, come ti senti?', 'Durante, come ti senti?', 'Dopo, come ti senti?'],
+        vi: ['Hết giờ', 'Trước khi làm, bạn cảm thấy thế nào?', 'Trong khi làm, bạn cảm thấy thế nào?', 'Sau khi làm xong, bạn cảm thấy thế nào?'],
+        id: ['Waktu habis', 'Sebelum, bagaimana perasaan Anda?', 'Selama, bagaimana perasaan Anda?', 'Sesudah, bagaimana perasaan Anda?'],
+        hi: ['समय समाप्त', 'पहले, आप कैसा महसूस करते हैं?', 'दौरान, आप कैसा महसूस करते हैं?', 'बाद में, आप कैसा महसूस करते हैं?'],
+        ar: ['انتهى الوقت', 'قبل ذلك، كيف تشعر؟', 'أثناء ذلك، كيف تشعر؟', 'بعد ذلك، كيف تشعر؟'],
+        tr: ['Süre doldu', 'Önce, nasıl hissediyorsunuz?', 'Sırasında, nasıl hissediyorsunuz?', 'Sonra, nasıl hissediyorsunuz?']
+      };
+      function endVoice() {
+        var m = document.cookie.match(/(?:^|;\s*)googtrans=([^;]*)/), g = '';
+        if (m) { var a = decodeURIComponent(m[1]).split('/'); g = a[a.length - 1] || ''; }
+        if (!g || g === 'th') { return null; }
+        if (VP[g]) { return { code: g, p: VP[g] }; }
+        var b = g.split('-')[0];
+        if (VP[b]) { return { code: b, p: VP[b] }; }
+        return { code: 'en-US', p: VP.en };
+      }
       function announceEnd() {
         if (!soundOn || !synth) { return; }
         setTimeout(function () {
           if (cur !== 'reflect') { return; }
-          speakParts([t('timeUp')], function () {
-            setTimeout(function () { if (cur === 'reflect') { speakParts([t('qBefore'), t('qDuring'), t('qAfter')]); } }, 1000);
-          });
+          var ev = endVoice();
+          speakParts(ev ? [ev.p[0]] : [t('timeUp')], function () {
+            setTimeout(function () { if (cur === 'reflect') { speakParts(ev ? ev.p.slice(1) : [t('qBefore'), t('qDuring'), t('qAfter')], null, ev ? ev.code : undefined); } }, 1000);
+          }, ev ? ev.code : undefined);
         }, 2300);
       }
       var SR = window.SpeechRecognition || window.webkitSpeechRecognition, rec = null, recFor = null;
