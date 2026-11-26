@@ -100,6 +100,9 @@
       .gt { margin-top: 14px; min-height: 32px; }
     .gt .goog-te-gadget { font-size: 0 !important; }
     .gt select.goog-te-combo { width: 100%; min-height: 44px; padding: 0 10px; border: 1px solid var(--line); border-radius: 12px; background: #143229; color: var(--ink); font: inherit; font-size: 16px; margin: 0; }
+    #remBox select { width: 100%; min-height: 48px; padding: 0 10px; border: 1px solid var(--line); border-radius: 12px; background: #143229; color: var(--ink); font: inherit; }
+    #remBox { margin-top: 14px; padding-top: 4px; border-top: 1px solid var(--line); }
+    #remBox .muted { margin: 10px 0 0; }
     iframe.skiptranslate, .goog-te-banner-frame { display: none !important; }
     body { top: 0 !important; }
     #goog-gt-tt, .goog-tooltip, .goog-tooltip:hover { display: none !important; }
@@ -188,6 +191,16 @@
         <p class="muted" id="tdStat" style="margin-top:12px"></p>
         <button id="bStart" class="btn" type="button"></button>
         <button id="bEdit" class="btn secondary" type="button" data-i18n="btnEdit">เปลี่ยนเกมหรือเวลา</button>
+        <button id="bRem" class="btn secondary" type="button" data-i18n="remOpen">ตั้งเตือนในมือถือ</button>
+        <div id="remBox" hidden>
+          <label for="remLead" data-i18n="remLead">เตือนครั้งแรกก่อนนั่ง</label>
+          <select id="remLead"><option value="15">15 นาที</option><option value="30" selected>30 นาที</option><option value="60">1 ชั่วโมง</option></select>
+          <label for="remDays" data-i18n="remDays">ตั้งเตือนกี่วัน</label>
+          <select id="remDays"><option value="7" selected>7 วัน</option><option value="14">14 วัน</option><option value="30">30 วัน</option><option value="90">90 วัน</option></select>
+          <p class="muted" data-i18n="remNote">จะเตือนอีกครั้งก่อนนั่ง 3 นาที</p>
+          <button id="bRemGo" class="btn" type="button" data-i18n="remGo">เพิ่มลงปฏิทินมือถือ</button>
+          <p class="muted" data-i18n="remHelp">มือถือจะเปิดปฏิทินให้ กดบันทึกในนั้นอีกครั้ง</p>
+        </div>
         <button id="bTodayRedo" class="btn secondary" type="button" data-i18n="redoOpen"></button>
       </section>
 
@@ -277,7 +290,7 @@
       btnWelcome: 'มาเริ่มต้นกันเลย',
       qName: 'เกมของคุณชื่ออะไร', qTime: 'ทำตอนกี่โมงถึงกี่โมง', fStart: 'เริ่ม', fEnd: 'จบ',
       btnBegin: 'เริ่มทดลอง', btnStartTimer: 'เริ่มจับเวลา', btnStop: 'หยุดก่อน',
-      btnEdit: 'เปลี่ยนเกมหรือเวลา', btnSave: 'บันทึก', btnBack: 'กลับ',
+      btnEdit: 'เปลี่ยนเกมหรือเวลา', btnSave: 'บันทึก', remOpen: 'ตั้งเตือนในมือถือ', remLead: 'เตือนครั้งแรกก่อนนั่ง', remDays: 'ตั้งเตือนกี่วัน', remNote: 'จะเตือนอีกครั้งก่อนนั่ง 3 นาที', remGo: 'เพิ่มลงปฏิทินมือถือ', remHelp: 'มือถือจะเปิดปฏิทินให้ กดบันทึกในนั้นอีกครั้ง', btnBack: 'กลับ',
       dayOf: 'วันที่ {n} จาก 7', timeLine: 'เริ่ม {s} จบ {e}', startedAt: 'เริ่มเมื่อ {s}',
       stats: 'ฝึกแล้ว {a} วัน · ตรงเวลา {b} วัน',
       onTimeYes: 'ตรงเวลา', onTimeNo: 'ไม่ตรงเวลาที่ตั้งไว้',
@@ -300,7 +313,7 @@
       btnWelcome: 'Let us begin',
       qName: 'What is your game called?', qTime: 'What time do you do it, from when to when?', fStart: 'Start', fEnd: 'End',
       btnBegin: 'Start the trial', btnStartTimer: 'Start the timer', btnStop: 'Stop for now',
-      btnEdit: 'Change game or time', btnSave: 'Save', btnBack: 'Back',
+      btnEdit: 'Change game or time', btnSave: 'Save', remOpen: 'Set a reminder on your phone', remLead: 'First reminder before the sit', remDays: 'How many days', remNote: 'Another reminder comes 3 minutes before the sit', remGo: 'Add to phone calendar', remHelp: 'Your phone opens its calendar. Tap save there once more.', btnBack: 'Back',
       dayOf: 'Day {n} of 7', timeLine: 'Start {s} End {e}', startedAt: 'Started at {s}',
       stats: 'Days practiced: {a} · on time: {b}',
       onTimeYes: 'on time', onTimeNo: 'not at the time you set',
@@ -662,6 +675,23 @@
         S.name = $('#gName').value.trim() || t('defaultName');
         if (!S.startDate) { S.start = $('#gStart').value || '06:00'; S.end = $('#gEnd').value || '06:10'; }
         S.startDate = S.startDate || ymd(new Date()); save(); show('today');
+      });
+      $('#bRem').addEventListener('click', function () { var b = $('#remBox'); b.hidden = !b.hidden; });
+      $('#bRemGo').addEventListener('click', function () {
+        var st = mins(S.start || '06:00'), en = mins(S.end || '06:10'), now = new Date(), d = new Date();
+        d.setHours(0, st, 0, 0); if (d.getTime() <= now.getTime()) { d.setDate(d.getDate() + 1); }
+        var e = new Date(d.getTime()); e.setHours(0, en, 0, 0); if (e.getTime() <= d.getTime()) { e = new Date(d.getTime() + 10 * 60000); }
+        function ics(x) { return x.getFullYear() + pad(x.getMonth() + 1) + pad(x.getDate()) + 'T' + pad(x.getHours()) + pad(x.getMinutes()) + '00'; }
+        var lead = parseInt($('#remLead').value, 10) || 30, days = parseInt($('#remDays').value, 10) || 7;
+        var name = String(shownName()).replace(/[\r\n,;\\]/g, ' ');
+        var L = ['BEGIN:VCALENDAR', 'VERSION:2.0', 'PRODID:-//jdl9010//Deep Listening//TH', 'CALSCALE:GREGORIAN', 'BEGIN:VEVENT',
+          'UID:' + Date.now() + '-' + Math.floor(Math.random() * 1e6) + '@jdl9010.com', 'DTSTAMP:' + now.toISOString().replace(/[-:]/g, '').slice(0, 15) + 'Z',
+          'DTSTART:' + ics(d), 'DTEND:' + ics(e), 'RRULE:FREQ=DAILY;COUNT=' + days, 'SUMMARY:' + name,
+          'BEGIN:VALARM', 'ACTION:DISPLAY', 'DESCRIPTION:' + name, 'TRIGGER:-PT' + lead + 'M', 'END:VALARM',
+          'BEGIN:VALARM', 'ACTION:DISPLAY', 'DESCRIPTION:' + name, 'TRIGGER:-PT3M', 'END:VALARM', 'END:VEVENT', 'END:VCALENDAR'];
+        var url = URL.createObjectURL(new Blob([L.join('\r\n')], { type: 'text/calendar;charset=utf-8' }));
+        if (/iPad|iPhone|iPod/.test(navigator.userAgent)) { location.href = url; return; }
+        var a = document.createElement('a'); a.href = url; a.download = 'deep-listening.ics'; document.body.appendChild(a); a.click(); document.body.removeChild(a);
       });
       $('#bEdit').addEventListener('click', function () {
         $('#gName').value = shownName(); $('#gStart').value = S.start; $('#gEnd').value = S.end; show('setup');
