@@ -195,8 +195,6 @@
         <div id="remBox" hidden>
           <label for="remLead" data-i18n="remLead">เตือนครั้งแรกก่อนนั่ง</label>
           <input id="remLead" type="number" inputmode="numeric" min="1" max="1440" placeholder="นาที">
-          <label for="remDays" data-i18n="remDays">ตั้งเตือนกี่วัน</label>
-          <input id="remDays" type="number" inputmode="numeric" min="1" max="365" placeholder="วัน">
           <p class="muted" data-i18n="remNote">จะเตือนอีกครั้งก่อนนั่ง 3 นาที</p>
           <button id="bRemGo" class="btn" type="button" data-i18n="remGo">เพิ่มลงปฏิทินมือถือ</button>
           <p class="muted" data-i18n="remHelp">มือถือจะเปิดปฏิทินให้ กดบันทึกในนั้นอีกครั้ง</p>
@@ -290,7 +288,7 @@
       btnWelcome: 'มาเริ่มต้นกันเลย',
       qName: 'เกมของคุณชื่ออะไร', qTime: 'ทำตอนกี่โมงถึงกี่โมง', fStart: 'เริ่ม', fEnd: 'จบ',
       btnBegin: 'เริ่มทดลอง', btnStartTimer: 'เริ่มจับเวลา', btnStop: 'หยุดก่อน',
-      btnEdit: 'เปลี่ยนเกมหรือเวลา', btnSave: 'บันทึก', remOpen: 'ตั้งเตือนในมือถือ', remLead: 'เตือนครั้งแรกก่อนนั่ง', remDays: 'ตั้งเตือนกี่วัน', remNote: 'จะเตือนอีกครั้งก่อนนั่ง 3 นาที', remGo: 'เพิ่มลงปฏิทินมือถือ', remHelp: 'มือถือจะเปิดปฏิทินให้ กดบันทึกในนั้นอีกครั้ง', btnBack: 'กลับ',
+      btnEdit: 'เปลี่ยนเกมหรือเวลา', btnSave: 'บันทึก', remOpen: 'ตั้งเตือนในมือถือ', remLead: 'เตือนครั้งแรกก่อนนั่ง', remNote: 'จะเตือนอีกครั้งก่อนนั่ง 3 นาที', remGo: 'เพิ่มลงปฏิทินมือถือ', remHelp: 'มือถือจะเปิดปฏิทินให้ กดบันทึกในนั้นอีกครั้ง', btnBack: 'กลับ',
       dayOf: 'วันที่ {n} จาก 7', timeLine: 'เริ่ม {s} จบ {e}', startedAt: 'เริ่มเมื่อ {s}',
       stats: 'ฝึกแล้ว {a} วัน · ตรงเวลา {b} วัน',
       onTimeYes: 'ตรงเวลา', onTimeNo: 'ไม่ตรงเวลาที่ตั้งไว้',
@@ -313,7 +311,7 @@
       btnWelcome: 'Let us begin',
       qName: 'What is your game called?', qTime: 'What time do you do it, from when to when?', fStart: 'Start', fEnd: 'End',
       btnBegin: 'Start the trial', btnStartTimer: 'Start the timer', btnStop: 'Stop for now',
-      btnEdit: 'Change game or time', btnSave: 'Save', remOpen: 'Set a reminder on your phone', remLead: 'First reminder before the sit', remDays: 'How many days', remNote: 'Another reminder comes 3 minutes before the sit', remGo: 'Add to phone calendar', remHelp: 'Your phone opens its calendar. Tap save there once more.', btnBack: 'Back',
+      btnEdit: 'Change game or time', btnSave: 'Save', remOpen: 'Set a reminder on your phone', remLead: 'First reminder before the sit', remNote: 'Another reminder comes 3 minutes before the sit', remGo: 'Add to phone calendar', remHelp: 'Your phone opens its calendar. Tap save there once more.', btnBack: 'Back',
       dayOf: 'Day {n} of 7', timeLine: 'Start {s} End {e}', startedAt: 'Started at {s}',
       stats: 'Days practiced: {a} · on time: {b}',
       onTimeYes: 'on time', onTimeNo: 'not at the time you set',
@@ -688,7 +686,7 @@
         d.setHours(0, st, 0, 0); if (d.getTime() <= now.getTime()) { d.setDate(d.getDate() + 1); }
         var e = new Date(d.getTime()); e.setHours(0, en, 0, 0); if (e.getTime() <= d.getTime()) { e = new Date(d.getTime() + 10 * 60000); }
         function ics(x) { return x.getFullYear() + pad(x.getMonth() + 1) + pad(x.getDate()) + 'T' + pad(x.getHours()) + pad(x.getMinutes()) + '00'; }
-        var lead = Math.min(1440, parseInt($('#remLead').value, 10) || 0), days = Math.min(365, Math.max(1, parseInt($('#remDays').value, 10) || 7));
+        var lead = Math.min(1440, parseInt($('#remLead').value, 10) || 0), days = 90;
         var name = String(shownName()).replace(/[\r\n,;\\]/g, ' ');
         var L = ['BEGIN:VCALENDAR', 'VERSION:2.0', 'PRODID:-//jdl9010//Deep Listening//TH', 'CALSCALE:GREGORIAN', 'BEGIN:VEVENT',
           'UID:' + Date.now() + '-' + Math.floor(Math.random() * 1e6) + '@jdl9010.com', 'DTSTAMP:' + now.toISOString().replace(/[-:]/g, '').slice(0, 15) + 'Z',
