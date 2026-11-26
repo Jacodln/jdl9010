@@ -1,0 +1,22 @@
+<!doctype html>
+<html lang="th"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex"><title>ทดสอบเสียง</title>
+<style>body{margin:0;padding:20px;background:#0d1f1b;color:#EAF5F1;font:16px/1.6 system-ui,sans-serif}button{min-height:48px;padding:8px 16px;border:0;border-radius:12px;background:#F5D98B;color:#0B2A22;font:inherit;font-weight:700;margin:6px 6px 6px 0}pre{white-space:pre-wrap;background:rgba(255,255,255,.07);padding:12px;border-radius:12px}</style></head>
+<body>
+<h1>ทดสอบเสียงในเครื่อง</h1>
+<p>หน้านี้ใช้ตรวจว่าเครื่องนี้มีเสียงภาษาอะไรบ้าง</p>
+<button id="b1">แสดงรายการเสียง</button>
+<button id="b2">ลองพูดภาษาลาว</button>
+<pre id="out">กดปุ่มด้านบน</pre>
+<script>
+var out=document.getElementById('out');
+function list(){var vs=speechSynthesis.getVoices();var lo=vs.filter(function(v){return /^lo/i.test(v.lang)});var km=vs.filter(function(v){return /^km/i.test(v.lang)});
+out.textContent='เสียงทั้งหมด: '+vs.length+'\nเสียงลาว (lo): '+(lo.length?lo.map(function(v){return v.name+' ['+v.lang+']'}).join(', '):'ไม่มี')+'\nเสียงเขมร (km): '+(km.length?km.map(function(v){return v.name+' ['+v.lang+']'}).join(', '):'ไม่มี')+'\nภาษาที่มี: '+Array.from(new Set(vs.map(function(v){return v.lang}))).sort().join(' ');}
+document.getElementById('b1').onclick=function(){list();};
+speechSynthesis.onvoiceschanged=function(){};
+document.getElementById('b2').onclick=function(){
+ var vs=speechSynthesis.getVoices();var v=vs.filter(function(x){return /^lo/i.test(x.lang)})[0];
+ var u=new SpeechSynthesisUtterance('ສະບາຍດີ ຍິນດີຕ້ອນຮັບ');u.lang='lo-LA';if(v){u.voice=v;}
+ u.onstart=function(){out.textContent+='\nเริ่มพูด เสียงที่ใช้: '+(u.voice?u.voice.name+' ['+u.voice.lang+']':'ไม่ได้เลือกเสียง (เครื่องเลือกเอง)');};
+ u.onerror=function(e){out.textContent+='\nผิดพลาด: '+e.error;};
+ speechSynthesis.cancel();speechSynthesis.speak(u);};
+</script></body></html>
