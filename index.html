@@ -1,78 +1,123 @@
 <!doctype html>
 <html lang="th">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Deep Listening Training</title>
-  <link rel="stylesheet" href="style.css">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Deep Listening Training</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@400;600;700;800&display=swap">
+<style>
+*{box-sizing:border-box}
+body{margin:0;font-family:'Noto Sans Thai',system-ui,sans-serif;background:#0d1f1b;color:#EAF5F1}
+a{color:#F5D98B}
+.hero{width:100%;background:linear-gradient(180deg,#0d1f1b,#143229 70%,#1b4338);display:flex;flex-direction:column;align-items:center;padding:32px clamp(20px,5vw,48px) 64px;gap:40px}
+.row{width:100%;max-width:1100px}
+.top{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px}
+.brand{display:flex;align-items:center;gap:16px;text-decoration:none;color:inherit}
+.brand .t1{font-size:clamp(26px,5vw,34px);font-weight:800;letter-spacing:.04em;line-height:1;color:#EAF5F1}
+.brand .t1 span{color:#F5D98B}
+.brand .t2{margin-top:8px;font-size:13px;font-weight:600;letter-spacing:.5em;color:#8EE0CC;line-height:1}
+.wave{flex:none;max-width:22vw;height:auto}
+.langs{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.langs button{font:inherit;font-size:14px;min-height:44px;padding:8px 16px;border-radius:999px;border:0;background:transparent;color:#A9C5BD;cursor:pointer}
+.langs button.on{background:rgba(255,255,255,.1);color:#EAF5F1}
+.gt{min-height:44px}
+.gt .goog-te-gadget{font-size:0!important}
+.gt select.goog-te-combo{min-height:44px;padding:0 10px;border:1px solid rgba(255,255,255,.2);border-radius:12px;background:#143229;color:#EAF5F1;font:inherit;font-size:14px;margin:0;max-width:170px}
+iframe.skiptranslate,.goog-te-banner-frame{display:none!important}
+body{top:0!important}
+.goog-text-highlight{background:none!important;box-shadow:none!important}
+.heroRow{display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:56px}
+.copy{flex:1 1 380px;display:flex;flex-direction:column;gap:20px}
+h1{margin:0;font-size:clamp(32px,6vw,48px);line-height:1.25;font-weight:700}
+.copy p{margin:0;font-size:18px;line-height:1.8;color:#A9C5BD}
+.cta{align-self:flex-start;display:inline-flex;align-items:center;padding:16px 36px;border-radius:14px;background:#F5D98B;color:#0B2A22;font-weight:700;font-size:20px;text-decoration:none;min-height:44px}
+.timer{flex:0 1 340px;width:100%;max-width:340px;padding:32px 28px;border-radius:28px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.12);display:flex;flex-direction:column;align-items:center;gap:20px}
+.timer .l{color:#A9C5BD;font-size:15px}
+.timer .n{font-size:64px;font-weight:700;color:#F5D98B;letter-spacing:.02em;line-height:1.1}
+.timer a{width:100%;text-align:center;border-radius:12px;font-weight:700;text-decoration:none;min-height:44px;display:flex;align-items:center;justify-content:center}
+.timer .p{background:#F5D98B;color:#0B2A22;padding:14px}
+.timer .s{border:1.5px solid #F5D98B;color:#F5D98B;padding:12px;font-weight:600}
+.sec{width:100%;max-width:1100px;padding:64px clamp(20px,5vw,48px) 32px;display:flex;flex-direction:column;gap:28px}
+.sec.faq{padding-top:0;padding-bottom:48px;gap:16px}
+h2{margin:0;font-size:30px}
+.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:24px}
+.box{padding:28px;border-radius:18px;background:rgba(255,255,255,.06);display:flex;flex-direction:column;gap:8px}
+.box b{font-size:20px;font-weight:600}
+.box span,.q span{color:#A9C5BD;line-height:1.7}
+.q{padding:20px 24px;border-radius:14px;background:rgba(255,255,255,.06)}
+.q b{font-weight:600;display:block}
+.q span{display:block;margin-top:6px}
+.foot{width:100%;max-width:1100px;padding:0 clamp(20px,5vw,48px) 48px;display:flex;flex-wrap:wrap;gap:8px 24px}
+.foot a{min-height:44px;display:inline-flex;align-items:center;font-size:15px}
+@media(max-width:700px){.grid{grid-template-columns:1fr}.heroRow{gap:36px}}
+</style>
 </head>
 <body>
-  <header class="topbar">
-    <h1 class="brand" data-i18n="appName">Deep Listening Training</h1>
-    <button id="langToggle" class="lang-toggle" type="button" data-i18n="langButton" data-i18n-label="langLabel">EN</button>
-  </header>
-
-  <nav class="nav">
-    <a href="index.html" data-i18n="navParticipant">ผู้ฝึก</a>
-    <a href="coach.html" data-i18n="navCoach">โค้ช</a>
-    <a href="manual.html" data-i18n="navManual">คู่มือ</a>
-  </nav>
-
-  <main>
-    <h2 data-i18n="participantTitle">หน้าผู้ฝึก</h2>
-    <div class="card">
-      <p data-i18n="intro">Deep Listening Training คือการฟังอย่างลึกซึ้ง หรือฟังให้ได้ยินในสิ่งที่เขาไม่ได้พูด โปรแกรมนี้ยืนและสนับสนุนให้คุณได้ผลลัพธ์ในสิ่งที่คุณต้องการ เป็นมากกว่า Deep Listening เชื้อเชิญให้คุณใช้โปรแกรมนี้เป็นเครื่องมือทดสอบ performance ของคุณ</p>
-    </div>
-    <div class="card">
-      <h3 data-i18n="s1">Introduction</h3>
-      <ul>
-        <li data-i18n="i1">โครงสร้าง 90 วัน</li>
-        <li data-i18n="i2">ยกตัวอย่าง พบโค้ช 24 ครั้ง (เริ่ม on time 20.00 น. / จบ on time 22.00 น.)</li>
-        <li data-i18n="i3">ทำกิจกรรม (เกม) 90 วัน ยกตัวอย่าง เช่น อ่านหนังสือ 10 นาที / ออกกำลังกาย / นับลมหายใจ 10 นาที</li>
-        <li data-i18n="i4">เชื้อเชิญ ทำตามโปรแกรมที่ออกแบบ</li>
-        <li data-i18n="i5">เชื่อ ทุกคน: ต้องการอะไรที่ตัวเองปรารถนา ในตอนนี้ / สิ่งที่ทุกคนควรทำคือ ตั้งคำถาม แล้วหาคำตอบ</li>
-        <li data-i18n="i6">ข้อตกลงร่วมกัน โค้ชกับผู้ฝึก: งานของโค้ชคือทำตามสิ่งที่คุณพูดไว้</li>
-      </ul>
-    </div>
-    <div class="card">
-      <h3 data-i18n="s2">รูปแบบการฝึก</h3>
-      <ul>
-        <li data-i18n="f1">พบ Coach 24 ครั้ง</li>
-        <li data-i18n="f2">ทำกิจกรรมต่อเนื่อง 90 วัน</li>
-        <li data-i18n="f3">ลงสนาม → ทำกิจกรรม (เล่นเกม)</li>
-        <li data-i18n="f4">พบโค้ช: แยกแยะ, เครื่องมือ</li>
-        <li data-i18n="f5">เกม: พบโค้ช, แชร์, พื้นที่</li>
-        <li data-i18n="f6">Power 3: แยกแยะ และ เล่นเกม; ใช้พื้นที่ (พบโค้ช); เข้า Call ตลอด 24 ครั้ง</li>
-      </ul>
-    </div>
-    <div class="card">
-      <h3 data-i18n="s3">การฝึก</h3>
-      <ul>
-        <li data-i18n="p1">คุณจะถูกถามไปมา</li>
-        <li data-i18n="p2">คุณถูกเรียกให้พูด ให้ตอบ ให้คิด ให้รู้สึก ให้ใช้สติ ให้ใช้ปัญญา</li>
-        <li data-i18n="p3">และสำคัญมาก เชื้อเชิญให้คุณเผชิญหน้ากับคำถามและคำตอบ</li>
-        <li data-i18n="p4">ในคำถามและคำตอบ คุณเป็นอิสระที่จะตอบและถาม แบบตรงไปตรงมาต่อความรู้สึก ไม่มีคำว่าผิดหรือถูก</li>
-      </ul>
-    </div>
-    <div class="card">
-      <h3 data-i18n="s4">Question</h3>
-      <p data-i18n="q1">ถ้าคุณถูกฝึกแบบนี้ตลอด จะเกิดอะไรขึ้นกับคุณ</p>
-      <p data-i18n="q2">นี่เป็นคำถามที่ผู้ฝึกต้องตอบเอง</p>
-    </div>
-    <div class="card">
-      <h3 data-i18n="s5">Tool เครื่องมือ</h3>
-      <p data-i18n="t1">Tool แปลว่าเครื่องมือหรืออุปกรณ์ เป็นคำศัพท์ที่คุณจะได้ใช้ประจำในการฝึกตลอดโปรแกรม เป็นเครื่องใช้ในการสื่อสาร</p>
-      <p data-i18n="t2">ความหมายใน Deep Listening คือสิ่งสนับสนุนให้คุณใช้ประโยชน์จากการใช้ตัวคุณเอง ด้วยตัวคุณเอง ไม่ใช่การให้จำ ให้เชื่อ ให้ยึด เราจึงใช้คำว่าเครื่องมือ จะใช้ก็ควรใช้ จะไม่ใช้ก็ไม่ต้องใช้</p>
-    </div>
-    <div class="card">
-      <p class="muted" data-i18n="placeholder">หน้านี้อยู่ระหว่างการสร้าง</p>
-    </div>
-  </main>
-
-  <script src="app.js"></script>
-  <script>
-    DL.addStrings('th', {"s1":"Introduction","i1":"โครงสร้าง 90 วัน","i2":"ยกตัวอย่าง พบโค้ช 24 ครั้ง (เริ่ม on time 20.00 น. / จบ on time 22.00 น.)","i3":"ทำกิจกรรม (เกม) 90 วัน ยกตัวอย่าง เช่น อ่านหนังสือ 10 นาที / ออกกำลังกาย / นับลมหายใจ 10 นาที","i4":"เชื้อเชิญ ทำตามโปรแกรมที่ออกแบบ","i5":"เชื่อ ทุกคน: ต้องการอะไรที่ตัวเองปรารถนา ในตอนนี้ / สิ่งที่ทุกคนควรทำคือ ตั้งคำถาม แล้วหาคำตอบ","i6":"ข้อตกลงร่วมกัน โค้ชกับผู้ฝึก: งานของโค้ชคือทำตามสิ่งที่คุณพูดไว้","s2":"รูปแบบการฝึก","f1":"พบ Coach 24 ครั้ง","f2":"ทำกิจกรรมต่อเนื่อง 90 วัน","f3":"ลงสนาม → ทำกิจกรรม (เล่นเกม)","f4":"พบโค้ช: แยกแยะ, เครื่องมือ","f5":"เกม: พบโค้ช, แชร์, พื้นที่","f6":"Power 3: แยกแยะ และ เล่นเกม; ใช้พื้นที่ (พบโค้ช); เข้า Call ตลอด 24 ครั้ง","s3":"การฝึก","p1":"คุณจะถูกถามไปมา","p2":"คุณถูกเรียกให้พูด ให้ตอบ ให้คิด ให้รู้สึก ให้ใช้สติ ให้ใช้ปัญญา","p3":"และสำคัญมาก เชื้อเชิญให้คุณเผชิญหน้ากับคำถามและคำตอบ","p4":"ในคำถามและคำตอบ คุณเป็นอิสระที่จะตอบและถาม แบบตรงไปตรงมาต่อความรู้สึก ไม่มีคำว่าผิดหรือถูก","s4":"Question","q1":"ถ้าคุณถูกฝึกแบบนี้ตลอด จะเกิดอะไรขึ้นกับคุณ","q2":"นี่เป็นคำถามที่ผู้ฝึกต้องตอบเอง","s5":"Tool เครื่องมือ","t1":"Tool แปลว่าเครื่องมือหรืออุปกรณ์ เป็นคำศัพท์ที่คุณจะได้ใช้ประจำในการฝึกตลอดโปรแกรม เป็นเครื่องใช้ในการสื่อสาร","t2":"ความหมายใน Deep Listening คือสิ่งสนับสนุนให้คุณใช้ประโยชน์จากการใช้ตัวคุณเอง ด้วยตัวคุณเอง ไม่ใช่การให้จำ ให้เชื่อ ให้ยึด เราจึงใช้คำว่าเครื่องมือ จะใช้ก็ควรใช้ จะไม่ใช้ก็ไม่ต้องใช้"});
-    DL.addStrings('en', {"s1":"Introduction","i1":"90-day structure","i2":"For example, meet the coach 24 times (start on time at 20:00 / end on time at 22:00)","i3":"Do an activity (a game) for 90 days. For example: read for 10 minutes / exercise / count your breaths for 10 minutes","i4":"We invite you to follow the program as designed","i5":"We believe everyone: wants what they desire right now / what everyone should do is ask questions, then find the answers","i6":"Agreement between coach and participant: the coach's job is to do what you said you would do","s2":"Training format","f1":"Meet the coach 24 times","f2":"Do the activity continuously for 90 days","f3":"Go into the field → do the activity (play the game)","f4":"Meeting the coach: distinguishing, tools","f5":"The game: meet the coach, share, space","f6":"Power 3: distinguish and play the game; use the space (meet the coach); join the call all 24 times","s3":"Training","p1":"You will be asked back and forth","p2":"You are called to speak, to answer, to think, to feel, to use awareness, to use wisdom","p3":"And very importantly, we invite you to face the questions and the answers","p4":"In the questions and answers, you are free to answer and ask directly, true to your feelings. There is no right or wrong","s4":"Question","q1":"If you are trained like this all the way through, what will happen to you?","q2":"This is a question the participant answers for themselves","s5":"Tool","t1":"Tool means an instrument or equipment. It is a word you will use regularly throughout the program, a means of communication","t2":"In Deep Listening, it means something that supports you in benefiting from using yourself, by yourself. It is not for memorizing, believing or holding on to. That is why we use the word tool: use it if it helps, and do not if it does not"});
-  </script>
+<div style="display:flex;flex-direction:column;align-items:center">
+<div class="hero">
+<div class="row top">
+<a class="brand" href="index.html"><svg class="wave" width="86" height="52" aria-hidden="true" viewBox="0 0 86 52" fill="none" stroke="#F5D98B" stroke-width="2" stroke-linecap="round"><path stroke="#EAF5F1" d="M4 21.0v10"/><path stroke="#EAF5F1" d="M9 16.0v20"/><path stroke="#EAF5F1" d="M14 19.0v14"/><path stroke="#F5D98B" d="M19 11.0v30"/><path stroke="#EAF5F1" d="M24 15.0v22"/><path stroke="#F5D98B" d="M29 6.0v40"/><path stroke="#EAF5F1" d="M34 12.0v28"/><path stroke="#F5D98B" d="M39 2.0v48"/><path stroke="#F5D98B" d="M44 9.0v34"/><path stroke="#F5D98B" d="M49 2.0v48"/><path stroke="#EAF5F1" d="M54 13.0v26"/><path stroke="#F5D98B" d="M59 6.0v40"/><path stroke="#EAF5F1" d="M64 17.0v18"/><path stroke="#F5D98B" d="M69 11.0v30"/><path stroke="#EAF5F1" d="M74 20.0v12"/><path stroke="#EAF5F1" d="M79 16.0v20"/><path stroke="#EAF5F1" d="M84 22.0v8"/></svg>
+<div><div class="t1">Deep <span>Listening</span></div><div class="t2">TRAINING</div></div></a>
+<div class="langs">
+<button type="button" id="bTh" class="on" translate="no">ไทย</button>
+<button type="button" id="bEn" translate="no">EN</button>
+<div id="gtEl" class="gt" translate="no"></div>
+</div>
+</div>
+<div class="row heroRow">
+<div class="copy">
+<h1>ความรู้ท่วมโลก ฟังให้ลึก แล้วเห็นโลกใหม่</h1>
+<p>ทุกวันนี้ความรู้ท่วมโลก ความเชื่อที่ฝังแน่นในใจ ทั้งที่รู้ตัวและไม่รู้ตัว กลายเป็นกรงขังที่ทำให้ติดอยู่กับที่</p>
+<p>แก้วใบหนึ่งมีหู คนเห็นด้านที่มีหูบอกว่าแก้วมีหู คนเห็นอีกด้านบอกว่าไม่มี ต่างคนต่างเห็นว่าจริง แต่เห็นกันแค่ครึ่งวง 180 องศา จากโลกที่มีทั้ง 360 องศา</p>
+<p>Deep Listening เป็นการฝึก 90 วัน นั่งหลับตาวันละ 10 นาที ทำให้ผู้ฝึกเห็นว่าความเชื่อเป็นสิ่งที่หยิบมาใช้ชั่วขณะ ไม่ใช่สิ่งที่ต้องยึดไว้เอาเป็นเอาตาย</p>
+<a class="cta" href="trial.html">เริ่มทดลอง 7 วัน ฟรี</a>
+</div>
+<div class="timer">
+<div class="l">วันนี้</div>
+<div class="n">10:00</div>
+<a class="p" href="trial.html">เริ่มจับเวลา</a>
+<a class="s" href="trial.html">กดฟังเสียง</a>
+</div>
+</div>
+</div>
+<div class="sec">
+<h2>สิ่งที่ผู้ฝึกทำ</h2>
+<div class="grid">
+<div class="box"><b>นั่งหลับตา 10 นาที</b><span>ผู้ฝึกได้เห็นว่าร่างกายมีอาการของมัน หูได้ยิน กายสัมผัส ความคิดทำหน้าที่คิด ความรู้สึกทำหน้าที่รู้สึก ความอยากไม่อยากก็ทำหน้าที่ของมัน</span></div>
+<div class="box"><b>เกมเป็นคำพูด</b><span>เกมที่สนุก ผู้ฝึกพูดเองว่าจะทำอะไร เมื่อพูดแล้วก็ลงมือทำ ได้เคารพคำพูดของตัวเอง</span></div>
+<div class="box"><b>Break down</b><span>เมื่อไม่ได้เป็นคำพูดของตัวเอง ผู้ฝึกประกาศเองว่า break down คำกลางที่ไม่ต้องโทษตัวเอง</span></div>
+<div class="box"><b>โค้ช</b><span>โค้ชคือผู้ที่ทำให้ผู้ฝึกได้สิ่งที่เขาต้องการ ด้วยการถามก่อนนั่ง ขณะนั่ง และหลังนั่ง</span></div>
+</div>
+</div>
+<div class="sec faq">
+<h2>คำถามที่พบบ่อย</h2>
+<div class="q"><b>ทดลองใช้ฟรีอย่างไร</b><span>นั่งหลับตาวันละ 10 นาที กดปุ่ม "ทดลอง 7 วัน ฟรี" เพื่อเริ่ม</span></div>
+<div class="q"><b>ข้อมูลของผู้ฝึกเก็บอย่างไร</b><span>ข้อมูลการฝึกเก็บในเครื่องของผู้ฝึกเอง</span></div>
+</div>
+<div class="foot">
+<a href="intro.html">เกี่ยวกับโปรแกรม</a>
+<a href="coach.html">โค้ช</a>
+<a href="manual.html">คู่มือ</a>
+<a href="invite.html">หน้าเชิญ</a>
+</div>
+</div>
+<script>
+function googleTranslateElementInit(){try{new google.translate.TranslateElement({pageLanguage:'th',autoDisplay:false},'gtEl');}catch(e){}}
+(function(){
+  var m=document.cookie.match(/(?:^|;\s*)googtrans=([^;]*)/),g='';
+  if(m){var p=decodeURIComponent(m[1]).split('/');g=p[p.length-1]||'';}
+  var on=(g&&g!=='th');
+  document.getElementById('bTh').className=on?'':'on';
+  document.getElementById('bEn').className=(g==='en')?'on':'';
+  if(on&&g!=='en'){document.getElementById('bTh').className='';}
+  function clr(){var past='googtrans=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/';document.cookie=past;document.cookie=past+'; domain='+location.hostname;document.cookie=past+'; domain=.'+location.hostname;}
+  document.getElementById('bTh').addEventListener('click',function(){clr();location.reload();});
+  document.getElementById('bEn').addEventListener('click',function(){clr();document.cookie='googtrans=/th/en; path=/';location.reload();});
+  var hl=on?g:((navigator.language||'th').split('-')[0]||'th');
+  var sc=document.createElement('script');
+  sc.src='https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit&hl='+encodeURIComponent(hl);
+  sc.async=true;document.head.appendChild(sc);
+})();
+</script>
 </body>
 </html>
