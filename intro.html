@@ -18,6 +18,8 @@
     .card p,.card li{color:#EAF5F1}
     .muted{color:#A9C5BD}
     a{color:#F5D98B}
+    #dlTools{display:none!important}
+    .say{margin-top:12px;min-height:44px;padding:10px 22px;font:inherit;font-weight:600;color:#F5D98B;background:transparent;border:1.5px solid #F5D98B;border-radius:12px;cursor:pointer}
     :focus-visible{outline-color:#F5D98B}
   </style>
 </head>
@@ -37,6 +39,7 @@
     <h2 data-i18n="participantTitle">หน้าผู้ฝึก</h2>
     <div class="card">
       <p data-i18n="intro">Deep Listening Training คือการฟังอย่างลึกซึ้ง หรือฟังให้ได้ยินในสิ่งที่เขาไม่ได้พูด โปรแกรมนี้ยืนและสนับสนุนให้คุณได้ผลลัพธ์ในสิ่งที่คุณต้องการ เป็นมากกว่า Deep Listening เชื้อเชิญให้คุณใช้โปรแกรมนี้เป็นเครื่องมือทดสอบ performance ของคุณ</p>
+      <button type="button" id="sayIntro" class="say">กดฟังเสียง</button>
     </div>
     <div class="card">
       <h3 data-i18n="s1">Introduction</h3>
@@ -88,6 +91,36 @@
   <script>
     DL.addStrings('th', {"s1":"Introduction","i1":"โครงสร้าง 90 วัน","i2":"ยกตัวอย่าง พบโค้ช 24 ครั้ง (เริ่ม on time 20.00 น. / จบ on time 22.00 น.)","i3":"ทำกิจกรรม (เกม) 90 วัน ยกตัวอย่าง เช่น อ่านหนังสือ 10 นาที / ออกกำลังกาย / นับลมหายใจ 10 นาที","i4":"เชื้อเชิญ ทำตามโปรแกรมที่ออกแบบ","i5":"เชื่อ ทุกคน: ต้องการอะไรที่ตัวเองปรารถนา ในตอนนี้ / สิ่งที่ทุกคนควรทำคือ ตั้งคำถาม แล้วหาคำตอบ","i6":"ข้อตกลงร่วมกัน โค้ชกับผู้ฝึก: งานของโค้ชคือทำตามสิ่งที่คุณพูดไว้","s2":"รูปแบบการฝึก","f1":"พบ Coach 24 ครั้ง","f2":"ทำกิจกรรมต่อเนื่อง 90 วัน","f3":"ลงสนาม → ทำกิจกรรม (เล่นเกม)","f4":"พบโค้ช: แยกแยะ, เครื่องมือ","f5":"เกม: พบโค้ช, แชร์, พื้นที่","f6":"Power 3: แยกแยะ และ เล่นเกม; ใช้พื้นที่ (พบโค้ช); เข้า Call ตลอด 24 ครั้ง","s3":"การฝึก","p1":"คุณจะถูกถามไปมา","p2":"คุณถูกเรียกให้พูด ให้ตอบ ให้คิด ให้รู้สึก ให้ใช้สติ ให้ใช้ปัญญา","p3":"และสำคัญมาก เชื้อเชิญให้คุณเผชิญหน้ากับคำถามและคำตอบ","p4":"ในคำถามและคำตอบ คุณเป็นอิสระที่จะตอบและถาม แบบตรงไปตรงมาต่อความรู้สึก ไม่มีคำว่าผิดหรือถูก","s4":"Question","q1":"ถ้าคุณถูกฝึกแบบนี้ตลอด จะเกิดอะไรขึ้นกับคุณ","q2":"นี่เป็นคำถามที่ผู้ฝึกต้องตอบเอง","s5":"Tool เครื่องมือ","t1":"Tool แปลว่าเครื่องมือหรืออุปกรณ์ เป็นคำศัพท์ที่คุณจะได้ใช้ประจำในการฝึกตลอดโปรแกรม เป็นเครื่องใช้ในการสื่อสาร","t2":"ความหมายใน Deep Listening คือสิ่งสนับสนุนให้คุณใช้ประโยชน์จากการใช้ตัวคุณเอง ด้วยตัวคุณเอง ไม่ใช่การให้จำ ให้เชื่อ ให้ยึด เราจึงใช้คำว่าเครื่องมือ จะใช้ก็ควรใช้ จะไม่ใช้ก็ไม่ต้องใช้"});
     DL.addStrings('en', {"s1":"Introduction","i1":"90-day structure","i2":"For example, meet the coach 24 times (start on time at 20:00 / end on time at 22:00)","i3":"Do an activity (a game) for 90 days. For example: read for 10 minutes / exercise / count your breaths for 10 minutes","i4":"We invite you to follow the program as designed","i5":"We believe everyone: wants what they desire right now / what everyone should do is ask questions, then find the answers","i6":"Agreement between coach and participant: the coach's job is to do what you said you would do","s2":"Training format","f1":"Meet the coach 24 times","f2":"Do the activity continuously for 90 days","f3":"Go into the field → do the activity (play the game)","f4":"Meeting the coach: distinguishing, tools","f5":"The game: meet the coach, share, space","f6":"Power 3: distinguish and play the game; use the space (meet the coach); join the call all 24 times","s3":"Training","p1":"You will be asked back and forth","p2":"You are called to speak, to answer, to think, to feel, to use awareness, to use wisdom","p3":"And very importantly, we invite you to face the questions and the answers","p4":"In the questions and answers, you are free to answer and ask directly, true to your feelings. There is no right or wrong","s4":"Question","q1":"If you are trained like this all the way through, what will happen to you?","q2":"This is a question the participant answers for themselves","s5":"Tool","t1":"Tool means an instrument or equipment. It is a word you will use regularly throughout the program, a means of communication","t2":"In Deep Listening, it means something that supports you in benefiting from using yourself, by yourself. It is not for memorizing, believing or holding on to. That is why we use the word tool: use it if it helps, and do not if it does not"});
+  </script>
+  <script>
+    (function () {
+      var synth = window.speechSynthesis; var btn = document.getElementById('sayIntro');
+      if (!synth || !btn) { if (btn) { btn.style.display = 'none'; } return; }
+      var on = false;
+      function gtCode() {
+        var m = document.cookie.match(/(?:^|;\s*)googtrans=([^;]*)/); if (!m) { return null; }
+        var p = decodeURIComponent(m[1]).split('/'), g = p[p.length - 1] || '';
+        if (!g || g === 'th' || p[1] !== 'th') { return null; }
+        return ({ iw: 'he', jw: 'jv', tl: 'fil' })[g] || g;
+      }
+      function lbl(x) { btn.textContent = x ? 'หยุดฟัง' : 'กดฟังเสียง'; on = x; }
+      function pick(code) {
+        var vs = synth.getVoices() || [], c = code.toLowerCase(), l = c.split('-')[0];
+        for (var i = 0; i < vs.length; i++) { if (vs[i].lang.toLowerCase().replace('_', '-') === c) { return vs[i]; } }
+        for (var j = 0; j < vs.length; j++) { if (vs[j].lang.toLowerCase().indexOf(l) === 0) { return vs[j]; } }
+        return null;
+      }
+      btn.addEventListener('click', function () {
+        if (on) { synth.cancel(); lbl(false); return; }
+        var el = document.querySelector('[data-i18n="intro"]'); if (!el) { return; }
+        var gc = gtCode(), code = gc || ((window.DL && DL.getLang() === 'en') ? 'en-US' : 'th-TH');
+        var voice = pick(code);
+        if (gc && !voice && (synth.getVoices() || []).length) { btn.textContent = 'เครื่องนี้ยังไม่มีเสียงภาษานี้'; setTimeout(function () { lbl(false); }, 3000); return; }
+        var u = new SpeechSynthesisUtterance(el.innerText); u.lang = code; if (voice) { u.voice = voice; }
+        u.onend = u.onerror = function () { lbl(false); };
+        synth.cancel(); synth.speak(u); lbl(true);
+      });
+    })();
   </script>
 </body>
 </html>
