@@ -173,7 +173,9 @@
         var cls = lang === 'en' ? '.en' : '.th', code = lang === 'en' ? 'en-US' : 'th-TH', lg = lang, gc = gtCode();
         if (gc) { code = gc; lg = gc.split('-')[0].toLowerCase(); }
         var parts = [d.querySelector('summary ' + cls)].concat(Array.prototype.slice.call(d.querySelectorAll('div p ' + cls + ', div li ' + cls))).map(function (n) { return n ? n.textContent : ''; }).filter(function (x) { return x.trim(); });
-        var my = ++runId, voice = pickVoice(code, lg); curBtn = btn; btn.classList.add('on');
+        var voice = pickVoice(code, lg);
+        if (gc && !voice && (synth.getVoices() || []).length) { btn.textContent = 'เครื่องนี้ยังไม่มีเสียงภาษานี้'; setTimeout(refreshBtns, 3000); return; }
+        var my = ++runId; curBtn = btn; btn.classList.add('on');
         parts.forEach(function (text, i) {
           var u = new SpeechSynthesisUtterance(text); u.lang = code; if (voice) { u.voice = voice; }
           var fin = function () { if (my === runId) { curBtn = null; btn.classList.remove('on'); refreshBtns(); } };
