@@ -39,7 +39,6 @@
     <h2 data-i18n="participantTitle">หน้าผู้ฝึก</h2>
     <div class="card">
       <p data-i18n="intro">Deep Listening Training คือการฟังอย่างลึกซึ้ง หรือฟังให้ได้ยินในสิ่งที่เขาไม่ได้พูด โปรแกรมนี้ยืนและสนับสนุนให้คุณได้ผลลัพธ์ในสิ่งที่คุณต้องการ เป็นมากกว่า Deep Listening เชื้อเชิญให้คุณใช้โปรแกรมนี้เป็นเครื่องมือทดสอบ performance ของคุณ</p>
-      <button type="button" id="sayIntro" class="say">กดฟังเสียง</button>
     </div>
     <div class="card">
       <h3 data-i18n="s1">Introduction</h3>
@@ -94,32 +93,38 @@
   </script>
   <script>
     (function () {
-      var synth = window.speechSynthesis; var btn = document.getElementById('sayIntro');
-      if (!synth || !btn) { if (btn) { btn.style.display = 'none'; } return; }
-      var on = false;
+      var synth = window.speechSynthesis; if (!synth) { return; }
+      var cur = null;
       function gtCode() {
         var m = document.cookie.match(/(?:^|;\s*)googtrans=([^;]*)/); if (!m) { return null; }
         var p = decodeURIComponent(m[1]).split('/'), g = p[p.length - 1] || '';
         if (!g || g === 'th' || p[1] !== 'th') { return null; }
         return ({ iw: 'he', jw: 'jv', tl: 'fil' })[g] || g;
       }
-      function lbl(x) { btn.textContent = x ? 'หยุดฟัง' : 'กดฟังเสียง'; on = x; }
       function pick(code) {
         var vs = synth.getVoices() || [], c = code.toLowerCase(), l = c.split('-')[0];
         for (var i = 0; i < vs.length; i++) { if (vs[i].lang.toLowerCase().replace('_', '-') === c) { return vs[i]; } }
         for (var j = 0; j < vs.length; j++) { if (vs[j].lang.toLowerCase().indexOf(l) === 0) { return vs[j]; } }
         return null;
       }
-      btn.addEventListener('click', function () {
-        if (on) { synth.cancel(); lbl(false); return; }
-        var el = document.querySelector('[data-i18n="intro"]'); if (!el) { return; }
-        var gc = gtCode(), code = gc || ((window.DL && DL.getLang() === 'en') ? 'en-US' : 'th-TH');
-        var voice = pick(code);
-        if (gc && !voice && (synth.getVoices() || []).length) { btn.textContent = 'เครื่องนี้ยังไม่มีเสียงภาษานี้'; setTimeout(function () { lbl(false); }, 3000); return; }
-        var u = new SpeechSynthesisUtterance(el.innerText); u.lang = code; if (voice) { u.voice = voice; }
-        u.onend = u.onerror = function () { lbl(false); };
-        synth.cancel(); synth.speak(u); lbl(true);
-      });
+      function reset(b) { b.textContent = 'กดฟังเสียง'; if (cur === b) { cur = null; } }
+      function wire(card) {
+        var b = document.createElement('button'); b.type = 'button'; b.className = 'say'; b.textContent = 'กดฟังเสียง';
+        card.appendChild(b);
+        b.addEventListener('click', function () {
+          var was = cur; synth.cancel(); if (was) { reset(was); }
+          if (was === b) { return; }
+          var text = Array.prototype.map.call(card.children, function (c) { return c === b ? '' : c.innerText; }).join('\n');
+          var gc = gtCode(), code = gc || ((window.DL && DL.getLang() === 'en') ? 'en-US' : 'th-TH');
+          var voice = pick(code);
+          if (gc && !voice && (synth.getVoices() || []).length) { b.textContent = 'เครื่องนี้ยังไม่มีเสียงภาษานี้'; setTimeout(function () { reset(b); }, 3000); return; }
+          var u = new SpeechSynthesisUtterance(text); u.lang = code; if (voice) { u.voice = voice; }
+          u.onend = u.onerror = function () { reset(b); };
+          synth.speak(u); cur = b; b.textContent = 'หยุดฟัง';
+        });
+      }
+      Array.prototype.forEach.call(document.querySelectorAll('main .card'), wire);
+      window.addEventListener('pagehide', function () { synth.cancel(); });
     })();
   </script>
 </body>
